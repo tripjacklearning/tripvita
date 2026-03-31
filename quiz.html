@@ -3,43 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita | March Edition</title>
+    <title>TripVita March 2026 | Sales Quiz</title>
     <style>
-        :root { --primary: #EF7F1A; --dark: #1A1A1A; --text: #333333; --bg: #fdfcfb; }
-        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: var(--text); }
-        .wrapper { width: 90%; max-width: 500px; background: #ffffff; padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border-top: 8px solid var(--primary); text-align: center; }
-        .logo { font-size: 32px; font-weight: 800; letter-spacing: 2px; color: var(--dark); margin-bottom: 5px; text-transform: uppercase; }
-        .edition { font-size: 12px; letter-spacing: 4px; color: var(--primary); font-weight: bold; margin-bottom: 30px; }
-        h1 { font-size: 24px; margin-bottom: 20px; color: var(--dark); }
-        .rules-list { text-align: left; background: #fff9f4; padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid var(--primary); }
-        .rule-item { margin: 10px 0; font-size: 15px; line-height: 1.5; display: flex; align-items: flex-start; }
-        .rule-item span { margin-right: 10px; }
-        .btn { display: inline-block; width: 100%; padding: 18px; background-color: var(--dark); color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px; transition: transform 0.2s, background-color 0.2s; box-sizing: border-box; }
-        .btn:hover { background-color: #333; transform: translateY(-2px); }
-        .footer { margin-top: 30px; font-size: 12px; color: #999; }
+        :root { --primary: #EF7F1A; --dark: #1A1A1A; --success: #28a745; --error: #dc3545; --bg: #fdfcfb; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 600px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 30px; box-sizing: border-box; border-top: 8px solid var(--primary); }
+        .hidden { display: none; }
+        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; }
+        .btn { width: 100%; padding: 16px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; transition: 0.3s; }
+        .btn:disabled { background: #bbb; cursor: not-allowed; }
+        .option-btn { width: 100%; padding: 16px; margin: 10px 0; border: 1px solid #eee; border-radius: 12px; background: #fff; cursor: pointer; text-align: left; font-size: 15px; }
+        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #fff9f4; }
+        .correct { background-color: #d4edda !important; border-color: var(--success) !important; color: #155724; font-weight: bold; }
+        .wrong { background-color: #f8d7da !important; border-color: var(--error) !important; color: #721c24; }
+        .explanation { padding: 18px; background: #eef7ff; border-radius: 12px; margin-top: 15px; border-left: 6px solid #007bff; font-size: 14px; line-height: 1.5; }
+        #timer { font-size: 20px; font-weight: 900; color: var(--primary); text-align: right; margin-bottom: 15px; }
+        .progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
+        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s; }
+        #reg-msg { text-align: center; font-size: 14px; margin-top: 20px; min-height: 40px; }
     </style>
 </head>
 <body>
 
-<div class="wrapper">
-    <div class="logo">TripVita</div>
-    <div class="edition">MARCH 2026</div>
-    
-    <h1>Knowledge Challenge</h1>
-    <p style="color: #666; margin-bottom: 25px;">Welcome back. Please review the assessment guidelines before proceeding.</p>
-    
-    <div class="rules-list">
-        <div class="rule-item"><span>⏱️</span> <strong>6 Minute Limit:</strong> The timer is strict and will auto-submit.</div>
-        <div class="rule-item"><span>🎯</span> <strong>One Attempt:</strong> Your Employee ID is locked once you start.</div>
-        <div class="rule-item"><span>📶</span> <strong>Stability:</strong> Ensure a strong connection before clicking start.</div>
+<div class="container">
+    <div id="registration">
+        <h2 style="text-align:center; margin-top:0;">TripVita March Edition</h2>
+        <p style="text-align:center; color:#666; margin-bottom:25px;">Please enter your details to begin the assessment.</p>
+        
+        <input type="text" id="userName" placeholder="Full Name" required>
+        <input type="text" id="empId" placeholder="Employee ID (e.g. TJ1234)" required>
+        <input type="email" id="userEmail" placeholder="Email Address" required>
+        <select id="userRegion">
+            <option value="">Select Region</option>
+            <option value="North">North</option>
+            <option value="South">South</option>
+            <option value="West">West</option>
+            <option value="OBJ">OBJ</option>
+        </select>
+        
+        <button id="start-btn" class="btn" onclick="validateAndStart()">START QUIZ</button>
+        <div id="reg-msg"></div>
     </div>
 
-    <a href="quiz.html" class="btn">PROCEED TO LOGIN</a>
+    <div id="quiz-box" class="hidden">
+        <div id="timer">06:00</div>
+        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
+        <h3 id="question-text">Loading...</h3>
+        <div id="options-container"></div>
+        <div id="explanation-box" class="explanation hidden"></div>
+        <button id="next-btn" class="btn hidden" onclick="nextQuestion()">Next Question</button>
+    </div>
 
-    <div class="footer">
-        © TripJack Learning & Development
+    <div id="results" class="hidden" style="text-align:center">
+        <h2>Assessment Complete</h2>
+        <div id="final-score" style="font-size: 60px; font-weight: 900; color: var(--primary); margin: 25px 0;">0/0</div>
+        <p id="result-msg" style="font-weight:bold; color:#444;">Saving your responses...</p>
+        <button class="btn" onclick="location.href='index.html'">Finish</button>
     </div>
 </div>
 
+<script>
+    // MAKE SURE THIS IS YOUR CURRENT WEB APP URL
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz2xRHKxn1U3YQNOIi8BOwVQNHSisfD-j57rUZvwMmEW0BkNoVgNEswsNqbAj9j0i2q/exec';
+    
+    let questions = [];
+    let currentIdx = 0;
+    let score = 0;
+    let timeLeft = 360; 
+    let timeSpent = 0;
+    let timerInterval;
+    let userDetails = {};
+
+    async function validateAndStart() {
+        const name = document.getElementById('userName').value.trim();
+        const empId = document.getElementById('empId').value.trim();
+        const email = document.getElementById('userEmail').value.trim();
+        const region = document.getElementById('userRegion').value;
+        const msg = document.getElementById('reg-msg');
+        const btn = document.getElementById('start-btn');
+
+        if(!name || !empId || !email || !region) {
+            alert("All fields are mandatory.");
+            return;
+        }
+
+        btn.disabled = true;
+        msg.innerHTML = "Authenticating ID... ⏳";
+        msg.style.color = "#666";
+
+        try {
+            // STEP 1: Verify Employee ID Duplicate
+            const check = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${encodeURIComponent(empId)}`);
+            const checkData = await check.json();
+
+            if (checkData.exists) {
+                msg.innerHTML = "<b style='color:red'>You have already submitted the quiz.<br>Duplicate attempts are not allowed.</b>";
+                btn.disabled = false;
+                return;
+            }
+
+            // STEP 2: Fetch Questions
+            msg.innerText = "Fetching questions... 🚀";
+            const qResp = await fetch(`${SCRIPT_URL}?action=getQuestions`);
+            const qData = await qResp.json();
+
+            if (qData.error) {
+                msg.innerHTML = `<b style='color:red'>${qData.error}</b>`;
+                btn.disabled = false;
+                return;
+            }
+
+            // STEP 3: Begin Quiz
+            questions = qData;
+            userDetails = { name, empId, email, region };
+            document.getElementById('registration').classList.add('hidden');
+            document.getElementById('quiz-box').classList.remove('hidden');
+            
+            startTimer();
+            renderQuestion();
+
+        } catch (err) {
+            console.error(err);
+            msg.innerHTML = "<b style='color:red'>Connection Error. Refresh and try again.</b>";
+            btn.disabled = false;
+        }
+    }
+
+    function startTimer() {
+        timerInterval = setInterval(() => {
+            timeLeft--;
+            timeSpent++;
+            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+            let s = (timeLeft % 60).toString().padStart(2, '0');
+            document.getElementById('timer').innerText = m + ":" + s;
+
+            if (timeLeft <= 0) {
+                clearInterval(timerInterval);
+                alert("Time is up! Submitting automatically.");
+                endQuiz();
+            }
+        }, 1000);
+    }
+
+    function renderQuestion() {
+        const q = questions[currentIdx];
+        document.getElementById('question-text').innerText = (currentIdx + 1) + ". " + q.question;
+        document.getElementById('progress').style.width = ((currentIdx / questions.length) * 100) + "%";
+        
+        const optBox = document.getElementById('options-container');
+        optBox.innerHTML = '';
+        document.getElementById('explanation-box').classList.add('hidden');
+        document.getElementById('next-btn').classList.add('hidden');
+
+        q.options.forEach(opt => {
+            const b = document.createElement('button');
+            b.className = 'option-btn';
+            b.innerText = opt;
+            b.onclick = () => selectOption(b, opt, q.answer, q.explanation);
+            optBox.appendChild(b);
+        });
+    }
+
+    function selectOption(btn, selected, correct, explanation) {
+        const buttons = document.querySelectorAll('.option-btn');
+        buttons.forEach(b => b.disabled = true);
+
+        if (selected === correct) {
+            btn.classList.add('correct');
+            score++;
+        } else {
+            btn.classList.add('wrong');
+            buttons.forEach(b => { if(b.innerText === correct) b.classList.add('correct'); });
+        }
+
+        const exp = document.getElementById('explanation-box');
+        exp.innerHTML = "<strong>Explanation:</strong> " + explanation;
+        exp.classList.remove('hidden');
+        document.getElementById('next-btn').classList.remove('hidden');
+    }
+
+    function nextQuestion() {
+        currentIdx++;
+        if(currentIdx < questions.length) renderQuestion();
+        else endQuiz();
+    }
+
+    async function endQuiz() {
+        clearInterval(timerInterval);
+        document.getElementById('quiz-box').classList.add('hidden');
+        document.getElementById('results').classList.remove('hidden');
+        document.getElementById('final-score').innerText = score + " / " + questions.length;
+
+        const m = Math.floor(timeSpent / 60);
+        const s = (timeSpent % 60).toString().padStart(2, '0');
+
+        const resultData = {
+            name: userDetails.name,
+            empId: userDetails.empId,
+            email: userDetails.email,
+            region: userDetails.region,
+            score: score,
+            totalQuestions: questions.length,
+            timeTakenSeconds: timeSpent,
+            timeFormatted: m + ":" + s
+        };
+
+        // Post to Google Sheet
+        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(resultData) });
+        document.getElementById('result-msg').innerText = "Results saved successfully!";
+    }
+</script>
 </body>
 </html>
