@@ -3,110 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Learning Assessment | TripJack</title>
+    <title>TripVita | March Edition</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f4f7f9;
-            color: #333;
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-
-        .quiz-container {
-            background: white;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            max-width: 600px;
-            width: 90%;
-            text-align: center;
-        }
-
-        /* --- Updated Banner Styles --- */
-        .hold-banner {
-            background-color: #fff4e5; /* Soft Amber */
-            border-left: 5px solid #ffa117;
-            padding: 20px;
-            margin-bottom: 30px;
-            border-radius: 8px;
-            text-align: left;
-            display: flex;
-            align-items: center;
-        }
-
-        .hold-banner-icon {
-            font-size: 24px;
-            margin-right: 15px;
-        }
-
-        .hold-banner-text h2 {
-            margin: 0 0 5px 0;
-            font-size: 18px;
-            color: #856404;
-        }
-
-        .hold-banner-text p {
-            margin: 0;
-            font-size: 14px;
-            color: #666;
-        }
-
-        .content-disabled {
-            opacity: 0.5;
-            pointer-events: none;
-            user-select: none;
-        }
-
-        .btn-notify {
-            background-color: #0052cc;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 600;
-            margin-top: 20px;
-            transition: background 0.3s;
-        }
-
-        .btn-notify:hover {
-            background-color: #003e99;
-        }
+        :root { --primary: #EF7F1A; --dark: #1A1A1A; --text: #333333; --bg: #fdfcfb; }
+        body { font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; background-color: var(--bg); margin: 0; display: flex; align-items: center; justify-content: center; min-height: 100vh; color: var(--text); }
+        .wrapper { width: 90%; max-width: 500px; background: #ffffff; padding: 40px; border-radius: 24px; box-shadow: 0 15px 35px rgba(0,0,0,0.05); border-top: 8px solid var(--primary); text-align: center; }
+        .logo { font-size: 32px; font-weight: 800; letter-spacing: 2px; color: var(--dark); margin-bottom: 5px; text-transform: uppercase; }
+        .edition { font-size: 12px; letter-spacing: 4px; color: var(--primary); font-weight: bold; margin-bottom: 30px; }
+        h1 { font-size: 24px; margin-bottom: 20px; color: var(--dark); }
+        .rules-list { text-align: left; background: #fff9f4; padding: 20px; border-radius: 12px; margin-bottom: 30px; border-left: 4px solid var(--primary); }
+        .rule-item { margin: 10px 0; font-size: 15px; line-height: 1.5; display: flex; align-items: flex-start; }
+        .rule-item span { margin-right: 10px; }
+        .btn { display: inline-block; width: 100%; padding: 18px; background-color: var(--dark); color: #ffffff; text-decoration: none; border-radius: 12px; font-weight: bold; font-size: 16px; transition: transform 0.2s, background-color 0.2s; box-sizing: border-box; }
+        .btn:hover { background-color: #333; transform: translateY(-2px); }
+        .footer { margin-top: 30px; font-size: 12px; color: #999; }
     </style>
 </head>
 <body>
 
-<div class="quiz-container">
+<div class="wrapper">
+    <div class="logo">TripVita</div>
+    <div class="edition">MARCH 2026</div>
     
-    <div class="hold-banner">
-        <div class="hold-banner-icon">⏳</div>
-        <div class="hold-banner-text">
-            <h2>Quiz Currently on Hold</h2>
-            <p>We are currently updating our question bank to include the latest Product Features. </p>
-        </div>
+    <h1>Knowledge Challenge</h1>
+    <p style="color: #666; margin-bottom: 25px;">Welcome back. Please review the assessment guidelines before proceeding.</p>
+    
+    <div class="rules-list">
+        <div class="rule-item"><span>⏱️</span> <strong>6 Minute Limit:</strong> The timer is strict and will auto-submit.</div>
+        <div class="rule-item"><span>🎯</span> <strong>One Attempt:</strong> Your Employee ID is locked once you start.</div>
+        <div class="rule-item"><span>📶</span> <strong>Stability:</strong> Ensure a strong connection before clicking start.</div>
     </div>
 
-    <h1>Knowledge Check</h1>
-    <p>Test your understanding of TripJack!</p>
+    <a href="quiz.html" class="btn">PROCEED TO LOGIN</a>
 
-    <div class="content-disabled">
-        <div style="border: 1px dashed #ccc; padding: 20px; border-radius: 8px;">
-            <p><i>The assessment module is temporarily locked.</i></p>
-        </div>
+    <div class="footer">
+        © TripJack Learning & Development
     </div>
-
-    <hr style="margin: 30px 0; border: 0; border-top: 1px solid #eee;">
-
-    <h3>Want to be the first to know?</h3>
-    <p>Click below and we'll send a notification to your dashboard as soon as the quiz is live again.</p>
-    <button class="btn-notify" onclick="alert('Great! We will notify you once the quiz is back up.')">
-        Notify Me When Back Online
-    </button>
-
 </div>
 
 </body>
