@@ -3,148 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita April 2026 | Sales Quiz</title>
+    <title>TripVita April | Challenge</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #EF7F1A; --dark: #1A1A1A; --success: #28a745; --error: #dc3545; --bg: #fdfcfb; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 600px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 30px; box-sizing: border-box; border-top: 8px solid var(--primary); }
+        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; --white: #ffffff; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--soft); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
+        .card { width: 100%; max-width: 550px; background: var(--white); border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); align-self: center; border: 1px solid #e5e4e2; }
+        h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; font-size: 32px; margin-bottom: 10px; color: var(--dark); }
+        .tagline { color: var(--orange); font-weight: 700; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; }
+        input, select { width: 100%; padding: 16px; margin: 10px 0; border: 2px solid #eee; border-radius: 15px; font-family: inherit; font-size: 15px; transition: 0.3s; }
+        input:focus { border-color: var(--orange); outline: none; }
+        .btn { width: 100%; padding: 20px; background: var(--dark); color: white; border: none; border-radius: 15px; font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .hidden { display: none; }
-        input, select { width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px; box-sizing: border-box; font-size: 15px; }
-        .btn { width: 100%; padding: 16px; background: var(--dark); color: white; border: none; border-radius: 12px; cursor: pointer; font-weight: bold; font-size: 16px; margin-top: 10px; transition: 0.3s; }
-        .btn:disabled { background: #bbb; cursor: not-allowed; }
-        .option-btn { width: 100%; padding: 16px; margin: 10px 0; border: 1px solid #eee; border-radius: 12px; background: #fff; cursor: pointer; text-align: left; font-size: 15px; }
-        .option-btn:hover:not(:disabled) { border-color: var(--primary); background: #fff9f4; }
-        .correct { background-color: #d4edda !important; border-color: var(--success) !important; color: #155724; font-weight: bold; }
-        .wrong { background-color: #f8d7da !important; border-color: var(--error) !important; color: #721c24; }
-        .explanation { padding: 18px; background: #eef7ff; border-radius: 12px; margin-top: 15px; border-left: 6px solid #007bff; font-size: 14px; line-height: 1.5; }
-        #timer { font-size: 20px; font-weight: 900; color: var(--primary); text-align: right; margin-bottom: 15px; }
-        .progress-bar { height: 8px; background: #eee; border-radius: 4px; margin-bottom: 25px; overflow: hidden; }
-        .progress-fill { height: 100%; background: var(--primary); width: 0%; transition: 0.4s; }
-        #reg-msg { text-align: center; font-size: 14px; margin-top: 20px; min-height: 40px; }
+        #timer { font-family: 'Syne', sans-serif; color: var(--orange); font-size: 24px; text-align: right; }
+        .opt { width: 100%; padding: 18px; margin: 10px 0; border: 2px solid #eee; border-radius: 15px; background: var(--white); text-align: left; cursor: pointer; font-family: inherit; font-size: 16px; transition: 0.2s; }
+        .opt:hover { border-color: var(--orange); background: var(--orange-light); }
+        .correct { background: #d4edda !important; border-color: #28a745 !important; }
+        .wrong { background: #f8d7da !important; border-color: #dc3545 !important; }
+        .exp { padding: 20px; background: #f0f7ff; border-radius: 15px; margin-top: 15px; font-size: 14px; line-height: 1.6; border-left: 5px solid #007bff; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div id="registration">
-        <h2 style="text-align:center; margin-top:0;">TripVita April Edition</h2>
-        <p style="text-align:center; color:#666; margin-bottom:25px;">Knowledge Assessment Challenge</p>
-        <input type="text" id="userName" placeholder="Full Name" required>
-        <input type="text" id="empId" placeholder="Employee ID" required>
-        <input type="email" id="userEmail" placeholder="Email Address" required>
-        <select id="userRegion">
-            <option value="">Select Region</option>
-            <option value="North">North</option><option value="South">South</option><option value="West">West</option><option value="OBJ">OBJ</option>
-        </select>
-        <button id="start-btn" class="btn" onclick="validateAndStart()">START QUIZ</button>
-        <div id="reg-msg"></div>
-    </div>
+<div class="card" id="reg-area">
+    <h1>TripVita</h1>
+    <div class="tagline">April Edition 2026</div>
+    <p style="color:#666; margin-bottom:20px;">Enter your credentials to begin the challenge.</p>
+    <input type="text" id="uName" placeholder="Full Name">
+    <input type="text" id="uId" placeholder="Employee ID">
+    <input type="email" id="uEmail" placeholder="Email Address">
+    <select id="uReg">
+        <option value="">Select Region</option>
+        <option value="North">North</option><option value="South">South</option><option value="West">West</option><option value="OBJ">OBJ</option>
+    </select>
+    <button class="btn" id="startBtn" onclick="initiate()">Enter Arena</button>
+    <p id="status" style="margin-top:15px; font-size:13px; text-align:center;"></p>
+</div>
 
-    <div id="quiz-box" class="hidden">
-        <div id="timer">06:00</div>
-        <div class="progress-bar"><div id="progress" class="progress-fill"></div></div>
-        <h3 id="question-text">Loading...</h3>
-        <div id="options-container"></div>
-        <div id="explanation-box" class="explanation hidden"></div>
-        <button id="next-btn" class="btn hidden" onclick="nextQuestion()">Next Question</button>
-    </div>
+<div class="card hidden" id="quiz-area">
+    <div id="timer">06:00</div>
+    <h2 id="qText" style="font-family:'Syne'; font-size:22px; margin: 20px 0;"></h2>
+    <div id="optContainer"></div>
+    <div id="expBox" class="exp hidden"></div>
+    <button id="nextBtn" class="btn hidden" onclick="nextQ()">Next Question</button>
+</div>
 
-    <div id="results" class="hidden" style="text-align:center">
-        <h2>Assessment Complete</h2>
-        <div id="final-score" style="font-size: 60px; font-weight: 900; color: var(--primary); margin: 25px 0;">0/0</div>
-        <p id="result-msg" style="font-weight:bold; color:#444;">Saving your responses...</p>
-        <button class="btn" onclick="location.href='leaderboard.html'">View Leaderboard</button>
-    </div>
+<div class="card hidden" id="result-area" style="text-align:center;">
+    <h1>Final Score</h1>
+    <div id="scoreDisplay" style="font-size:80px; font-family:'Syne'; color:var(--orange);">0/0</div>
+    <p id="saveStatus">Uploading to leaderboard...</p>
+    <button class="btn" onclick="location.href='leaderboard.html'">View Wall of Fame</button>
 </div>
 
 <script>
-    const SCRIPT_URL = 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE';
-    let questions = [], currentIdx = 0, score = 0, timeLeft = 360, timeSpent = 0, timerInterval, userDetails = {};
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
+    let qs = [], cur = 0, score = 0, time = 360, spent = 0, timer, user = {};
 
-    async function validateAndStart() {
-        const name = document.getElementById('userName').value.trim();
-        const empId = document.getElementById('empId').value.trim();
-        const email = document.getElementById('userEmail').value.trim();
-        const region = document.getElementById('userRegion').value;
-        const msg = document.getElementById('reg-msg');
-        const btn = document.getElementById('start-btn');
+    async function initiate() {
+        const id = document.getElementById('uId').value.trim();
+        const nm = document.getElementById('uName').value.trim();
+        if(!id || !nm) return alert("Please fill all details");
 
-        if(!name || !empId || !email || !region) return alert("All fields are required.");
-
-        btn.disabled = true;
-        msg.innerHTML = "Authenticating ID... ⏳";
+        document.getElementById('startBtn').disabled = true;
+        document.getElementById('status').innerText = "Validating entry...";
 
         try {
-            const check = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${encodeURIComponent(empId)}`);
-            const checkData = await check.json();
-            if (checkData.exists) {
-                msg.innerHTML = "<b style='color:red'>You have already submitted the quiz.</b>";
-                btn.disabled = false; return;
+            const cRes = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${encodeURIComponent(id)}`);
+            const cData = await cRes.json();
+            if(cData.exists) {
+                alert("Attempt already recorded for this ID.");
+                location.reload(); return;
             }
 
-            msg.innerText = "Loading April Challenge... 🚀";
-            const qResp = await fetch(`${SCRIPT_URL}?action=getQuestions`);
-            questions = await qResp.json();
+            const qRes = await fetch(`${SCRIPT_URL}?action=getQuestions`);
+            qs = await qRes.json();
+            user = { name: nm, empId: id, email: document.getElementById('uEmail').value, region: document.getElementById('uReg').value };
 
-            userDetails = { name, empId, email, region };
-            document.getElementById('registration').classList.add('hidden');
-            document.getElementById('quiz-box').classList.remove('hidden');
-            startTimer(); renderQuestion();
-        } catch (err) {
-            msg.innerHTML = "<b style='color:red'>Connection Error. Please try again.</b>";
-            btn.disabled = false;
+            document.getElementById('reg-area').classList.add('hidden');
+            document.getElementById('quiz-area').classList.remove('hidden');
+            runTimer(); renderQ();
+        } catch(e) {
+            alert("Connection error. Try again.");
+            document.getElementById('startBtn').disabled = false;
         }
     }
 
-    function startTimer() {
-        timerInterval = setInterval(() => {
-            timeLeft--; timeSpent++;
-            let m = Math.floor(timeLeft / 60).toString().padStart(2, '0');
-            let s = (timeLeft % 60).toString().padStart(2, '0');
-            document.getElementById('timer').innerText = m + ":" + s;
-            if (timeLeft <= 0) { clearInterval(timerInterval); endQuiz(); }
-        }, 1000);
-    }
+    function renderQ() {
+        const q = qs[cur];
+        document.getElementById('qText').innerText = `${cur+1}. ${q.question}`;
+        const container = document.getElementById('optContainer');
+        container.innerHTML = "";
+        document.getElementById('expBox').classList.add('hidden');
+        document.getElementById('nextBtn').classList.add('hidden');
 
-    function renderQuestion() {
-        const q = questions[currentIdx];
-        document.getElementById('question-text').innerText = (currentIdx + 1) + ". " + q.question;
-        document.getElementById('progress').style.width = ((currentIdx / questions.length) * 100) + "%";
-        const optBox = document.getElementById('options-container');
-        optBox.innerHTML = '';
-        document.getElementById('explanation-box').classList.add('hidden');
-        document.getElementById('next-btn').classList.add('hidden');
-
-        q.options.forEach(opt => {
+        q.options.forEach(o => {
             const b = document.createElement('button');
-            b.className = 'option-btn'; b.innerText = opt;
-            b.onclick = () => selectOption(b, opt, q.answer, q.explanation);
-            optBox.appendChild(b);
+            b.className = "opt"; b.innerText = o;
+            b.onclick = () => {
+                document.querySelectorAll('.opt').forEach(el => el.disabled = true);
+                if(o === q.answer) { b.classList.add('correct'); score++; }
+                else { b.classList.add('wrong'); }
+                document.getElementById('expBox').innerHTML = `<b>Explanation:</b> ${q.explanation}`;
+                document.getElementById('expBox').classList.remove('hidden');
+                document.getElementById('nextBtn').classList.remove('hidden');
+            };
+            container.appendChild(b);
         });
     }
 
-    function selectOption(btn, selected, correct, explanation) {
-        document.querySelectorAll('.option-btn').forEach(b => b.disabled = true);
-        if (selected === correct) { btn.classList.add('correct'); score++; } 
-        else { btn.classList.add('wrong'); document.querySelectorAll('.option-btn').forEach(b => { if(b.innerText === correct) b.classList.add('correct'); }); }
-        document.getElementById('explanation-box').innerHTML = "<strong>Explanation:</strong> " + explanation;
-        document.getElementById('explanation-box').classList.remove('hidden');
-        document.getElementById('next-btn').classList.remove('hidden');
+    function runTimer() {
+        timer = setInterval(() => {
+            time--; spent++;
+            let m = Math.floor(time/60).toString().padStart(2,'0');
+            let s = (time%60).toString().padStart(2,'0');
+            document.getElementById('timer').innerText = `${m}:${s}`;
+            if(time <= 0) { clearInterval(timer); finish(); }
+        }, 1000);
     }
 
-    function nextQuestion() {
-        currentIdx++;
-        if(currentIdx < questions.length) renderQuestion(); else endQuiz();
+    function nextQ() {
+        cur++;
+        if(cur < qs.length) renderQ(); else finish();
     }
 
-    async function endQuiz() {
-        clearInterval(timerInterval);
-        document.getElementById('quiz-box').classList.add('hidden');
-        document.getElementById('results').classList.remove('hidden');
-        document.getElementById('final-score').innerText = score + " / " + questions.length;
-        const resultData = { ...userDetails, score, totalQuestions: questions.length, timeTakenSeconds: timeSpent, timeFormatted: Math.floor(timeSpent/60) + ":" + (timeSpent%60).toString().padStart(2,'0') };
-        await fetch(SCRIPT_URL, { method: 'POST', mode: 'no-cors', body: JSON.stringify(resultData) });
-        document.getElementById('result-msg').innerText = "Results saved successfully!";
+    async function finish() {
+        clearInterval(timer);
+        document.getElementById('quiz-area').classList.add('hidden');
+        document.getElementById('result-area').classList.remove('hidden');
+        document.getElementById('scoreDisplay').innerText = `${score}/${qs.length}`;
+        
+        const payload = { ...user, score, totalQuestions: qs.length, timeTakenSeconds: spent, timeFormatted: Math.floor(spent/60) + ":" + (spent%60).toString().padStart(2,'0') };
+        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+        document.getElementById('saveStatus').innerText = "Standings updated!";
     }
 </script>
 </body>
