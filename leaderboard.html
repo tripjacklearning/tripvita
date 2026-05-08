@@ -3,67 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita April | Wall of Fame</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>TripVita | Wall of Fame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
-        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; --white: #ffffff; --gold: #d4960a; --silver: #7e8c99; --bronze: #a0522d; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--soft); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 650px; background: var(--white); border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
-        h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; text-align: center; font-size: 32px; margin-bottom: 30px; }
-        .lb-item { display: flex; align-items: center; padding: 20px; margin-bottom: 12px; background: #fff; border: 1px solid #eee; border-radius: 20px; transition: 0.3s; }
-        .rank-badge { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 20px; font-family: 'Syne'; }
-        .rank-1 { background: #fff8e1; color: var(--gold); border: 2px solid var(--gold); }
-        .rank-2 { background: #f0f2f5; color: var(--silver); border: 2px solid var(--silver); }
-        .rank-3 { background: #fff0eb; color: var(--bronze); border: 2px solid var(--bronze); }
-        .lb-info { flex-grow: 1; }
-        .lb-name { font-weight: 700; text-transform: capitalize; font-size: 17px; }
-        .lb-meta { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
-        .score-chip { background: var(--dark); color: white; padding: 6px 14px; border-radius: 12px; font-weight: bold; font-size: 14px; }
-        .time-label { font-size: 11px; color: #aaa; text-align: right; margin-top: 4px; }
-        .loading { text-align: center; padding: 50px; color: #999; font-style: italic; }
+        :root { --orange: #EF7F1A; --dark: #111111; --gold: #FFD700; }
+        body { font-family: 'DM Sans', sans-serif; background: #f5f4f2; margin: 0; padding: 20px; color: var(--dark); }
+        .container { max-width: 600px; margin: 0 auto; }
+        
+        .header { text-align: center; margin-bottom: 40px; }
+        .header h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 32px; margin: 0; }
+        .header p { color: var(--orange); font-weight: 700; letter-spacing: 2px; font-size: 12px; }
+
+        .leaderboard-card { background: white; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        
+        .entry { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; transition: 0.2s; }
+        .entry:last-child { border-bottom: none; }
+        .rank { width: 40px; font-family: 'Syne'; font-weight: 800; color: #bbb; font-size: 18px; }
+        .entry:nth-child(1) .rank { color: var(--gold); }
+        .entry:nth-child(2) .rank { color: #C0C0C0; }
+        .entry:nth-child(3) .rank { color: #CD7F32; }
+
+        .info { flex-grow: 1; }
+        .info b { display: block; font-size: 16px; }
+        .info span { font-size: 12px; color: #888; }
+
+        .score-box { text-align: right; }
+        .total-pts { font-family: 'Syne'; font-weight: 800; color: var(--orange); font-size: 20px; display: block; }
+        .time-taken { font-size: 11px; color: #aaa; }
+
+        .btn-back { display: block; text-align: center; margin-top: 30px; text-decoration: none; color: var(--dark); font-weight: 700; font-size: 14px; }
+        
+        #loading { text-align: center; padding: 50px; color: #888; }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Wall of Fame</h1>
-    <div id="loader" class="loading">Retrieving latest scores...</div>
-    <div id="lbList"></div>
+    <div class="header">
+        <h1>Wall of Fame</h1>
+        <p>APRIL CHALLENGE 2026</p>
+    </div>
+
+    <div class="leaderboard-card">
+        <div id="loading">Fetching Standings...</div>
+        <div id="leaderboard-list"></div>
+    </div>
+
+    <a href="quiz.html" class="btn-back">← Back to Challenge</a>
 </div>
 
 <script>
-    const SCRIPT_URL = "https://tripjacklearning.github.io/tripvita/leaderboard.html";
-    const medals = ["🥇", "🥈", "🥉"];
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
 
-    async function load() {
+    async function loadLeaderboard() {
         try {
-            const res = await fetch(`${SCRIPT_URL}?action=getLeaderboard`);
-            const data = await res.json();
-            const list = document.getElementById('lbList');
-            document.getElementById('loader').style.display = 'none';
+            const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard`);
+            const data = await response.json();
+            
+            const list = document.getElementById('leaderboard-list');
+            document.getElementById('loading').style.display = 'none';
+            
+            if (data.length === 0) {
+                list.innerHTML = "<p style='text-align:center; color:#888;'>No results yet. Be the first!</p>";
+                return;
+            }
 
-            data.forEach((u, i) => {
+            data.forEach((user, index) => {
                 const item = document.createElement('div');
-                item.className = 'lb-item';
-                const rankClass = i < 3 ? `rank-${i+1}` : '';
-                const rankText = i < 3 ? medals[i] : i + 1;
-                
+                item.className = 'entry';
                 item.innerHTML = `
-                    <div class="rank-badge ${rankClass}">${rankText}</div>
-                    <div class="lb-info">
-                        <div class="lb-name">${u.name.toLowerCase()}</div>
-                        <div class="lb-meta">${u.region} · ID: ${u.empId}</div>
+                    <div class="rank">${index + 1}</div>
+                    <div class="info">
+                        <b>${user.name}</b>
+                        <span>P: ${user.portal} | H: ${user.hotels}</span>
                     </div>
-                    <div style="text-align:right">
-                        <span class="score-chip">${u.score}/${u.total}</span>
-                        <div class="time-label">⏱ ${u.timeFormatted}</div>
+                    <div class="score-box">
+                        <span class="total-pts">${user.score}</span>
+                        <span class="time-taken">${user.time}</span>
                     </div>
                 `;
                 list.appendChild(item);
             });
-        } catch(e) { document.getElementById('loader').innerText = "Error loading standings."; }
+        } catch (e) {
+            document.getElementById('loading').innerText = "Error loading standings.";
+        }
     }
-    load();
+
+    loadLeaderboard();
 </script>
+
 </body>
 </html>
