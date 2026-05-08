@@ -3,44 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita April | Secure Challenge</title>
+    <title>TripVita April | Secure</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; --white: #ffffff; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--soft); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .card { width: 100%; max-width: 500px; background: var(--white); border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); align-self: center; border: 1px solid #e5e4e2; }
-        h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; text-align: center; margin: 0; }
-        .tagline { color: var(--orange); font-weight: 700; font-size: 12px; letter-spacing: 2px; text-transform: uppercase; text-align: center; margin-bottom: 30px; }
-        .select2-container--default .select2-selection--single { height: 50px; border-radius: 12px; border: 2px solid #eee; display: flex; align-items: center; }
-        .btn { width: 100%; padding: 18px; background: var(--dark); color: white; border: none; border-radius: 15px; font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; margin-top: 15px; transition: 0.3s; }
-        .btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--soft); display: flex; justify-content: center; padding: 20px; min-height: 100vh; }
+        .card { width: 100%; max-width: 500px; background: white; border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); align-self: center; }
+        h1 { font-family: 'Syne', sans-serif; text-transform: uppercase; text-align: center; margin: 0; }
+        .tagline { color: var(--orange); text-align: center; font-weight: 700; font-size: 12px; letter-spacing: 2px; margin-bottom: 30px; }
+        .btn { width: 100%; padding: 18px; background: var(--dark); color: white; border: none; border-radius: 15px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; margin-top: 15px; }
         .hidden { display: none; }
-        #timer { font-family: 'Syne', sans-serif; color: var(--orange); font-size: 24px; text-align: right; }
-        .opt { width: 100%; padding: 16px; margin: 8px 0; border: 2px solid #eee; border-radius: 12px; background: #fff; text-align: left; cursor: pointer; font-size: 15px; transition: 0.2s; }
+        .opt { width: 100%; padding: 15px; margin: 8px 0; border: 2px solid #eee; border-radius: 12px; background: #fff; text-align: left; cursor: pointer; }
         .correct { background: #d4edda !important; border-color: #28a745 !important; }
         .wrong { background: #f8d7da !important; border-color: #dc3545 !important; }
-        .exp { padding: 15px; background: #f0f7ff; border-radius: 12px; margin-top: 10px; font-size: 13px; border-left: 5px solid #007bff; }
+        #timer { font-family: 'Syne'; color: var(--orange); text-align: right; font-size: 20px; }
     </style>
 </head>
 <body>
 
 <div class="card" id="reg-area">
     <h1>TripVita</h1>
-    <div class="tagline">April Edition 2026</div>
+    <div class="tagline">April Edition</div>
     
-    <div id="loading-team" style="text-align:center; color:#888;">Syncing team list...</div>
+    <div id="loading-msg" style="text-align:center; color:#888;">Fetching Team List...</div>
     
     <div id="step-1" class="hidden">
         <select id="userSelector" style="width: 100%;"></select>
         
         <div id="otp-box" class="hidden" style="margin-top:20px; padding-top:20px; border-top:1px solid #eee;">
-            <p style="font-size:13px; color:#666;">Verify identity via: <b id="masked-email"></b></p>
-            <button class="btn" id="sendBtn" onclick="sendOTP()">Get Verification Code</button>
+            <p style="font-size:13px; color:#666;">Verification code will be sent to your official email.</p>
+            <button class="btn" id="sendBtn" onclick="sendOTP()">Send OTP</button>
             
             <div id="verify-box" class="hidden">
-                <input type="text" id="otpIn" placeholder="4-Digit Code" maxlength="4" style="width:100%; padding:15px; text-align:center; font-size:20px; font-weight:bold; border:2px solid #eee; border-radius:12px; margin-top:10px;">
-                <button class="btn" style="background:#28a745;" id="verifyBtn" onclick="verifyOTP()">Verify & Start</button>
+                <input type="text" id="otpIn" placeholder="4-Digit Code" maxlength="4" style="width:100%; padding:15px; text-align:center; font-size:24px; border:2px solid #eee; border-radius:12px; margin-top:10px;">
+                <button class="btn" style="background:#28a745;" onclick="verifyOTP()">Verify & Start Quiz</button>
             </div>
         </div>
     </div>
@@ -48,16 +45,14 @@
 
 <div class="card hidden" id="quiz-area">
     <div id="timer">06:00</div>
-    <h3 id="qText" style="font-family:'Syne';"></h3>
+    <h3 id="qText"></h3>
     <div id="optContainer"></div>
-    <div id="expBox" class="exp hidden"></div>
-    <button id="nextBtn" class="btn hidden" onclick="nextQ()">Next Question</button>
+    <button id="nextBtn" class="btn hidden" onclick="nextQ()">Next</button>
 </div>
 
 <div class="card hidden" id="result-area" style="text-align:center;">
-    <h1>Score</h1>
+    <h1>Complete</h1>
     <div id="scoreDisplay" style="font-size:70px; font-family:'Syne'; color:var(--orange);">0/0</div>
-    <p id="saveMsg">Saving results...</p>
     <button class="btn" onclick="location.href='leaderboard.html'">Leaderboard</button>
 </div>
 
@@ -65,56 +60,58 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
-    let qs = [], cur = 0, score = 0, time = 360, spent = 0, timer, user = null;
+    let qs = [], cur = 0, score = 0, time = 360, timer, user = null;
 
     $(document).ready(async function() {
         const res = await fetch(`${SCRIPT_URL}?action=getTeam`);
         const team = await res.json();
         const sel = $('#userSelector');
-        sel.append(new Option("Select your name...", ""));
+        sel.append(new Option("Find your name...", ""));
         team.forEach(p => sel.append(new Option(`${p.name} (${p.empId})`, JSON.stringify(p))));
         sel.select2();
-        $('#loading-team').addClass('hidden');
+        $('#loading-msg').addClass('hidden');
         $('#step-1').removeClass('hidden');
     });
 
     $('#userSelector').on('change', function() {
-        if(!this.value) return;
-        user = JSON.parse(this.value);
-        const masked = user.email.replace(/(.{2})(.*)(?=@)/, (gp1, gp2, gp3) => gp2 + "*".repeat(gp3.length));
-        document.getElementById('masked-email').innerText = masked;
-        document.getElementById('otp-box').classList.remove('hidden');
+        if(this.value) {
+            user = JSON.parse(this.value);
+            $('#otp-box').removeClass('hidden');
+        }
     });
 
     async function sendOTP() {
-        document.getElementById('sendBtn').disabled = true;
-        document.getElementById('sendBtn').innerText = "Sending Code...";
-        
-        // Double check duplicate before sending OTP
+        const btn = document.getElementById('sendBtn');
+        btn.innerText = "Sending...";
+        btn.disabled = true;
+
+        // Check duplicate first
         const c = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${user.empId}`);
         const cD = await c.json();
-        if(cD.exists) { alert("You have already completed this quiz."); location.reload(); return; }
+        if(cD.exists) { alert("You have already submitted!"); location.reload(); return; }
 
         await fetch(`${SCRIPT_URL}?action=sendOTP&email=${encodeURIComponent(user.email)}`);
-        document.getElementById('sendBtn').classList.add('hidden');
-        document.getElementById('verify-box').classList.remove('hidden');
+        $('#sendBtn').addClass('hidden');
+        $('#verify-box').removeClass('hidden');
     }
 
     async function verifyOTP() {
         const otp = document.getElementById('otpIn').value;
         const res = await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(user.email)}&otp=${otp}`);
         const data = await res.json();
-        if(data.valid) startQuiz(); else alert("Wrong code.");
+        if(data.valid) {
+            const qR = await fetch(`${SCRIPT_URL}?action=getQuestions`);
+            qs = await qR.json();
+            startQuiz();
+        } else { alert("Incorrect Code!"); }
     }
 
-    async function startQuiz() {
-        const qR = await fetch(`${SCRIPT_URL}?action=getQuestions`);
-        qs = await qR.json();
-        document.getElementById('reg-area').classList.add('hidden');
-        document.getElementById('quiz-area').classList.remove('hidden');
+    function startQuiz() {
+        $('#reg-area').addClass('hidden');
+        $('#quiz-area').removeClass('hidden');
         timer = setInterval(() => {
-            time--; spent++;
-            document.getElementById('timer').innerText = Math.floor(time/60).toString().padStart(2,'0') + ":" + (time%60).toString().padStart(2,'0');
+            time--;
+            document.getElementById('timer').innerText = Math.floor(time/60) + ":" + (time%60).toString().padStart(2,'0');
             if(time<=0) finish();
         }, 1000);
         renderQ();
@@ -122,18 +119,16 @@
 
     function renderQ() {
         const q = qs[cur];
-        document.getElementById('qText').innerText = `${cur+1}. ${q.question}`;
+        document.getElementById('qText').innerText = q.question;
         const container = document.getElementById('optContainer');
-        container.innerHTML = ""; document.getElementById('expBox').classList.add('hidden');
-        document.getElementById('nextBtn').classList.add('hidden');
+        container.innerHTML = "";
+        $('#nextBtn').addClass('hidden');
         q.options.forEach(o => {
             const b = document.createElement('button'); b.className="opt"; b.innerText=o;
             b.onclick = () => {
-                document.querySelectorAll('.opt').forEach(x => x.disabled=true);
+                $('.opt').attr('disabled', true);
                 if(o === q.answer) { b.classList.add('correct'); score++; } else b.classList.add('wrong');
-                document.getElementById('expBox').innerHTML = q.explanation;
-                document.getElementById('expBox').classList.remove('hidden');
-                document.getElementById('nextBtn').classList.remove('hidden');
+                $('#nextBtn').removeClass('hidden');
             };
             container.appendChild(b);
         });
@@ -143,12 +138,11 @@
 
     async function finish() {
         clearInterval(timer);
-        document.getElementById('quiz-area').classList.add('hidden');
-        document.getElementById('result-area').classList.remove('hidden');
+        $('#quiz-area').addClass('hidden');
+        $('#result-area').removeClass('hidden');
         document.getElementById('scoreDisplay').innerText = `${score}/${qs.length}`;
-        const p = { name: user.name, empId: user.empId, email: user.email, region: user.location, score, totalQuestions: qs.length, timeTakenSeconds: spent, timeFormatted: Math.floor(spent/60) + ":" + (spent%60).toString().padStart(2,'0') };
+        const p = { name: user.name, empId: user.empId, email: user.email, region: user.location, score, totalQuestions: qs.length, timeTakenSeconds: 360-time, timeFormatted: "April Attempt" };
         await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(p) });
-        document.getElementById('saveMsg').innerText = "Results Secured!";
     }
 </script>
 </body>
