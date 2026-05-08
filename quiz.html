@@ -3,139 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita April | Challenge</title>
+    <title>TripVita April | Entrance</title>
     <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
-        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; --white: #ffffff; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--soft); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; }
-        .card { width: 100%; max-width: 550px; background: var(--white); border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); align-self: center; border: 1px solid #e5e4e2; }
-        h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; letter-spacing: -1px; font-size: 32px; margin-bottom: 10px; color: var(--dark); }
-        .tagline { color: var(--orange); font-weight: 700; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; margin-bottom: 30px; }
-        input, select { width: 100%; padding: 16px; margin: 10px 0; border: 2px solid #eee; border-radius: 15px; font-family: inherit; font-size: 15px; transition: 0.3s; }
-        input:focus { border-color: var(--orange); outline: none; }
-        .btn { width: 100%; padding: 20px; background: var(--dark); color: white; border: none; border-radius: 15px; font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; margin-top: 20px; transition: 0.3s; }
-        .btn:hover { transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--soft); display: flex; justify-content: center; min-height: 100vh; padding: 20px; }
+        .card { width: 100%; max-width: 500px; background: white; border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); align-self: center; border: 1px solid #e5e4e2; }
+        h1 { font-family: 'Syne', sans-serif; text-transform: uppercase; text-align: center; margin-bottom: 5px; }
+        .tagline { color: var(--orange); text-align: center; font-weight: 700; letter-spacing: 2px; font-size: 12px; margin-bottom: 30px; }
+        .select2-container--default .select2-selection--single { height: 50px; border-radius: 12px; border: 2px solid #eee; display: flex; align-items: center; }
+        .btn { width: 100%; padding: 18px; background: var(--dark); color: white; border: none; border-radius: 15px; font-family: 'Syne', sans-serif; font-weight: 700; cursor: pointer; margin-top: 20px; }
         .hidden { display: none; }
-        #timer { font-family: 'Syne', sans-serif; color: var(--orange); font-size: 24px; text-align: right; }
-        .opt { width: 100%; padding: 18px; margin: 10px 0; border: 2px solid #eee; border-radius: 15px; background: var(--white); text-align: left; cursor: pointer; font-family: inherit; font-size: 16px; transition: 0.2s; }
-        .opt:hover { border-color: var(--orange); background: var(--orange-light); }
-        .correct { background: #d4edda !important; border-color: #28a745 !important; }
-        .wrong { background: #f8d7da !important; border-color: #dc3545 !important; }
-        .exp { padding: 20px; background: #f0f7ff; border-radius: 15px; margin-top: 15px; font-size: 14px; line-height: 1.6; border-left: 5px solid #007bff; }
+        .loading-spinner { text-align: center; color: #888; font-size: 14px; }
     </style>
 </head>
 <body>
 
-<div class="card" id="reg-area">
+<div class="card" id="login-card">
     <h1>TripVita</h1>
     <div class="tagline">April Edition 2026</div>
-    <p style="color:#666; margin-bottom:20px;">Enter your credentials to begin the challenge.</p>
-    <input type="text" id="uName" placeholder="Full Name">
-    <input type="text" id="uId" placeholder="Employee ID">
-    <input type="email" id="uEmail" placeholder="Email Address">
-    <select id="uReg">
-        <option value="">Select Region</option>
-        <option value="North">North</option><option value="South">South</option><option value="West">West</option><option value="OBJ">OBJ</option>
-    </select>
-    <button class="btn" id="startBtn" onclick="initiate()">Enter Arena</button>
-    <p id="status" style="margin-top:15px; font-size:13px; text-align:center;"></p>
+    
+    <div id="loading-team" class="loading-spinner">Fetching team list...</div>
+    
+    <div id="form-content" class="hidden">
+        <p style="text-align:center; font-size: 14px; color: #666; margin-bottom: 15px;">Search and select your name to begin</p>
+        <select id="nameSelect" style="width: 100%;"></select>
+        <button class="btn" id="startBtn" onclick="checkAndStart()">START CHALLENGE</button>
+    </div>
+    <p id="error-msg" style="color:red; font-size:12px; text-align:center; margin-top:10px;"></p>
 </div>
 
-<div class="card hidden" id="quiz-area">
-    <div id="timer">06:00</div>
-    <h2 id="qText" style="font-family:'Syne'; font-size:22px; margin: 20px 0;"></h2>
-    <div id="optContainer"></div>
-    <div id="expBox" class="exp hidden"></div>
-    <button id="nextBtn" class="btn hidden" onclick="nextQ()">Next Question</button>
-</div>
-
-<div class="card hidden" id="result-area" style="text-align:center;">
-    <h1>Final Score</h1>
-    <div id="scoreDisplay" style="font-size:80px; font-family:'Syne'; color:var(--orange);">0/0</div>
-    <p id="saveStatus">Uploading to leaderboard...</p>
-    <button class="btn" onclick="location.href='leaderboard.html'">View Wall of Fame</button>
-</div>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
-    let qs = [], cur = 0, score = 0, time = 360, spent = 0, timer, user = {};
 
-    async function initiate() {
-        const id = document.getElementById('uId').value.trim();
-        const nm = document.getElementById('uName').value.trim();
-        if(!id || !nm) return alert("Please fill all details");
-
-        document.getElementById('startBtn').disabled = true;
-        document.getElementById('status').innerText = "Validating entry...";
-
+    $(document).ready(async function() {
         try {
-            const cRes = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${encodeURIComponent(id)}`);
-            const cData = await cRes.json();
-            if(cData.exists) {
-                alert("Attempt already recorded for this ID.");
-                location.reload(); return;
-            }
+            const res = await fetch(`${SCRIPT_URL}?action=getTeam`);
+            const team = await res.json();
+            const select = $('#nameSelect');
+            
+            select.append(new Option("", ""));
+            team.forEach(p => {
+                select.append(new Option(`${p.name} (${p.empId})`, JSON.stringify(p)));
+            });
 
-            const qRes = await fetch(`${SCRIPT_URL}?action=getQuestions`);
-            qs = await qRes.json();
-            user = { name: nm, empId: id, email: document.getElementById('uEmail').value, region: document.getElementById('uReg').value };
-
-            document.getElementById('reg-area').classList.add('hidden');
-            document.getElementById('quiz-area').classList.remove('hidden');
-            runTimer(); renderQ();
-        } catch(e) {
-            alert("Connection error. Try again.");
-            document.getElementById('startBtn').disabled = false;
+            select.select2({ placeholder: "Type your name..." });
+            $('#loading-team').addClass('hidden');
+            $('#form-content').removeClass('hidden');
+        } catch (err) {
+            $('#loading-team').text("Failed to load team list. Please refresh.");
         }
-    }
+    });
 
-    function renderQ() {
-        const q = qs[cur];
-        document.getElementById('qText').innerText = `${cur+1}. ${q.question}`;
-        const container = document.getElementById('optContainer');
-        container.innerHTML = "";
-        document.getElementById('expBox').classList.add('hidden');
-        document.getElementById('nextBtn').classList.add('hidden');
+    async function checkAndStart() {
+        const selectedData = $('#nameSelect').val();
+        if (!selectedData) return alert("Please select your name.");
 
-        q.options.forEach(o => {
-            const b = document.createElement('button');
-            b.className = "opt"; b.innerText = o;
-            b.onclick = () => {
-                document.querySelectorAll('.opt').forEach(el => el.disabled = true);
-                if(o === q.answer) { b.classList.add('correct'); score++; }
-                else { b.classList.add('wrong'); }
-                document.getElementById('expBox').innerHTML = `<b>Explanation:</b> ${q.explanation}`;
-                document.getElementById('expBox').classList.remove('hidden');
-                document.getElementById('nextBtn').classList.remove('hidden');
-            };
-            container.appendChild(b);
-        });
-    }
+        const user = JSON.parse(selectedData);
+        const btn = document.getElementById('startBtn');
+        btn.disabled = true;
+        btn.innerText = "VERIFYING...";
 
-    function runTimer() {
-        timer = setInterval(() => {
-            time--; spent++;
-            let m = Math.floor(time/60).toString().padStart(2,'0');
-            let s = (time%60).toString().padStart(2,'0');
-            document.getElementById('timer').innerText = `${m}:${s}`;
-            if(time <= 0) { clearInterval(timer); finish(); }
-        }, 1000);
-    }
+        const check = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${user.empId}`);
+        const res = await check.json();
 
-    function nextQ() {
-        cur++;
-        if(cur < qs.length) renderQ(); else finish();
-    }
-
-    async function finish() {
-        clearInterval(timer);
-        document.getElementById('quiz-area').classList.add('hidden');
-        document.getElementById('result-area').classList.remove('hidden');
-        document.getElementById('scoreDisplay').innerText = `${score}/${qs.length}`;
-        
-        const payload = { ...user, score, totalQuestions: qs.length, timeTakenSeconds: spent, timeFormatted: Math.floor(spent/60) + ":" + (spent%60).toString().padStart(2,'0') };
-        await fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
-        document.getElementById('saveStatus').innerText = "Standings updated!";
+        if (res.exists) {
+            document.getElementById('error-msg').innerText = "Access Denied: You have already completed this edition.";
+            btn.innerText = "LOCKED";
+        } else {
+            // Store user in SessionStorage and move to quiz logic
+            sessionStorage.setItem('activeUser', JSON.stringify(user));
+            // In a real setup, you'd hide this card and show the quiz-area div
+            alert("Verification Successful! Starting Quiz...");
+            // Trigger your renderQuestion() logic here
+        }
     }
 </script>
 </body>
