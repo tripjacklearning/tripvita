@@ -3,50 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita | April Leaderboard</title>
+    <title>TripVita April | Wall of Fame</title>
+    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
-        :root { --primary: #EF7F1A; --dark: #1A1A1A; --bg: #fdfcfb; }
-        body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; }
-        .container { width: 100%; max-width: 700px; background: white; border-radius: 24px; box-shadow: 0 10px 30px rgba(0,0,0,0.08); padding: 40px; border-top: 8px solid var(--primary); }
-        h1 { text-align: center; color: var(--dark); text-transform: uppercase; letter-spacing: 2px; margin-bottom: 5px; }
-        .subtitle { text-align: center; color: #666; font-size: 14px; margin-bottom: 30px; }
-        table { width: 100%; border-collapse: collapse; }
-        th { text-align: left; padding: 15px; border-bottom: 2px solid #eee; color: #888; font-size: 12px; text-transform: uppercase; }
-        td { padding: 15px; border-bottom: 1px solid #f9f9f9; font-size: 15px; }
-        .rank { font-weight: bold; color: var(--primary); width: 50px; }
-        .score-pill { background: var(--dark); color: white; padding: 4px 12px; border-radius: 20px; font-weight: bold; }
-        .hidden { display: none; }
-        .loading { text-align: center; color: #999; padding: 40px; }
+        :root { --orange: #EF7F1A; --dark: #111111; --soft: #f5f4f2; --white: #ffffff; --gold: #d4960a; --silver: #7e8c99; --bronze: #a0522d; }
+        body { font-family: 'DM Sans', sans-serif; background: var(--soft); margin: 0; padding: 20px; display: flex; justify-content: center; }
+        .container { width: 100%; max-width: 650px; background: var(--white); border-radius: 30px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); }
+        h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; text-align: center; font-size: 32px; margin-bottom: 30px; }
+        .lb-item { display: flex; align-items: center; padding: 20px; margin-bottom: 12px; background: #fff; border: 1px solid #eee; border-radius: 20px; transition: 0.3s; }
+        .rank-badge { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; margin-right: 20px; font-family: 'Syne'; }
+        .rank-1 { background: #fff8e1; color: var(--gold); border: 2px solid var(--gold); }
+        .rank-2 { background: #f0f2f5; color: var(--silver); border: 2px solid var(--silver); }
+        .rank-3 { background: #fff0eb; color: var(--bronze); border: 2px solid var(--bronze); }
+        .lb-info { flex-grow: 1; }
+        .lb-name { font-weight: 700; text-transform: capitalize; font-size: 17px; }
+        .lb-meta { font-size: 12px; color: #888; text-transform: uppercase; letter-spacing: 1px; }
+        .score-chip { background: var(--dark); color: white; padding: 6px 14px; border-radius: 12px; font-weight: bold; font-size: 14px; }
+        .time-label { font-size: 11px; color: #aaa; text-align: right; margin-top: 4px; }
+        .loading { text-align: center; padding: 50px; color: #999; font-style: italic; }
     </style>
 </head>
 <body>
+
 <div class="container">
-    <h1>Leaderboard</h1>
-    <p class="subtitle">April Edition - Top Performers</p>
-    <div id="loader" class="loading">Loading standings...</div>
-    <table id="lbTable" class="hidden">
-        <thead><tr><th>Rank</th><th>Participant</th><th>Region</th><th>Score</th><th>Time</th></tr></thead>
-        <tbody id="lbBody"></tbody>
-    </table>
+    <h1>Wall of Fame</h1>
+    <div id="loader" class="loading">Retrieving latest scores...</div>
+    <div id="lbList"></div>
 </div>
+
 <script>
-    const SCRIPT_URL = 'PASTE_YOUR_NEW_DEPLOYMENT_URL_HERE';
-    async function loadLB() {
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
+    const medals = ["🥇", "🥈", "🥉"];
+
+    async function load() {
         try {
             const res = await fetch(`${SCRIPT_URL}?action=getLeaderboard`);
             const data = await res.json();
-            if (data.length === 0) { document.getElementById('loader').innerText = "No entries yet."; return; }
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('lbTable').classList.remove('hidden');
-            const tbody = document.getElementById('lbBody');
+            const list = document.getElementById('lbList');
+            document.getElementById('loader').style.display = 'none';
+
             data.forEach((u, i) => {
-                const row = document.createElement('tr');
-                row.innerHTML = `<td>#${i+1}</td><td><b>${u.name}</b><br><small>${u.empId}</small></td><td>${u.region || '—'}</td><td><span class="score-pill">${u.score}/${u.total}</span></td><td>${u.timeFormatted}</td>`;
-                tbody.appendChild(row);
+                const item = document.createElement('div');
+                item.className = 'lb-item';
+                const rankClass = i < 3 ? `rank-${i+1}` : '';
+                const rankText = i < 3 ? medals[i] : i + 1;
+                
+                item.innerHTML = `
+                    <div class="rank-badge ${rankClass}">${rankText}</div>
+                    <div class="lb-info">
+                        <div class="lb-name">${u.name.toLowerCase()}</div>
+                        <div class="lb-meta">${u.region} · ID: ${u.empId}</div>
+                    </div>
+                    <div style="text-align:right">
+                        <span class="score-chip">${u.score}/${u.total}</span>
+                        <div class="time-label">⏱ ${u.timeFormatted}</div>
+                    </div>
+                `;
+                list.appendChild(item);
             });
-        } catch (e) { document.getElementById('loader').innerText = "Error loading data."; }
+        } catch(e) { document.getElementById('loader').innerText = "Error loading standings."; }
     }
-    loadLB();
+    load();
 </script>
 </body>
 </html>
