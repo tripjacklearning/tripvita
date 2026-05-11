@@ -8,47 +8,165 @@
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <style>
         :root { --orange: #EF7F1A; --dark: #111111; --white: #ffffff; --bg: #f5f4f2; }
-        body { font-family: 'DM Sans', sans-serif; background: var(--bg); margin: 0; padding: 20px; display: flex; justify-content: center; min-height: 100vh; color: var(--dark); }
-        .card { width: 100%; max-width: 500px; background: var(--white); border-radius: 32px; padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05); align-self: center; border: 1px solid #e5e4e2; position: relative; }
-        .brand-header { text-align: center; margin-bottom: 25px; }
-        .brand-header h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; margin: 0; font-size: 28px; }
-        
-        /* Timer Style */
-        .timer-container { text-align: center; margin-bottom: 25px; padding: 15px; background: #fffcf9; border-radius: 20px; border: 1px dashed #ffd8b5; }
-        #timer { font-family: 'Syne', sans-serif; font-size: 54px; font-weight: 800; line-height: 1; color: var(--dark); }
 
-        /* Options & Feedback */
-        .opt { width: 100%; padding: 18px; margin: 8px 0; border: 2px solid #eee; border-radius: 16px; background: #fff; text-align: left; cursor: pointer; font-size: 16px; font-family: inherit; transition: 0.2s; }
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            margin: 0; padding: 20px;
+            display: flex; justify-content: center;
+            min-height: 100vh; color: var(--dark);
+        }
+
+        .card {
+            width: 100%; max-width: 500px;
+            background: var(--white); border-radius: 32px;
+            padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            align-self: center; border: 1px solid #e5e4e2; position: relative;
+        }
+
+        .brand-header { text-align: center; margin-bottom: 25px; }
+        .brand-header h1 {
+            font-family: 'Syne', sans-serif; font-weight: 800;
+            text-transform: uppercase; margin: 0; font-size: 28px;
+        }
+
+        /* ── Timer ── */
+        /* FIX #8: Much bigger, more intimidating timer */
+        .timer-container {
+            text-align: center; margin-bottom: 25px; padding: 18px 15px;
+            background: #fffcf9; border-radius: 20px;
+            border: 2px solid #ffd8b5; position: relative; overflow: hidden;
+        }
+        #timer {
+            font-family: 'Syne', sans-serif;
+            font-size: 80px; /* was 54px */
+            font-weight: 800; line-height: 1; color: var(--dark);
+            letter-spacing: -2px;
+            transition: color 0.3s, transform 0.3s;
+        }
+        #timer.warning { color: #cc7700; }
+        #timer.danger  {
+            color: #dc3545;
+            animation: timerPulse 0.5s infinite alternate;
+        }
+        @keyframes timerPulse {
+            from { transform: scale(1);   opacity: 1;   }
+            to   { transform: scale(1.04); opacity: 0.7; }
+        }
+        .timer-label {
+            font-size: 10px; font-weight: 700; letter-spacing: 3px;
+            text-transform: uppercase; color: #bbb; margin-top: 4px;
+        }
+
+        /* ── Options ── */
+        .opt {
+            width: 100%; padding: 18px; margin: 8px 0;
+            border: 2px solid #eee; border-radius: 16px;
+            background: #fff; text-align: left; cursor: pointer;
+            font-size: 16px; font-family: inherit; transition: 0.2s;
+        }
         .opt:hover:not(:disabled) { border-color: var(--orange); background: #fff9f4; }
         .correct { background: #d4edda !important; border-color: #28a745 !important; color: #155724; font-weight: 700; }
-        .wrong { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
-        
-        .exp-box { padding: 20px; border-radius: 16px; margin-top: 20px; font-size: 14px; line-height: 1.5; border-left: 6px solid #007bff; background: #f0f7ff; }
-        .correct-bg { background: #e6f4ea; border-left-color: #28a745; color: #1e4620; }
-        .wrong-bg { background: #fdf2f2; border-left-color: #dc3545; color: #611a15; }
+        .wrong   { background: #f8d7da !important; border-color: #dc3545 !important; color: #721c24; }
 
-        .btn { width: 100%; padding: 20px; background: var(--dark); color: white; border: none; border-radius: 16px; font-family: 'Syne', sans-serif; font-weight: 700; text-transform: uppercase; cursor: pointer; margin-top: 15px; }
+        .exp-box {
+            padding: 20px; border-radius: 16px; margin-top: 20px;
+            font-size: 14px; line-height: 1.5;
+            border-left: 6px solid #007bff; background: #f0f7ff;
+        }
+        .correct-bg { background: #e6f4ea; border-left-color: #28a745; color: #1e4620; }
+        .wrong-bg   { background: #fdf2f2; border-left-color: #dc3545; color: #611a15; }
+
+        .btn {
+            width: 100%; padding: 20px;
+            background: var(--dark); color: white; border: none;
+            border-radius: 16px; font-family: 'Syne', sans-serif;
+            font-weight: 700; text-transform: uppercase;
+            cursor: pointer; margin-top: 15px; transition: opacity 0.2s;
+        }
+        .btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .hidden { display: none; }
-        #qCat { color: var(--orange); font-weight: 700; font-size: 11px; letter-spacing: 2px; text-transform: uppercase; margin-bottom: 10px; display: block; }
+
+        #qCat {
+            color: var(--orange); font-weight: 700; font-size: 11px;
+            letter-spacing: 2px; text-transform: uppercase;
+            margin-bottom: 10px; display: block;
+        }
+
+        /* ── Progress dots ── */
+        .progress-row {
+            display: flex; gap: 6px; justify-content: center;
+            margin-bottom: 18px; flex-wrap: wrap;
+        }
+        .prog-dot {
+            width: 10px; height: 10px; border-radius: 50%;
+            background: #e5e4e2; transition: background 0.2s;
+        }
+        .prog-dot.done    { background: #28a745; }
+        .prog-dot.current { background: var(--orange); }
+        .prog-dot.wrong-d { background: #dc3545; }
+
+        /* ── Result screen ── */
+        .score-ring {
+            font-size: 80px; font-family: 'Syne', sans-serif;
+            color: var(--orange); line-height: 1; margin: 20px 0;
+        }
+        .cat-scores {
+            display: flex; justify-content: space-around;
+            margin-bottom: 30px; background: #fafafa;
+            padding: 15px; border-radius: 15px; flex-wrap: wrap; gap: 10px;
+        }
+        .cat-score-box { text-align: center; }
+        .cat-score-box .lbl { font-size: 10px; color: #888; font-weight: 700; letter-spacing: 1px; }
+        .cat-score-box .val { font-size: 22px; font-weight: 700; }
+        .time-taken { font-size: 14px; color: #888; margin-bottom: 10px; }
+
+        /* ── Error/loader states ── */
+        #loader { text-align: center; color: #888; padding: 20px; }
+        .error-msg { color: #dc3545; font-size: 13px; margin-top: 10px; font-weight: 600; }
     </style>
 </head>
 <body>
 
+<!-- ══ REGISTRATION ══ -->
 <div class="card" id="reg-area">
-    <div class="brand-header"><h1>TripVita</h1><div style="font-size:11px; font-weight:700; color:var(--orange); letter-spacing:3px;">APRIL EDITION</div></div>
-    <div id="loader" style="text-align:center; color:#888;">Syncing Arena...</div>
+    <div class="brand-header">
+        <h1>TripVita</h1>
+        <div style="font-size:11px; font-weight:700; color:var(--orange); letter-spacing:3px;">APRIL EDITION</div>
+    </div>
+
+    <div id="loader">Syncing Arena…</div>
+    <!-- FIX #12: Error state for failed team load -->
+    <div id="load-error" class="error-msg hidden">
+        ⚠️ Could not load team list. Please check your connection and refresh.
+    </div>
+
     <div id="step-1" class="hidden">
         <select id="userSelector" style="width: 100%;"></select>
         <button class="btn" id="sendBtn" onclick="sendOTP()">Request Code</button>
         <div id="verify-box" class="hidden">
-            <input type="text" id="otpIn" placeholder="Enter 4-Digit Code" maxlength="4" style="width:100%; padding:18px; text-align:center; font-size:24px; border:2px solid #eee; border-radius:16px; margin-top:15px; font-family: 'Syne'; letter-spacing: 5px;">
-            <button class="btn" style="background:#28a745;" onclick="verifyOTP()">Verify & Start</button>
+            <input type="text" id="otpIn"
+                placeholder="Enter 4-Digit Code"
+                maxlength="4"
+                style="width:100%; padding:18px; text-align:center; font-size:24px;
+                       border:2px solid #eee; border-radius:16px; margin-top:15px;
+                       font-family: 'Syne'; letter-spacing: 5px; box-sizing:border-box;">
+            <!-- FIX #11: disabled while verifying to prevent double-submit -->
+            <button class="btn" id="verifyBtn" style="background:#28a745;" onclick="verifyOTP()">
+                Verify &amp; Start
+            </button>
         </div>
+        <div id="reg-error" class="error-msg hidden"></div>
     </div>
 </div>
 
+<!-- ══ QUIZ ══ -->
 <div class="card hidden" id="quiz-area">
-    <div class="timer-container"><div id="timer">06:00</div></div>
+    <div class="timer-container">
+        <div id="timer">06:00</div>
+        <div class="timer-label">Time Remaining</div>
+    </div>
+    <div class="progress-row" id="progressDots"></div>
     <span id="qCat">CATEGORY</span>
     <h2 id="qText" style="font-family: 'Syne'; font-size: 22px; margin-top: 5px;"></h2>
     <div id="optContainer"></div>
@@ -56,122 +174,298 @@
     <button id="nextBtn" class="btn hidden" onclick="nextQ()">Continue</button>
 </div>
 
+<!-- ══ RESULT ══ -->
 <div class="card hidden" id="result-area" style="text-align:center;">
-    <div class="brand-header"><h1>TripVita</h1><div>CHALLENGE COMPLETE</div></div>
-    <div id="scoreDisplay" style="font-size:80px; font-family:'Syne'; color:var(--orange); line-height:1; margin: 20px 0;">0/0</div>
-    <div style="display:flex; justify-content: space-around; margin-bottom:30px; background: #fafafa; padding: 15px; border-radius: 15px;">
-        <div><div style="font-size:11px; color:#888;">PORTAL</div><b id="pScore" style="font-size:20px;">0</b></div>
-        <div><div style="font-size:11px; color:#888;">HOTELS</div><b id="hScore" style="font-size:20px;">0</b></div>
+    <div class="brand-header">
+        <h1>TripVita</h1>
+        <div style="font-size:11px; font-weight:700; color:var(--orange); letter-spacing:3px;">CHALLENGE COMPLETE</div>
     </div>
-    <button class="btn" onclick="window.location.href='https://docs.google.com/spreadsheets/d/1KbkBs7bMyUaNgeBb8FanXdDuuNp7GHqy-Dq_Ng4HJrQ/edit#gid=0'">View Leaderboard</button>
+
+    <div class="score-ring" id="scoreDisplay">0/0</div>
+    <!-- FIX #2: Show actual time taken, not remaining -->
+    <div class="time-taken" id="timeTakenDisplay"></div>
+
+    <!-- FIX #4: All four categories shown -->
+    <div class="cat-scores" id="catScores"></div>
+
+    <div id="submitStatus" style="font-size:13px; color:#888; margin-bottom:10px;">Saving result…</div>
+    <!-- FIX #6: Links to leaderboard.html, not Google Sheets -->
+    <button class="btn" onclick="window.location.href='leaderboard.html'">View Leaderboard →</button>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
-    
-    let qs = [], cur = 0, pScore = 0, hScore = 0, spent = 0, timerInterval = null, user = null, responses = [];
+
+    // ── State ──────────────────────────────────────────────────
+    let qs = [], cur = 0, spent = 0, timerInterval = null, user = null;
+    let responses = [], dotStates = [];
     let isSubmitting = false;
 
-    // Initialize Team List
+    // FIX #4: Track scores per category correctly
+    const catScores = { Portal: 0, Hotels: 0, 'Fare Types': 0, 'Golden Rules': 0 };
+
+    // ── Load team list ─────────────────────────────────────────
     $(document).ready(async function() {
-        const res = await fetch(`${SCRIPT_URL}?action=getTeam`);
-        const team = await res.json();
-        team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
-        $('#userSelector').select2({ placeholder: "Search your name..." });
-        $('#loader').addClass('hidden'); $('#step-1').removeClass('hidden');
+        try {
+            const res = await fetch(`${SCRIPT_URL}?action=getTeam`);
+            const team = await res.json();
+            if (!Array.isArray(team) || team.length === 0) throw new Error('Empty team list');
+            team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
+            $('#userSelector').select2({ placeholder: "Search your name…" });
+            $('#loader').addClass('hidden');
+            $('#step-1').removeClass('hidden');
+        } catch (err) {
+            // FIX #12: Show error instead of infinite loader
+            $('#loader').addClass('hidden');
+            $('#load-error').removeClass('hidden');
+        }
     });
 
+    // ── OTP: Send ──────────────────────────────────────────────
     async function sendOTP() {
-        user = JSON.parse($('#userSelector').val());
-        $('#sendBtn').text("Sending...").attr('disabled', true);
-        
-        // Duplicate Check
-        const check = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${user.empId}`);
-        if((await check.json()).exists) { alert("You have already submitted for this month!"); location.reload(); return; }
-        
-        await fetch(`${SCRIPT_URL}?action=sendOTP&email=${encodeURIComponent(user.email)}`);
-        $('#sendBtn').addClass('hidden'); $('#verify-box').removeClass('hidden');
+        const val = $('#userSelector').val();
+        if (!val) { showRegError('Please select your name first.'); return; }
+
+        user = JSON.parse(val);
+        $('#sendBtn').text('Sending…').prop('disabled', true);
+        $('#reg-error').addClass('hidden');
+
+        try {
+            // FIX #1: checkDuplicate now handled in Code.gs
+            const checkRes = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${encodeURIComponent(user.empId)}`);
+            const checkData = await checkRes.json();
+            if (checkData.exists) {
+                alert('You have already submitted for this month!');
+                location.reload();
+                return;
+            }
+
+            await fetch(`${SCRIPT_URL}?action=sendOTP&email=${encodeURIComponent(user.email)}`);
+            $('#sendBtn').addClass('hidden');
+            $('#verify-box').removeClass('hidden');
+        } catch (err) {
+            $('#sendBtn').text('Request Code').prop('disabled', false);
+            showRegError('Network error. Please try again.');
+        }
     }
 
+    // ── OTP: Verify ────────────────────────────────────────────
     async function verifyOTP() {
-        const otp = $('#otpIn').val();
-        const res = await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(user.email)}&otp=${otp}`);
-        if((await res.json()).valid) {
-            const qData = await fetch(`${SCRIPT_URL}?action=getQuestions`);
-            qs = await qData.json();
-            $('#reg-area').addClass('hidden'); $('#quiz-area').removeClass('hidden');
-            
-            // TIMER START (Fixed: One single interval)
-            spent = 0;
-            timerInterval = setInterval(() => {
-                spent++;
-                let rem = 360 - spent;
-                let m = Math.floor(rem/60).toString().padStart(2, '0');
-                let s = (rem%60).toString().padStart(2, '0');
-                $('#timer').text(`${m}:${s}`);
-                if(rem <= 0) finish();
-            }, 1000);
-            
+        const otp = $('#otpIn').val().trim();
+        if (otp.length !== 4) { showRegError('Please enter the full 4-digit code.'); return; }
+
+        // FIX #11: Disable button to prevent double-click
+        $('#verifyBtn').text('Verifying…').prop('disabled', true);
+        $('#reg-error').addClass('hidden');
+
+        try {
+            const res  = await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${encodeURIComponent(user.email)}&otp=${otp}`);
+            const data = await res.json();
+
+            if (!data.valid) {
+                showRegError('Incorrect code. Please try again.');
+                $('#verifyBtn').text('Verify & Start').prop('disabled', false);
+                return;
+            }
+
+            // Load questions
+            const qRes  = await fetch(`${SCRIPT_URL}?action=getQuestions`);
+            qs = await qRes.json();
+
+            // Initialise dot states
+            dotStates = new Array(qs.length).fill('pending');
+
+            // Start quiz
+            $('#reg-area').addClass('hidden');
+            $('#quiz-area').removeClass('hidden');
+            buildProgressDots();
+            startTimer();
             renderQ();
-        } else alert("Incorrect Code.");
+
+        } catch (err) {
+            showRegError('Network error. Please try again.');
+            $('#verifyBtn').text('Verify & Start').prop('disabled', false);
+        }
     }
 
+    function showRegError(msg) {
+        $('#reg-error').text(msg).removeClass('hidden');
+    }
+
+    // ── Timer ──────────────────────────────────────────────────
+    function startTimer() {
+        spent = 0;
+        timerInterval = setInterval(() => {
+            spent++;
+            const rem = 360 - spent;
+            const m = Math.floor(rem / 60).toString().padStart(2, '0');
+            const s = (rem % 60).toString().padStart(2, '0');
+            const el = document.getElementById('timer');
+            el.textContent = `${m}:${s}`;
+
+            // FIX #8: More intimidating visual feedback
+            el.className = '';
+            if (rem <= 60)  el.classList.add('danger');
+            else if (rem <= 120) el.classList.add('warning');
+
+            if (rem <= 0) finish();
+        }, 1000);
+    }
+
+    // ── Progress dots ──────────────────────────────────────────
+    function buildProgressDots() {
+        const row = document.getElementById('progressDots');
+        row.innerHTML = '';
+        qs.forEach((_, i) => {
+            const d = document.createElement('div');
+            d.className = 'prog-dot' + (i === 0 ? ' current' : '');
+            d.id = 'dot-' + i;
+            row.appendChild(d);
+        });
+    }
+
+    function updateDot(idx, state) {
+        const d = document.getElementById('dot-' + idx);
+        if (!d) return;
+        d.className = 'prog-dot ' + (state === 'correct' ? 'done' : state === 'wrong' ? 'wrong-d' : 'current');
+    }
+
+    // ── Render question ────────────────────────────────────────
     function renderQ() {
         const q = qs[cur];
-        $('#qText').text(q.question); 
-        $('#qCat').text(q.category.toUpperCase());
-        const container = $('#optContainer').empty();
-        $('#expBox, #nextBtn').addClass('hidden').removeClass('correct-bg wrong-bg');
+        document.getElementById('qText').textContent = q.question;
+        document.getElementById('qCat').textContent  = q.category.toUpperCase();
+
+        // Update progress dots
+        if (cur > 0) {
+            const prev = responses[cur - 1];
+            updateDot(cur - 1, prev && prev.result === 'Correct' ? 'correct' : 'wrong');
+        }
+        updateDot(cur, 'current');
+
+        const container = document.getElementById('optContainer');
+        container.innerHTML = '';
+        document.getElementById('expBox').classList.add('hidden');
+        document.getElementById('expBox').className = 'exp-box hidden';
+        document.getElementById('nextBtn').classList.add('hidden');
 
         q.options.forEach(o => {
-            const b = $('<button class="opt">').text(o).appendTo(container);
-            b.click(function() {
-                $('.opt').attr('disabled', true);
-                const isCorrect = (o === q.answer);
-                
-                if(isCorrect) {
-                    $(this).addClass('correct');
-                    $('#expBox').addClass('correct-bg').html(`<b>✓ Correct!</b><br>${q.explanation}`);
-                    if(q.category.toLowerCase().includes('portal')) pScore++; else hScore++;
-                } else {
-                    $(this).addClass('wrong');
-                    $('#expBox').addClass('wrong-bg').html(`<b>× Incorrect</b><br>${q.explanation}`);
-                }
-                
-                responses.push({ id: q.id, result: isCorrect ? "Correct" : "Incorrect" });
-                $('#expBox, #nextBtn').removeClass('hidden');
-            });
+            const b = document.createElement('button');
+            b.className = 'opt';
+            // FIX #7: Normalise options to string for True/False comparison
+            b.textContent = String(o);
+            b.dataset.val  = String(o);
+            b.onclick = function() { selectOption(b, q); };
+            container.appendChild(b);
         });
+    }
+
+    function selectOption(btn, q) {
+        // Disable all options
+        document.querySelectorAll('.opt').forEach(b => b.disabled = true);
+
+        const chosen = btn.dataset.val;
+        // FIX #7: Normalise answer to string for True/False questions
+        const correct = String(q.answer);
+        const isCorrect = (chosen === correct);
+
+        btn.classList.add(isCorrect ? 'correct' : 'wrong');
+
+        // Highlight correct answer if wrong choice
+        if (!isCorrect) {
+            document.querySelectorAll('.opt').forEach(b => {
+                if (b.dataset.val === correct) b.classList.add('correct');
+            });
+        }
+
+        // FIX #4: Increment correct category score
+        if (isCorrect) {
+            const cat = q.category;
+            if (catScores.hasOwnProperty(cat)) catScores[cat]++;
+            else catScores[cat] = (catScores[cat] || 0) + 1; // handle unexpected categories
+        }
+
+        responses.push({ id: q.id, result: isCorrect ? 'Correct' : 'Incorrect' });
+
+        const expBox = document.getElementById('expBox');
+        expBox.className = 'exp-box ' + (isCorrect ? 'correct-bg' : 'wrong-bg');
+        expBox.innerHTML = `<b>${isCorrect ? '✓ Correct!' : '✗ Incorrect'}</b><br>${q.explanation}`;
+        expBox.classList.remove('hidden');
+        document.getElementById('nextBtn').classList.remove('hidden');
     }
 
     function nextQ() {
         cur++;
-        if(cur < qs.length) renderQ();
+        if (cur < qs.length) renderQ();
         else finish();
     }
 
+    // ── Finish & Submit ────────────────────────────────────────
     async function finish() {
-        if(isSubmitting) return; // Prevent double trigger
+        // FIX #5: Guard against double-trigger (timer + nextQ race)
+        if (isSubmitting) return;
         isSubmitting = true;
-        
+
         clearInterval(timerInterval);
-        $('#quiz-area').addClass('hidden'); $('#result-area').removeClass('hidden');
-        
-        const total = pScore + hScore;
-        $('#scoreDisplay').text(`${total}/${qs.length}`);
-        $('#pScore').text(pScore); $('#hScore').text(hScore);
+
+        // FIX #2: Record actual time TAKEN, not time remaining
+        const timeTaken = spent; // seconds elapsed since quiz start
+        const tm = Math.floor(timeTaken / 60).toString().padStart(2, '0');
+        const ts = (timeTaken % 60).toString().padStart(2, '0');
+        const timeFormatted = `${tm}:${ts}`;
+
+        const totalScore = Object.values(catScores).reduce((a, b) => a + b, 0);
+
+        // Show result screen
+        $('#quiz-area').addClass('hidden');
+        $('#result-area').removeClass('hidden');
+
+        document.getElementById('scoreDisplay').textContent  = `${totalScore}/${qs.length}`;
+        document.getElementById('timeTakenDisplay').textContent = `⏱ Time taken: ${timeFormatted}`;
+
+        // FIX #4: Show all category scores
+        const catDiv = document.getElementById('catScores');
+        catDiv.innerHTML = '';
+        Object.entries(catScores).forEach(([cat, score]) => {
+            const box = document.createElement('div');
+            box.className = 'cat-score-box';
+            box.innerHTML = `<div class="lbl">${cat.toUpperCase()}</div><div class="val">${score}</div>`;
+            catDiv.appendChild(box);
+        });
+
+        // Build per-question results array (size = number of questions)
+        const qResults = new Array(qs.length).fill('-');
+        responses.forEach(r => {
+            if (r.id >= 1 && r.id <= qs.length) qResults[r.id - 1] = r.result;
+        });
 
         const payload = {
-            name: user.name, empId: user.empId, email: user.email,
-            totalScore: total, portalScore: pScore, hotelScore: hScore,
-            timeFormatted: $('#timer').text(),
-            responses: responses
+            name:         user.name,
+            empId:        user.empId,
+            email:        user.email,
+            totalScore:   totalScore,
+            portalScore:  catScores['Portal']      || 0,
+            hotelScore:   catScores['Hotels']      || 0,
+            fareScore:    catScores['Fare Types']  || 0,
+            rulesScore:   catScores['Golden Rules']|| 0,
+            // FIX #2: timeFormatted = time TAKEN not remaining
+            timeFormatted: timeFormatted,
+            timeSec:       timeTaken,
+            responses:     responses
         };
 
-        // Submit Data
-        fetch(SCRIPT_URL, { method: "POST", mode: "no-cors", body: JSON.stringify(payload) });
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode:   'no-cors',
+                body:   JSON.stringify(payload)
+            });
+            document.getElementById('submitStatus').textContent = '✅ Result saved!';
+        } catch (err) {
+            document.getElementById('submitStatus').textContent = '⚠️ Could not save. Contact admin.';
+        }
     }
 </script>
 </body>
