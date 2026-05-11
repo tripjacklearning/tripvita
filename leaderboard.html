@@ -1,96 +1,492 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita | Wall of Fame</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
-    <style>
-        :root { --orange: #EF7F1A; --dark: #111111; --gold: #FFD700; }
-        body { font-family: 'DM Sans', sans-serif; background: #f5f4f2; margin: 0; padding: 20px; color: var(--dark); }
-        .container { max-width: 600px; margin: 0 auto; }
-        
-        .header { text-align: center; margin-bottom: 40px; }
-        .header h1 { font-family: 'Syne', sans-serif; font-weight: 800; text-transform: uppercase; font-size: 32px; margin: 0; }
-        .header p { color: var(--orange); font-weight: 700; letter-spacing: 2px; font-size: 12px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TripVita Leaderboard — April 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --orange: #F26522;
+  --orange-lt: #FEF0E8;
+  --blue: #1B3F7A;
+  --blue-acc: #2D5BB9;
+  --blue-lt: #EBF2FF;
+  --green: #1A8C5E;
+  --green-lt: #E6F7F0;
+  --red: #D94040;
+  --bg: #F4F6FB;
+  --card: #FFFFFF;
+  --border: #E0E6F0;
+  --text: #0F1C35;
+  --text2: #4A5572;
+  --muted: #8E97B0;
+  --gold: #F5C842;
+  --silver: #B0BEC5;
+  --bronze: #CD7F32;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: var(--bg); color: var(--text);
+  font-family: 'DM Sans', sans-serif; min-height: 100vh;
+}
 
-        .leaderboard-card { background: white; border-radius: 24px; padding: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        
-        .entry { display: flex; align-items: center; padding: 15px; border-bottom: 1px solid #eee; transition: 0.2s; }
-        .entry:last-child { border-bottom: none; }
-        .rank { width: 40px; font-family: 'Syne'; font-weight: 800; color: #bbb; font-size: 18px; }
-        .entry:nth-child(1) .rank { color: var(--gold); }
-        .entry:nth-child(2) .rank { color: #C0C0C0; }
-        .entry:nth-child(3) .rank { color: #CD7F32; }
+/* ── Topbar ── */
+.topbar {
+  background: var(--blue); padding: 10px 32px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  box-shadow: 0 2px 12px rgba(27,63,122,0.18);
+}
+.logo { display: flex; align-items: center; gap: 8px; }
+.logo-box {
+  width: 26px; height: 26px; background: var(--orange);
+  border-radius: 6px; display: flex; align-items: center;
+  justify-content: center; font-family: 'Syne', sans-serif;
+  font-size: 14px; font-weight: 800; color: white;
+}
+.logo-text { font-family: 'Syne', sans-serif; font-size: 16px; font-weight: 800; color: white; }
+.logo-text span { color: var(--orange); }
+.topbar-right {
+  display: flex; align-items: center; gap: 12px;
+}
+.refresh-btn {
+  background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.2);
+  color: white; padding: 5px 12px; border-radius: 6px; cursor: pointer;
+  font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 600;
+  transition: background 0.15s;
+}
+.refresh-btn:hover { background: rgba(255,255,255,0.2); }
+.last-updated { font-size: 11px; color: rgba(255,255,255,0.45); }
+.back-link {
+  color: rgba(255,255,255,0.7); font-size: 13px; font-weight: 600;
+  text-decoration: none; display: flex; align-items: center; gap: 4px;
+}
+.back-link:hover { color: white; }
 
-        .info { flex-grow: 1; }
-        .info b { display: block; font-size: 16px; }
-        .info span { font-size: 12px; color: #888; }
+.content { max-width: 860px; margin: 0 auto; padding: 28px 16px 48px; }
 
-        .score-box { text-align: right; }
-        .total-pts { font-family: 'Syne'; font-weight: 800; color: var(--orange); font-size: 20px; display: block; }
-        .time-taken { font-size: 11px; color: #aaa; }
+/* ── Hero ── */
+.hero {
+  background: var(--blue); border-radius: 16px; padding: 28px 32px;
+  margin-bottom: 20px; position: relative; overflow: hidden;
+  box-shadow: 0 6px 32px rgba(27,63,122,0.18);
+}
+.hero::after {
+  content: '';
+  position: absolute; right: -20px; top: -20px;
+  width: 200px; height: 200px;
+  background: radial-gradient(circle, rgba(242,101,34,0.2), transparent 70%);
+  pointer-events: none;
+}
+.hero-top { display: flex; align-items: flex-start; justify-content: space-between; }
+.hero-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 2.5px;
+  text-transform: uppercase; color: var(--orange); margin-bottom: 6px;
+}
+.hero-title {
+  font-family: 'Syne', sans-serif; font-size: 28px; font-weight: 800;
+  color: white; letter-spacing: -0.5px;
+}
+.hero-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-top: 4px; }
+.hero-badge {
+  background: var(--orange); color: white; border-radius: 8px;
+  padding: 8px 14px; text-align: center;
+}
+.hero-badge-num {
+  font-family: 'Syne', sans-serif; font-size: 26px; font-weight: 800; line-height: 1;
+}
+.hero-badge-lbl { font-size: 10px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; opacity: 0.85; }
 
-        .btn-back { display: block; text-align: center; margin-top: 30px; text-decoration: none; color: var(--dark); font-weight: 700; font-size: 14px; }
-        
-        #loading { text-align: center; padding: 50px; color: #888; }
-    </style>
+/* ── Stats row ── */
+.stats-row {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 12px;
+  margin-bottom: 20px;
+}
+.stat-card {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 10px; padding: 14px 16px;
+  border-top: 3px solid var(--orange);
+}
+.stat-val {
+  font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800;
+  color: var(--blue); line-height: 1; margin-bottom: 4px;
+}
+.stat-lbl { font-size: 11px; font-weight: 600; color: var(--muted);
+  text-transform: uppercase; letter-spacing: 0.8px; }
+
+/* ── Filters ── */
+.filter-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 16px; flex-wrap: wrap;
+}
+.filter-btn {
+  padding: 6px 14px; border-radius: 20px; cursor: pointer;
+  font-size: 12px; font-weight: 600; border: 1.5px solid var(--border);
+  background: var(--card); color: var(--text2);
+  transition: all 0.15s;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--blue); color: white; border-color: var(--blue);
+}
+.filter-lbl { font-size: 12px; font-weight: 600; color: var(--muted); margin-right: 4px; }
+
+/* ── Podium ── */
+.podium {
+  display: grid; grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px; margin-bottom: 20px;
+}
+.podium-card {
+  background: var(--card); border-radius: 14px;
+  border: 1px solid var(--border); padding: 20px 16px;
+  text-align: center; position: relative; overflow: hidden;
+  box-shadow: 0 3px 20px rgba(27,63,122,0.07);
+}
+.podium-card.rank1 {
+  border-color: var(--gold); border-width: 2px;
+  box-shadow: 0 4px 24px rgba(245,200,66,0.2);
+}
+.podium-card.rank2 { border-color: var(--silver); }
+.podium-card.rank3 { border-color: var(--bronze); }
+.podium-medal { font-size: 32px; margin-bottom: 8px; }
+.podium-rank {
+  font-size: 10px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.podium-name {
+  font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 800;
+  color: var(--text); line-height: 1.2; margin-bottom: 4px;
+}
+.podium-zone {
+  font-size: 11px; font-weight: 600; color: var(--orange);
+  text-transform: uppercase; letter-spacing: 1px; margin-bottom: 10px;
+}
+.podium-score {
+  font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500;
+  color: var(--blue); line-height: 1;
+}
+.podium-score small { font-size: 12px; color: var(--muted); }
+.podium-time {
+  font-family: 'DM Mono', monospace; font-size: 13px; color: var(--muted);
+  margin-top: 4px;
+}
+.podium-tag {
+  position: absolute; top: 10px; right: 10px;
+  font-size: 9px; font-weight: 700; letter-spacing: 0.8px;
+  padding: 2px 7px; border-radius: 10px; text-transform: uppercase;
+}
+.tag-perfect { background: var(--green-lt); color: var(--green); }
+
+/* ── Table ── */
+.table-wrap {
+  background: var(--card); border: 1px solid var(--border);
+  border-radius: 14px; overflow: hidden;
+  box-shadow: 0 3px 20px rgba(27,63,122,0.06);
+}
+.table-header {
+  background: var(--blue-lt); padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  border-bottom: 1px solid var(--border);
+}
+.table-title {
+  font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 800;
+  color: var(--blue); letter-spacing: -0.3px;
+}
+.table-count { font-size: 12px; font-weight: 600; color: var(--muted); }
+
+table { width: 100%; border-collapse: collapse; }
+thead th {
+  padding: 10px 16px; font-size: 10px; font-weight: 700;
+  text-transform: uppercase; letter-spacing: 1.2px; color: var(--muted);
+  text-align: left; border-bottom: 1px solid var(--border);
+  background: var(--bg);
+}
+tbody tr { border-bottom: 1px solid #F4F6FB; transition: background 0.1s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: #F8FAFF; }
+tbody td { padding: 11px 16px; font-size: 13px; color: var(--text2); }
+
+.rank-cell {
+  font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500;
+  color: var(--muted); width: 36px;
+}
+.name-cell { font-weight: 600; color: var(--text); }
+.zone-chip {
+  display: inline-block; font-size: 10px; font-weight: 700;
+  letter-spacing: 0.8px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 10px;
+  background: var(--blue-lt); color: var(--blue-acc);
+}
+.score-cell {
+  font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 600;
+  color: var(--blue);
+}
+.pct-cell { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--muted); }
+.time-cell { font-family: 'DM Mono', monospace; font-size: 13px; color: var(--text2); }
+.tag-sm {
+  font-size: 9px; font-weight: 700; letter-spacing: 0.5px;
+  padding: 2px 6px; border-radius: 10px; text-transform: uppercase;
+  vertical-align: middle; margin-left: 4px;
+}
+.tag-perfect-sm { background: var(--green-lt); color: var(--green); }
+.tag-top-sm     { background: var(--blue-lt);  color: var(--blue-acc); }
+
+.row-gold   td { background: #FFFDF0; }
+.row-silver td { background: #F9FAFB; }
+.row-bronze td { background: #FFF8F5; }
+
+/* ── Loading / Error ── */
+.state-box {
+  text-align: center; padding: 48px 24px;
+  font-size: 14px; color: var(--muted);
+}
+.state-box .icon { font-size: 40px; margin-bottom: 12px; }
+.state-box p { line-height: 1.6; }
+
+/* ── Zone tab accent ── */
+.zone-tabs { display: flex; gap: 6px; flex-wrap: wrap; }
+</style>
 </head>
 <body>
 
-<div class="container">
-    <div class="header">
-        <h1>Wall of Fame</h1>
-        <p>APRIL CHALLENGE 2026</p>
-    </div>
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-box">T</div>
+    <div class="logo-text">Trip<span>Jack</span></div>
+  </div>
+  <div class="topbar-right">
+    <a href="index.html" class="back-link">← Take Quiz</a>
+    <button class="refresh-btn" onclick="loadData()">↻ Refresh</button>
+    <span class="last-updated" id="last-updated">—</span>
+  </div>
+</div>
 
-    <div class="leaderboard-card">
-        <div id="loading">Fetching Standings...</div>
-        <div id="leaderboard-list"></div>
-    </div>
+<div class="content">
 
-    <a href="quiz.html" class="btn-back">← Back to Challenge</a>
+  <!-- Hero -->
+  <div class="hero">
+    <div class="hero-top">
+      <div>
+        <div class="hero-label">TripVita · April 2026</div>
+        <div class="hero-title">Live Leaderboard</div>
+        <div class="hero-sub">Updated in real time · Ranked by score, then fastest time</div>
+      </div>
+      <div class="hero-badge">
+        <div class="hero-badge-num" id="total-count">—</div>
+        <div class="hero-badge-lbl">Participants</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats row -->
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="stat-val" id="stat-avg">—</div>
+      <div class="stat-lbl">Avg Score</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--green);">
+      <div class="stat-val" id="stat-perfect">—</div>
+      <div class="stat-lbl">Perfect 15/15</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--blue-acc);">
+      <div class="stat-val" id="stat-top">—</div>
+      <div class="stat-lbl">Top Performers (&gt;90%)</div>
+    </div>
+    <div class="stat-card" style="border-top-color:var(--red);">
+      <div class="stat-val" id="stat-below">—</div>
+      <div class="stat-lbl">Below Threshold</div>
+    </div>
+  </div>
+
+  <!-- Podium -->
+  <div class="podium" id="podium">
+    <div class="podium-card"><div class="state-box"><div class="icon">⏳</div><p>Loading...</p></div></div>
+    <div class="podium-card"><div class="state-box"></div></div>
+    <div class="podium-card"><div class="state-box"></div></div>
+  </div>
+
+  <!-- Zone filter -->
+  <div class="filter-row">
+    <span class="filter-lbl">Zone:</span>
+    <div class="zone-tabs" id="zone-tabs">
+      <button class="filter-btn active" onclick="filterZone('All', this)">All</button>
+      <button class="filter-btn" onclick="filterZone('North', this)">North</button>
+      <button class="filter-btn" onclick="filterZone('South', this)">South</button>
+      <button class="filter-btn" onclick="filterZone('East', this)">East</button>
+      <button class="filter-btn" onclick="filterZone('West', this)">West</button>
+      <button class="filter-btn" onclick="filterZone('OBJ', this)">OBJ</button>
+    </div>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <div class="table-header">
+      <div class="table-title">Full Rankings</div>
+      <div class="table-count" id="table-count">—</div>
+    </div>
+    <div id="table-body"></div>
+  </div>
+
 </div>
 
 <script>
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXY58K-kSmCDSEb1sAOg9Qk_QjweKCrtnOunl5OEMFanY9AA4ZCxYL4Jhaol8INYuo/exec";
+const APPS_SCRIPT_URL = 'YOUR_APPS_SCRIPT_URL_HERE';
+let allData = [];
+let currentZone = 'All';
 
-    async function loadLeaderboard() {
-        try {
-            const response = await fetch(`${SCRIPT_URL}?action=getLeaderboard`);
-            const data = await response.json();
-            
-            const list = document.getElementById('leaderboard-list');
-            document.getElementById('loading').style.display = 'none';
-            
-            if (data.length === 0) {
-                list.innerHTML = "<p style='text-align:center; color:#888;'>No results yet. Be the first!</p>";
-                return;
-            }
+// ── Show "unavailable" state immediately ──────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  showUnavailable();
+});
 
-            data.forEach((user, index) => {
-                const item = document.createElement('div');
-                item.className = 'entry';
-                item.innerHTML = `
-                    <div class="rank">${index + 1}</div>
-                    <div class="info">
-                        <b>${user.name}</b>
-                        <span>P: ${user.portal} | H: ${user.hotels}</span>
-                    </div>
-                    <div class="score-box">
-                        <span class="total-pts">${user.score}</span>
-                        <span class="time-taken">${user.time}</span>
-                    </div>
-                `;
-                list.appendChild(item);
-            });
-        } catch (e) {
-            document.getElementById('loading').innerText = "Error loading standings.";
-        }
+function showUnavailable() {
+  // Stats — blank dashes
+  ['stat-avg','stat-perfect','stat-top','stat-below','total-count'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = '—';
+  });
+
+  // Podium — hidden
+  document.getElementById('podium').style.display = 'none';
+
+  // Zone filter — hide
+  document.querySelector('.filter-row').style.display = 'none';
+
+  // Table — unavailable message
+  document.getElementById('table-body').innerHTML = `
+    <div style="text-align:center; padding:56px 32px;">
+      <div style="font-size:52px; margin-bottom:18px;">🔒</div>
+      <div style="font-family:'Syne',sans-serif; font-size:20px; font-weight:800;
+                  color:#1B3F7A; margin-bottom:10px;">Leaderboard Unavailable</div>
+      <div style="font-size:14px; color:#8E97B0; line-height:1.7; max-width:340px; margin:0 auto;">
+        Results are being compiled and will be published once the assessment window closes.<br><br>
+        Check back soon!
+      </div>
+    </div>`;
+
+  document.getElementById('table-count').textContent = '';
+  document.getElementById('last-updated').textContent = '';
+}
+
+// ── Kept for when leaderboard is re-enabled ───────────────────
+async function loadData() {
+  if (APPS_SCRIPT_URL === 'YOUR_APPS_SCRIPT_URL_HERE') {
+    showUnavailable();
+    return;
+  }
+  try {
+    const res  = await fetch(APPS_SCRIPT_URL + '?action=leaderboard&t=' + Date.now());
+    const json = await res.json();
+    allData = json.data || [];
+    if (allData.length === 0) { showUnavailable(); return; }
+    showLeaderboard();
+  } catch (e) {
+    showUnavailable();
+  }
+}
+
+function showLeaderboard() {
+  document.getElementById('podium').style.display = 'grid';
+  document.querySelector('.filter-row').style.display = 'flex';
+  renderAll();
+  document.getElementById('last-updated').textContent =
+    'Updated ' + new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit'});
+}
+
+function renderAll() {
+  const filtered = currentZone === 'All' ? allData : allData.filter(r => r.zone === currentZone);
+  const sorted   = [...filtered].sort((a,b) => b.score - a.score || a.timeSec - b.timeSec);
+
+  document.getElementById('total-count').textContent = allData.length;
+  const avg = allData.length
+    ? (allData.reduce((s,r) => s + r.score, 0) / allData.length).toFixed(1)
+    : '—';
+  document.getElementById('stat-avg').textContent    = avg + '/15';
+  document.getElementById('stat-perfect').textContent = allData.filter(r => r.score === 15).length;
+  document.getElementById('stat-top').textContent     = allData.filter(r => r.pct >= 90).length;
+  document.getElementById('stat-below').textContent   = allData.filter(r => r.pct < 70).length;
+
+  renderPodium(sorted);
+  renderTable(sorted);
+  document.getElementById('table-count').textContent = sorted.length + ' participants';
+}
+
+function renderPodium(sorted) {
+  const medals  = ['🥇','🥈','🥉'];
+  const classes  = ['rank1','rank2','rank3'];
+  const labels   = ['Rank 1','Rank 2','Rank 3'];
+  const podium   = document.getElementById('podium');
+  podium.innerHTML = '';
+
+  for (let i = 0; i < 3; i++) {
+    const r    = sorted[i];
+    const card = document.createElement('div');
+    card.className = 'podium-card ' + (classes[i] || '');
+    if (!r) {
+      card.innerHTML = `<div class="state-box" style="padding:20px;"><p style="font-size:20px;">—</p></div>`;
+    } else {
+      const isPerfect = r.score === 15;
+      const t = formatTime(r.timeSec);
+      card.innerHTML = `
+        ${isPerfect ? '<span class="podium-tag tag-perfect">Perfect 15/15</span>' : ''}
+        <div class="podium-medal">${medals[i]}</div>
+        <div class="podium-rank">${labels[i]}</div>
+        <div class="podium-name">${r.name}</div>
+        <div class="podium-zone">${r.zone}</div>
+        <div class="podium-score">${r.score}<small>/15</small></div>
+        <div class="podium-time">${t}</div>`;
     }
+    podium.appendChild(card);
+  }
+}
 
-    loadLeaderboard();
+function renderTable(sorted) {
+  if (sorted.length === 0) {
+    document.getElementById('table-body').innerHTML =
+      `<div class="state-box"><div class="icon">📭</div><p>No submissions yet.</p></div>`;
+    return;
+  }
+  let html = `<table><thead><tr>
+    <th>#</th><th>Name</th><th>Zone</th>
+    <th>Score</th><th>%</th><th>Time</th>
+  </tr></thead><tbody>`;
+
+  sorted.forEach((r, i) => {
+    const rank      = i + 1;
+    const rowClass  = rank === 1 ? 'row-gold' : rank === 2 ? 'row-silver' : rank === 3 ? 'row-bronze' : '';
+    const isPerfect = r.score === 15;
+    const isTop     = r.pct >= 90;
+    const tag       = isPerfect
+      ? '<span class="tag-sm tag-perfect-sm">Perfect</span>'
+      : isTop ? '<span class="tag-sm tag-top-sm">Top</span>' : '';
+    const pctColor  = r.pct >= 90 ? 'var(--green)' : r.pct >= 70 ? 'var(--blue-acc)' : 'var(--red)';
+
+    html += `<tr class="${rowClass}">
+      <td class="rank-cell">${rank}</td>
+      <td class="name-cell">${r.name}${tag}</td>
+      <td><span class="zone-chip">${r.zone}</span></td>
+      <td class="score-cell">${r.score}/15</td>
+      <td class="pct-cell" style="color:${pctColor};">${r.pct}%</td>
+      <td class="time-cell">${formatTime(r.timeSec)}</td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  document.getElementById('table-body').innerHTML = html;
+}
+
+function filterZone(zone, btn) {
+  currentZone = zone;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (allData.length > 0) renderAll();
+}
+
+function formatTime(sec) {
+  const m = Math.floor(sec / 60);
+  const s = sec % 60;
+  return `${m}:${s.toString().padStart(2,'0')}`;
+}
 </script>
-
 </body>
 </html>
