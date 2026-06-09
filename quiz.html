@@ -4,653 +4,483 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TripVita — May 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --orange: #EF7F1A;
-            --dark:   #111111;
-            --white:  #ffffff;
-            --bg:     #f5f4f2;
-            --green:  #28a745;
-            --red:    #dc3545;
+            --blue:#1B3F7A; --orange:#EF7F1A;
+            --green:#0e7c5a; --green-lt:#E6F5EF;
+            --red:#c0392b; --red-lt:#FDF0EF;
+            --bg:#F2F4F8; --white:#FFFFFF; --border:#DDE1EA;
+            --text:#1A202C; --text-2:#4A5568; --text-3:#718096;
+            --flights-bg:#EBF2FF; --flights-fg:#1B3F7A; --flights-bdr:#BDD0F5;
+            --portal-bg:#FEF3E8;  --portal-fg:#C05F00;  --portal-bdr:#F9C98A;
+            --hotels-bg:#E6F5EF;  --hotels-fg:#0a6347;  --hotels-bdr:#8ECFB8;
         }
-
-        * { box-sizing: border-box; }
-
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
-            margin: 0; padding: 20px;
-            display: flex; justify-content: center;
-            min-height: 100vh; color: var(--dark);
+            font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+            background:var(--bg); color:var(--text);
+            min-height:100vh; display:flex; flex-direction:column;
+            align-items:center; padding:24px 16px 48px;
         }
-
-        /* ── Card shell ── */
+        .topbar {
+            width:100%; max-width:560px;
+            display:flex; align-items:center; justify-content:space-between;
+            margin-bottom:20px;
+        }
+        .logo { display:flex; align-items:center; gap:8px; }
+        .logo-mark {
+            width:30px; height:30px; background:var(--blue); border-radius:7px;
+            display:flex; align-items:center; justify-content:center;
+        }
+        .logo-mark span { color:var(--orange); font-weight:800; font-size:16px; line-height:1; }
+        .logo-name { font-size:15px; font-weight:700; color:var(--blue); letter-spacing:-0.3px; }
+        .logo-name em { font-style:normal; color:var(--orange); }
+        .edition-pill {
+            font-size:11px; font-weight:600; color:var(--text-3);
+            background:var(--white); border:1px solid var(--border);
+            padding:4px 10px; border-radius:20px;
+        }
         .card {
-            width: 100%; max-width: 500px;
-            background: var(--white); border-radius: 32px;
-            padding: 40px; box-shadow: 0 20px 40px rgba(0,0,0,0.06);
-            align-self: center; border: 1px solid #e5e4e2;
+            width:100%; max-width:560px; background:var(--white);
+            border-radius:16px; border:1px solid var(--border);
+            box-shadow:0 2px 12px rgba(0,0,0,0.06); overflow:hidden;
         }
-
-        /* ── Brand header ── */
-        .brand-header { text-align: center; margin-bottom: 24px; }
-        .brand-header h1 {
-            font-family: 'Syne', sans-serif; font-weight: 800;
-            text-transform: uppercase; margin: 0; font-size: 28px;
-        }
-        .brand-header .edition {
-            font-size: 11px; font-weight: 700;
-            color: var(--orange); letter-spacing: 3px;
-            text-transform: uppercase; margin-top: 4px;
-        }
-
-        /* ── Timer ── */
-        .timer-wrap {
-            text-align: center; margin-bottom: 24px; padding: 16px 12px;
-            background: #fffcf9; border-radius: 20px;
-            border: 2px solid #ffd8b5;
-        }
-        #timer {
-            font-family: 'Syne', sans-serif;
-            font-size: 80px; font-weight: 800;
-            line-height: 1; letter-spacing: -2px;
-            color: var(--dark); transition: color 0.3s;
-        }
-        #timer.warning { color: #cc7700; }
-        #timer.danger  { color: var(--red); animation: pulse 0.5s infinite alternate; }
-        @keyframes pulse { from { opacity:1; transform:scale(1); } to { opacity:0.65; transform:scale(1.03); } }
-        .timer-label {
-            font-size: 10px; font-weight: 700; letter-spacing: 3px;
-            text-transform: uppercase; color: #bbb; margin-top: 3px;
-        }
-
-        /* ── Progress dots ── */
-        .dots-row {
-            display: flex; gap: 6px; justify-content: center;
-            flex-wrap: wrap; margin-bottom: 18px;
-        }
-        .dot {
-            width: 10px; height: 10px; border-radius: 50%;
-            background: #e5e4e2; transition: background 0.2s;
-        }
-        .dot.active  { background: var(--orange); }
-        .dot.correct { background: var(--green); }
-        .dot.wrong   { background: var(--red); }
-
-        /* ── Question ── */
-        #qCat {
-            display: block; font-size: 11px; font-weight: 700;
-            letter-spacing: 2px; text-transform: uppercase;
-            color: var(--orange); margin-bottom: 8px;
-        }
-        #qText {
-            font-family: 'Syne', sans-serif; font-size: 20px;
-            font-weight: 700; margin: 0 0 20px; line-height: 1.35;
-        }
-
-        /* ── Options ── */
-        .opt {
-            display: block; width: 100%; padding: 16px 18px;
-            margin: 8px 0; border: 2px solid #eee; border-radius: 16px;
-            background: var(--white); text-align: left; cursor: pointer;
-            font-size: 15px; font-family: 'DM Sans', sans-serif;
-            line-height: 1.4; transition: border-color 0.15s, background 0.15s;
-        }
-        .opt:hover:not(:disabled) { border-color: var(--orange); background: #fff9f4; }
-        .opt:disabled { cursor: default; }
-        .opt.correct  { background: #d4edda !important; border-color: var(--green) !important; color: #155724; font-weight: 700; }
-        .opt.wrong    { background: #f8d7da !important; border-color: var(--red)   !important; color: #721c24; }
-
-        /* ── Explanation box ── */
-        .exp-box {
-            padding: 16px 18px; border-radius: 14px; margin-top: 16px;
-            font-size: 14px; line-height: 1.55; border-left: 5px solid;
-        }
-        .exp-box.correct-bg { background: #e8f5ec; border-color: var(--green); color: #1d4a26; }
-        .exp-box.wrong-bg   { background: #fdf1f2; border-color: var(--red);   color: #6b1c24; }
-
-        /* ── Buttons ── */
+        .card-body { padding:28px 28px 24px; }
+        .brand-header { text-align:center; padding:28px 28px 0; margin-bottom:4px; }
+        .brand-title { font-size:26px; font-weight:800; color:var(--blue); letter-spacing:-0.5px; }
+        .brand-title span { color:var(--orange); }
+        .brand-sub { font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
+        .divider { height:1px; background:var(--border); margin:20px 0; }
+        .form-label { display:block; font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
+        .form-group { margin-bottom:14px; }
         .btn {
-            display: block; width: 100%; padding: 18px;
-            background: var(--dark); color: var(--white); border: none;
-            border-radius: 16px; font-family: 'Syne', sans-serif;
-            font-size: 15px; font-weight: 700; text-transform: uppercase;
-            cursor: pointer; margin-top: 14px; letter-spacing: 0.5px;
-            transition: opacity 0.2s, background 0.2s;
+            display:block; width:100%; padding:13px 20px;
+            font-family:'Inter',sans-serif; font-size:14px; font-weight:600;
+            border:none; border-radius:10px; cursor:pointer;
+            transition:opacity 0.15s,background 0.15s; letter-spacing:0.1px;
         }
-        .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-        .btn.green { background: var(--green); }
-        .btn.orange { background: var(--orange); }
-
-        /* ── Result ── */
-        .score-display {
-            font-family: 'Syne', sans-serif; font-size: 80px;
-            font-weight: 800; color: var(--orange);
-            line-height: 1; text-align: center; margin: 16px 0 6px;
+        .btn:disabled { opacity:0.45; cursor:not-allowed; }
+        .btn-primary { background:var(--blue); color:#fff; margin-top:4px; }
+        .btn-primary:hover:not(:disabled) { background:#153368; }
+        .btn-success { background:#1a7a4a; color:#fff; margin-top:10px; }
+        .btn-success:hover:not(:disabled) { background:#155e38; }
+        .otp-input {
+            width:100%; padding:14px; text-align:center;
+            font-family:'Inter',monospace; font-size:28px; font-weight:700;
+            letter-spacing:12px; color:var(--blue);
+            border:2px solid var(--border); border-radius:10px;
+            outline:none; margin-top:12px; transition:border-color 0.15s;
         }
-        .time-taken { text-align: center; font-size: 14px; color: #888; margin-bottom: 20px; }
-        .cat-grid {
-            display: flex; justify-content: space-around;
-            background: #fafafa; border-radius: 16px;
-            padding: 16px; margin-bottom: 24px; gap: 8px;
+        .otp-input:focus { border-color:var(--blue); }
+        .error-text { font-size:12px; font-weight:500; color:var(--red); margin-top:10px; text-align:center; }
+        #loader { text-align:center; color:var(--text-3); padding:20px 0; font-size:14px; }
+
+        /* Timer */
+        .timer-bar {
+            background:var(--blue); padding:14px 24px;
+            display:flex; align-items:center; justify-content:space-between;
         }
-        .cat-box { text-align: center; }
-        .cat-box .lbl { font-size: 10px; font-weight: 700; letter-spacing: 1px; color: #999; }
-        .cat-box .val { font-size: 24px; font-weight: 700; color: var(--dark); }
-        #submit-status { text-align: center; font-size: 13px; color: #888; margin-bottom: 8px; min-height: 20px; }
+        .timer-label-sm { font-size:10px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1.5px; }
+        #timer {
+            font-size:42px; font-weight:800; color:#fff;
+            letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums;
+            transition:color 0.3s;
+        }
+        #timer.warning { color:#FFD580; }
+        #timer.danger  { color:#FF8080; animation:blink 0.6s infinite alternate; }
+        @keyframes blink { to { opacity:0.5; } }
 
-        /* ── Already done ── */
-        .done-card { text-align: center; padding: 8px 0; }
-        .done-card .icon { font-size: 52px; margin-bottom: 14px; }
-        .done-card h2 { font-family: 'Syne', sans-serif; margin: 0 0 10px; }
-        .done-card p  { color: #666; font-size: 14px; line-height: 1.65; margin: 0 0 20px; }
+        /* Progress */
+        .progress-wrap { padding:12px 24px 0; }
+        .progress-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+        .progress-text { font-size:12px; font-weight:500; color:var(--text-3); }
+        .progress-track { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
+        .progress-fill { height:100%; background:var(--orange); border-radius:2px; transition:width 0.3s ease; }
 
-        /* ── Misc ── */
-        .hidden { display: none !important; }
-        .error-msg { color: var(--red); font-size: 13px; font-weight: 600; margin-top: 10px; }
-        #loader { text-align: center; color: #999; padding: 20px 0; }
+        /* Dots */
+        .dots-wrap { padding:10px 24px 0; display:flex; gap:5px; flex-wrap:wrap; }
+        .dot { width:9px; height:9px; border-radius:50%; background:var(--border); transition:background 0.2s; flex-shrink:0; }
+        .dot.active  { background:var(--orange); }
+        .dot.correct { background:#1a7a4a; }
+        .dot.wrong   { background:var(--red); }
 
-        /* select2 fix */
-        .select2-container { width: 100% !important; }
+        /* Section banner */
+        .section-banner {
+            margin:14px 24px 0; padding:10px 14px;
+            border-radius:8px; display:flex; align-items:center; gap:10px;
+            border:1px solid;
+        }
+        .section-banner .s-icon { font-size:16px; line-height:1; flex-shrink:0; }
+        .section-banner .s-right { display:flex; flex-direction:column; gap:1px; }
+        .section-banner .s-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; }
+        .section-banner .s-desc  { font-size:11px; font-weight:400; opacity:0.7; }
+        .section-banner.Flights { background:var(--flights-bg); border-color:var(--flights-bdr); color:var(--flights-fg); }
+        .section-banner.Portal  { background:var(--portal-bg);  border-color:var(--portal-bdr);  color:var(--portal-fg); }
+        .section-banner.Hotels  { background:var(--hotels-bg);  border-color:var(--hotels-bdr);  color:var(--hotels-fg); }
+
+        /* Question */
+        .question-wrap { padding:14px 24px 4px; }
+        .q-counter { font-size:11px; font-weight:600; color:var(--text-3); margin-bottom:8px; }
+        .q-text { font-size:16px; font-weight:600; color:var(--text); line-height:1.5; }
+
+        /* Options */
+        .options-wrap { padding:14px 24px; display:flex; flex-direction:column; gap:8px; }
+        .opt {
+            width:100%; padding:12px 15px;
+            background:var(--bg); border:1.5px solid var(--border);
+            border-radius:10px; cursor:pointer;
+            font-family:'Inter',sans-serif; font-size:14px; font-weight:500; color:var(--text-2);
+            text-align:left; line-height:1.45; transition:border-color 0.12s,background 0.12s,color 0.12s;
+            display:flex; align-items:flex-start; gap:10px;
+        }
+        .opt-letter {
+            width:20px; height:20px; border-radius:50%;
+            background:var(--border); color:var(--text-3);
+            font-size:10px; font-weight:700; display:flex;
+            align-items:center; justify-content:center;
+            flex-shrink:0; margin-top:1px; transition:background 0.12s,color 0.12s;
+        }
+        .opt:hover:not(:disabled) { border-color:var(--blue); background:var(--flights-bg); color:var(--blue); }
+        .opt:hover:not(:disabled) .opt-letter { background:var(--blue); color:#fff; }
+        .opt.correct { background:var(--green-lt); border-color:var(--green); color:var(--green); font-weight:600; }
+        .opt.correct .opt-letter { background:var(--green); color:#fff; }
+        .opt.wrong   { background:var(--red-lt);   border-color:var(--red);   color:var(--red);   font-weight:600; }
+        .opt.wrong   .opt-letter { background:var(--red); color:#fff; }
+
+        /* Explanation */
+        .exp-wrap { padding:0 24px 4px; }
+        .exp-box {
+            padding:12px 15px; border-radius:10px;
+            font-size:13px; font-weight:400; line-height:1.6; border-left:4px solid;
+        }
+        .exp-box.correct-bg { background:var(--green-lt); border-color:var(--green); color:#0a5038; }
+        .exp-box.wrong-bg   { background:var(--red-lt);   border-color:var(--red);   color:#8b2018; }
+        .exp-box strong { font-weight:700; }
+        .next-wrap { padding:12px 24px 24px; }
+
+        /* Result */
+        .result-score-block { text-align:center; padding:28px 28px 16px; }
+        .score-big { font-size:64px; font-weight:800; color:var(--blue); letter-spacing:-2px; line-height:1; }
+        .score-big span { color:var(--text-3); font-size:36px; font-weight:500; }
+        .score-pct { font-size:16px; font-weight:600; color:var(--text-2); margin-top:6px; }
+        .time-display { font-size:13px; color:var(--text-3); margin-top:4px; font-weight:500; }
+        .cat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+        .cat-cell { border-radius:10px; padding:14px 10px; text-align:center; border:1px solid; }
+        .cat-cell.Flights { background:var(--flights-bg); border-color:var(--flights-bdr); }
+        .cat-cell.Portal  { background:var(--portal-bg);  border-color:var(--portal-bdr); }
+        .cat-cell.Hotels  { background:var(--hotels-bg);  border-color:var(--hotels-bdr); }
+        .cc-icon { font-size:18px; margin-bottom:4px; }
+        .cc-val  { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
+        .cc-lbl  { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
+        .submit-status { text-align:center; font-size:13px; color:var(--text-3); padding:0 28px 8px; font-weight:500; }
+        .result-actions { padding:4px 28px 28px; }
+
+        /* Already done */
+        .done-block { text-align:center; padding:36px 28px; }
+        .done-block .d-icon { font-size:48px; margin-bottom:16px; }
+        .done-block h2 { font-size:20px; font-weight:700; color:var(--text); margin-bottom:8px; }
+        .done-block p { font-size:14px; color:var(--text-2); line-height:1.6; margin-bottom:20px; }
+
+        /* Select2 */
+        .select2-container--default .select2-selection--single {
+            height:42px; border:1.5px solid var(--border); border-radius:8px;
+            display:flex; align-items:center;
+        }
+        .select2-container--default .select2-selection--single .select2-selection__rendered { line-height:42px; font-size:14px; color:var(--text); }
+        .select2-container--default .select2-selection--single .select2-selection__arrow { height:42px; }
+        .hidden { display:none !important; }
     </style>
 </head>
 <body>
 
-<!-- ══ REGISTRATION ══ -->
+<div class="topbar">
+    <div class="logo">
+        <div class="logo-mark"><span>T</span></div>
+        <div class="logo-name">Trip<em>Jack</em> &nbsp;·&nbsp; TripVita</div>
+    </div>
+    <div class="edition-pill">May 2026</div>
+</div>
+
+<!-- REGISTRATION -->
 <div class="card" id="screen-reg">
     <div class="brand-header">
-        <h1>TripVita</h1>
-        <div class="edition">May 2026 Edition</div>
+        <div class="brand-title">Trip<span>Vita</span></div>
+        <div class="brand-sub">May 2026 · Monthly Assessment</div>
     </div>
-
-    <div id="loader">Syncing Arena…</div>
-    <div id="load-error" class="error-msg hidden">
-        ⚠️ Could not load team list. Please refresh the page.
-    </div>
-
-    <div id="step-reg" class="hidden">
-        <select id="userSelector" style="width:100%;"></select>
-
-        <button class="btn orange" id="btn-send-otp" onclick="sendOTP()">
-            Request Code
-        </button>
-
-        <div id="otp-box" class="hidden">
-            <input type="text" id="otp-input" maxlength="4"
-                placeholder="Enter 4-Digit Code"
-                style="width:100%; padding:18px; text-align:center; font-size:26px;
-                       border:2px solid #eee; border-radius:16px; margin-top:14px;
-                       font-family:'Syne',sans-serif; letter-spacing:6px; outline:none;">
-            <button class="btn green" id="btn-verify" onclick="verifyOTP()">
-                Verify &amp; Start
-            </button>
+    <div class="card-body">
+        <div id="loader">Loading team list…</div>
+        <div id="load-error" class="error-text hidden">⚠ Could not load team list. Please refresh.</div>
+        <div id="step-reg" class="hidden">
+            <div class="divider" style="margin-top:8px;"></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;">
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>📋</span> 15 Questions</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>⏱</span> 6-Minute Timer</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🔒</span> One Attempt Only</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🏆</span> Live Leaderboard</div>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Select Your Name</label>
+                <select id="userSelector" style="width:100%;"></select>
+            </div>
+            <button class="btn btn-primary" id="btn-otp" onclick="sendOTP()">Request Verification Code</button>
+            <div id="otp-box" class="hidden">
+                <div class="divider"></div>
+                <label class="form-label" style="text-align:center;display:block;">Enter the 4-digit code sent to your email</label>
+                <input type="text" id="otp-input" class="otp-input" maxlength="4" placeholder="——" autocomplete="off">
+                <button class="btn btn-success" id="btn-verify" onclick="verifyOTP()">Verify &amp; Start</button>
+            </div>
+            <div id="reg-error" class="error-text hidden"></div>
         </div>
-
-        <div id="reg-error" class="error-msg hidden"></div>
     </div>
 </div>
 
-<!-- ══ QUIZ ══ -->
+<!-- QUIZ -->
 <div class="card hidden" id="screen-quiz">
-    <div class="timer-wrap">
-        <div id="timer">06:00</div>
-        <div class="timer-label">Time Remaining</div>
+    <div class="timer-bar">
+        <div>
+            <div class="timer-label-sm">Time Remaining</div>
+            <div id="timer">06:00</div>
+        </div>
+        <div style="text-align:right;">
+            <div class="timer-label-sm" id="q-counter-top">Q 1 / 15</div>
+            <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-top:4px;" id="q-score-top">Score: 0</div>
+        </div>
     </div>
-
-    <div class="dots-row" id="dots"></div>
-
-    <span id="qCat"></span>
-    <div id="qText"></div>
-    <div id="opts"></div>
-    <div id="exp-box" class="exp-box hidden"></div>
-    <button class="btn hidden" id="btn-next" onclick="nextQ()">Continue →</button>
+    <div class="progress-wrap">
+        <div class="progress-row">
+            <span class="progress-text" id="progress-label">Question 1 of 15</span>
+            <span class="progress-text" id="progress-pct">0%</span>
+        </div>
+        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    </div>
+    <div class="dots-wrap" id="dots"></div>
+    <div class="section-banner Flights" id="section-banner">
+        <span class="s-icon">✈️</span>
+        <div class="s-right">
+            <span class="s-label" id="section-label">Flights</span>
+            <span class="s-desc"  id="section-desc">Flights Module</span>
+        </div>
+    </div>
+    <div class="question-wrap">
+        <div class="q-counter" id="q-counter">Question 1</div>
+        <p class="q-text" id="q-text"></p>
+    </div>
+    <div class="options-wrap" id="opts"></div>
+    <div class="exp-wrap"><div class="exp-box hidden" id="exp-box"></div></div>
+    <div class="next-wrap"><button class="btn btn-primary hidden" id="btn-next" onclick="nextQ()">Continue →</button></div>
 </div>
 
-<!-- ══ RESULT ══ -->
+<!-- RESULT -->
 <div class="card hidden" id="screen-result">
-    <div class="brand-header">
-        <h1>TripVita</h1>
-        <div class="edition">Challenge Complete</div>
+    <div class="result-score-block">
+        <div class="score-big" id="res-score">0<span>/15</span></div>
+        <div class="score-pct"     id="res-pct"></div>
+        <div class="time-display"  id="res-time"></div>
     </div>
-    <div class="score-display" id="res-score"></div>
-    <div class="time-taken"    id="res-time"></div>
-    <div class="cat-grid"      id="res-cats"></div>
-    <div id="submit-status">Saving result…</div>
-    <button class="btn" onclick="location.href='leaderboard.html'">View Leaderboard →</button>
+    <div class="divider" style="margin:0 28px;"></div>
+    <div style="padding:16px 28px 12px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin-bottom:12px;">Score by Section</div>
+        <div class="cat-grid">
+            <div class="cat-cell Flights"><div class="cc-icon">✈️</div><div class="cc-val" id="cc-flights">0</div><div class="cc-lbl">Flights</div></div>
+            <div class="cat-cell Portal"> <div class="cc-icon">🖥️</div><div class="cc-val" id="cc-portal">0</div> <div class="cc-lbl">Portal</div></div>
+            <div class="cat-cell Hotels"> <div class="cc-icon">🏨</div><div class="cc-val" id="cc-hotels">0</div> <div class="cc-lbl">Hotels</div></div>
+        </div>
+    </div>
+    <div class="divider" style="margin:12px 28px;"></div>
+    <div class="submit-status" id="submit-status">Saving result…</div>
+    <div class="result-actions">
+        <button class="btn btn-primary" onclick="location.href='leaderboard.html'">View Live Leaderboard →</button>
+    </div>
 </div>
 
-<!-- ══ ALREADY SUBMITTED ══ -->
+<!-- ALREADY DONE -->
 <div class="card hidden" id="screen-done">
-    <div class="brand-header">
-        <h1>TripVita</h1>
-        <div class="edition">May 2026 Edition</div>
-    </div>
-    <div class="done-card">
-        <div class="icon">✅</div>
-        <h2>Already Submitted!</h2>
+    <div class="done-block">
+        <div class="d-icon">✅</div>
+        <h2>Already Submitted</h2>
         <p id="done-msg">You have already completed this month's assessment.</p>
-        <button class="btn" onclick="location.href='leaderboard.html'">View Leaderboard →</button>
+        <button class="btn btn-primary" onclick="location.href='leaderboard.html'">View Leaderboard →</button>
     </div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-// ═══════════════════════════════════════════════════════════════
-// CONFIG  ← paste your deployed Apps Script URL here
-// ═══════════════════════════════════════════════════════════════
 const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbyIRloBsoHfWrZl3XMh_qA8Hr8WbI_VQfll584P9m5Tsn-vqhcUXyDFZzNAn72hrPUH/exec';
 const EDITION     = 'May 2026';
 const STORAGE_KEY = 'tripvita_may_2026';
-const NUM_QS      = 15;   // questions served per attempt (out of 16)
+const NUM_QS      = 15;
 
-// ═══════════════════════════════════════════════════════════════
-// QUESTION BANK  — 16 validated questions, 15 served randomly
-// ═══════════════════════════════════════════════════════════════
 const ALL_QUESTIONS = [
-  { id:1, cat:"Flights",
-    q:"Under the save for later feature, if a payment fails, within how many minutes can you retry without starting over?",
-    opts:["20 minutes","30 minutes","15 minutes","10 minutes"],
-    ans:"30 minutes",
-    exp:"If a payment fails during the transaction process, the portal allows a buffer period of 30 minutes to retry the payment without losing the itinerary or having to restart the booking from scratch." },
-
-  { id:2, cat:"Flights",
-    q:"Under the save for later feature, how many itineraries can be saved at a time?",
-    opts:["20","10","15","30"],
-    ans:"20",
-    exp:"The 'Save for Later' feature allows travel partners to hold or save up to 20 different flight itineraries simultaneously to manage multiple client options before final purchase." },
-
-  { id:3, cat:"Flights",
-    q:"If a passenger misses their flight, how long should the travel partner wait before raising a 'No Show' amendment to claim taxes?",
-    opts:["24 hours after the flights departure time.","Within the same day of the flight's scheduled departure.","Exactly after 28 hours before the next available flight.","Immediately after the flight takes off."],
-    ans:"24 hours after the flights departure time.",
-    exp:"In the case of a passenger missing a flight (No Show), travel partners must wait 24 hours after the flight's departure time before raising an amendment to ensure the airline has updated the ticket status to 'No Show' in their system for tax refund claims." },
-
-  { id:4, cat:"Portal",
-    q:"A client is looking for the absolute cheapest date to fly within a specific week. Which feature do you use?",
-    opts:["Fare Rules","Weekly Filter Schedule","Price Switch","Markup"],
-    ans:"Weekly Filter Schedule",
-    exp:"The 'Weekly Filter Schedule' provides a convenient calendar or weekly grid view of fares, allowing travel partners to easily identify the cheapest dates to fly within a given week." },
-
-  { id:5, cat:"Portal",
-    q:"You have already applied filters for \"IndiGo\" and \"Morning Departure.\" The client now wants to see \"Air India\" instead. What is the fastest way?",
-    opts:["Refresh the whole browser","Use Modify Search","Uncheck IndiGo and check Air India in the Airline Filter panel","Close the tab and start over"],
-    ans:"Use Modify Search",
-    exp:"When altering major search parameters or switching to an entirely different airline after multiple filters are applied, using 'Modify Search' ensures a clean, updated query to the system rather than relying on conflicting sidebar filters." },
-
-  { id:6, cat:"Portal",
-    q:"Which view allows you to see the actual commission/earnings you make on a specific flight?",
-    opts:["Net View","Incentive View","Gross View","Discount View"],
-    ans:"Incentive View",
-    exp:"The 'Incentive View' toggles the display to show the exact commission, incentives, and net earnings a travel partner makes on a specific flight option." },
-
-  { id:7, cat:"Portal",
-    q:"When is the earliest a user can upload a GST invoice for commission earned in the current month?",
-    opts:["Immediate after the first transaction","The 11th of the following month","The 16th of the current month","The 1st of the following month"],
-    ans:"The 1st of the following month",
-    exp:"GST invoices for commission earned during a specific calendar month can only be compiled and verified after the month concludes. Hence, the earliest date to upload them is the 1st of the following month." },
-
-  { id:8, cat:"Portal",
-    q:"Which of the following components are summed to determine the 'Taxable Value' on the Tripjack dashboard?",
-    opts:["Commission + Deposit Incentive","Wallet Balance + GST Amount","Net Profit - Operating Costs","Total Bookings + Refund Credits"],
-    ans:"Commission + Deposit Incentive",
-    exp:"The 'Taxable Value' for GST calculation on the dashboard is determined by adding the travel partner's Commission and any Deposit Incentives earned." },
-
-  { id:9, cat:"Portal",
-    q:"If a travel partner needs manual review for a 'Mismatch' status, which email address should they contact?",
-    opts:["info@tripjack.com","taxation@tripjack.com","finance@tripjack.com","support@tripjack.com"],
-    ans:"taxation@tripjack.com",
-    exp:"For any manual reconciliation or correction of a 'Mismatch' status related to TDS or GST, the dedicated support email is taxation@tripjack.com." },
-
-  { id:10, cat:"Portal",
-    q:"What is InstaCredit?",
-    opts:["A manual credit limit increase approved by the ASM","An auto-approved instant credit on top of the travel partner's permanent base limit","A one-time emergency credit for locked accounts","A government-backed travel finance scheme"],
-    ans:"An auto-approved instant credit on top of the travel partner's permanent base limit",
-    exp:"InstaCredit is an automated feature that provides travel partners with an instantaneous, auto-approved credit extension on top of their permanent base limit to prevent booking disruptions." },
-
-  { id:11, cat:"Portal",
-    q:"A travel partner does one large booking every 2 months but nothing in between. How does this affect their InstaCredit?",
-    opts:["It has no effect — only total volume matters","It helps because a large booking boosts TTWS","It hurts because Sales Consistency requires regular, not random, booking patterns","It increases their Payment Float score"],
-    ans:"It hurts because Sales Consistency requires regular, not random, booking patterns",
-    exp:"InstaCredit score algorithms heavily prioritize 'Sales Consistency'. Random, sporadic booking patterns — even if large — reduce the consistency score compared to regular, predictable daily or weekly bookings." },
-
-  { id:12, cat:"Portal",
-    q:"What is \"Payment Float\" in the context of InstaCredit?",
-    opts:["The buffer amount between base limit and InstaCredit","The total outstanding amount on a travel partner's account","Payment ageing — how promptly the travel partner clears their dues","A fee charged for extending the due date"],
-    ans:"Payment ageing — how promptly the travel partner clears their dues",
-    exp:"In credit scoring, 'Payment Float' represents payment ageing, which tracks how promptly and reliably a travel partner clears their outstanding balances and settles dues within the credit cycle." },
-
-  { id:13, cat:"Hotels",
-    q:"What is the primary benefit of the 'Advanced Room Mapping' feature for travel partners?",
-    opts:["It filters hotels based on GST claim-eligibility.","It defines the absolute lowest price for a specific category across different suppliers.","It automatically applies the travel partner's margin to the room rate.","It provides HD images."],
-    ans:"It defines the absolute lowest price for a specific category across different suppliers.",
-    exp:"Advanced Room Mapping automatically aggregates and deduplicates identical room categories across multiple hotel suppliers, allowing travel partners to instantly see the absolute lowest available price for that specific room type." },
-
-  { id:14, cat:"Hotels",
-    q:"When customizing a voucher in Step 2 of the Dual Voucher process, which of the following can be hidden to match current business needs?",
-    opts:["Check-in and Check-out times.","Agency info, prices, and cancellation terms.","Hotel address and location.","Number of guests."],
-    ans:"Agency info, prices, and cancellation terms.",
-    exp:"Step 2 of the Dual Voucher process lets travel partners customize the client-facing voucher by hiding sensitive details like agency contact information, supplier prices, and strict cancellation terms to protect business margins." },
-
-  { id:15, cat:"Hotels",
-    q:"According to the Dual Voucher Status feature, what is the advantage of generating a 'Confirmed' voucher while a booking is still on hold?",
-    opts:["It guarantees the hotel price will not fluctuate during the hold period.","It bypasses the need for the review step in the booking journey.","It assists with the embassy requirements and visa applications.","It automatically deducts the funds from the travel partner's wallet."],
-    ans:"It assists with the embassy requirements and visa applications.",
-    exp:"A 'Confirmed' status voucher for an on-hold booking provides the client with a provisional confirmation document required by embassies for visa applications and travel documentation without requiring immediate payment." },
-
-  { id:16, cat:"Hotels",
-    q:"Where should a travel partner navigate to first to retrieve an existing on-hold booking for the purpose of generating a Dual Voucher?",
-    opts:["The pencil icon.","The Grid view.","The partner community page.","Manage Carts - Retrieve The Booking - Booking Summary"],
-    ans:"Manage Carts - Retrieve The Booking - Booking Summary",
-    exp:"To generate a Dual Voucher, the travel partner needs to retrieve the booking by going through Manage Carts, clicking on Retrieve The Booking, and accessing the Booking Summary page where the voucher tools are available." }
+  { id:1, cat:"Flights", q:"Under the 'Save for Later' feature, if a payment fails, within how many minutes can you retry the payment without starting over?", opts:["20 minutes","30 minutes","15 minutes","10 minutes"], ans:"30 minutes", exp:"If a payment fails during the transaction process, the portal allows a buffer period of 30 minutes to retry the payment without losing the itinerary or having to restart the booking from scratch." },
+  { id:2, cat:"Flights", q:"Under the 'Save for Later' feature, how many itineraries can be saved at one time?", opts:["20","10","15","30"], ans:"20", exp:"The 'Save for Later' feature allows travel partners to hold or save up to 20 different flight itineraries simultaneously to manage multiple client options before final purchase." },
+  { id:3, cat:"Flights", q:"If a client is worried about having to cancel their trip, which section of the \"Flight Details\" panel must you explain?", opts:["Terminal Info","Fare Rules","Flight Number","Layover Duration"], ans:"Fare Rules", exp:"The 'Fare Rules' section contains all specific terms and conditions regarding cancellation penalties, date change fees, and refundability, which must be explained to clients who are worried about canceling." },
+  { id:4, cat:"Flights", q:"You have already applied filters for \"IndiGo\" and \"Morning Departure.\" The client now wants to see \"Air India\" instead. What is the fastest way?", opts:["Refresh the whole browser","Use Modify Search","Uncheck IndiGo and check Air India in the Airline Filter panel","Close the tab and start over"], ans:"Uncheck IndiGo and check Air India in the Airline Filter panel", exp:"Since IndiGo is already selected under the popular filters, the quickest way to view Air India flights is to uncheck IndiGo and select Air India in the filter panel." },
+  { id:5, cat:"Portal", q:"Which view allows you to see the actual commission or earnings you make on a specific flight?", opts:["Net View","Incentive View","Gross View","Discount View"], ans:"Incentive View", exp:"The 'Incentive View' toggles the display to show the exact commission, incentives, and net earnings a travel partner makes on a specific flight option." },
+  { id:6, cat:"Portal", q:"What is the earliest date a user can upload a GST invoice for commission earned during the current month?", opts:["Immediate after the first transaction","The 11th of the following month","The 16th of the current month","The 1st of the following month"], ans:"The 1st of the following month", exp:"GST invoices for commission earned during a specific calendar month can only be compiled and verified after the month concludes. Hence, the earliest date to upload them is the 1st of the following month." },
+  { id:7, cat:"Portal", q:"Which of the following components are summed to determine the 'Taxable Value' on the Tripjack dashboard?", opts:["Commission + Deposit Incentive","Wallet Balance + GST Amount","Net Profit - Operating Costs","Total Bookings + Refund Credits"], ans:"Commission + Deposit Incentive", exp:"The 'Taxable Value' for GST calculation on the dashboard is determined by adding the travel partner's Commission and any Deposit Incentives earned." },
+  { id:8, cat:"Portal", q:"If a travel partner requires a manual review for a 'Mismatch' status, which email address should they contact?", opts:["info@tripjack.com","taxation@tripjack.com","finance@tripjack.com","support@tripjack.com"], ans:"taxation@tripjack.com", exp:"For any manual reconciliation or correction of a 'Mismatch' status related to TDS or GST, the dedicated support email is taxation@tripjack.com." },
+  { id:9, cat:"Portal", q:"What is InstaCredit?", opts:["A manual credit limit increase approved by the ASM","An auto-approved instant credit on top of the travel partner's permanent base limit","A one-time emergency credit for locked accounts","A government-backed travel finance scheme"], ans:"An auto-approved instant credit on top of the travel partner's permanent base limit", exp:"InstaCredit is an automated feature that provides travel partners with an instantaneous, auto-approved credit extension on top of their permanent base limit to prevent booking disruptions." },
+  { id:10, cat:"Portal", q:"A travel partner does one large booking every 2 months but nothing in between. How does this affect their InstaCredit?", opts:["It has no effect \u2014 only total volume matters","It helps because a large booking boosts TTWS","It hurts because Sales Consistency requires regular, not random, booking patterns","It increases their Payment Float score"], ans:"It hurts because Sales Consistency requires regular, not random, booking patterns", exp:"InstaCredit score algorithms heavily prioritize 'Sales Consistency'. Random, sporadic booking patterns, even if large, reduce the consistency score compared to regular, predictable daily or weekly bookings." },
+  { id:11, cat:"Portal", q:"What is \"Payment Float\" in the context of InstaCredit?", opts:["The buffer amount between base limit and InstaCredit","The total outstanding amount on a travel partner's account","Payment ageing \u2014 how promptly the travel partner clears their dues","A fee charged for extending the due date"], ans:"Payment ageing \u2014 how promptly the travel partner clears their dues", exp:"In credit scoring, 'Payment Float' represents payment ageing, which tracks how promptly and reliably a travel partner clears their outstanding balances and settles dues within the credit cycle." },
+  { id:12, cat:"Hotels", q:"What is the primary benefit of the 'Advanced Room Mapping' feature for travel partners?", opts:["It filters hotels based on GST claim-eligibility.","It defines the absolute lowest price for a specific category across different suppliers.","It automatically applies the travel partner's margin to the room rate.","It provides HD images."], ans:"It defines the absolute lowest price for a specific category across different suppliers.", exp:"Advanced Room Mapping automatically aggregates and deduplicates identical room categories across multiple hotel suppliers, allowing travel partners to instantly see the absolute lowest available price for that specific room type." },
+  { id:13, cat:"Hotels", q:"When customizing a voucher in Step 2 of the Dual Voucher process, which of the following can be hidden to match current business needs?", opts:["Check-in and Check-out times.","Agency info, prices, and cancellation terms.","Hotel address and location.","Number of guests."], ans:"Agency info, prices, and cancellation terms.", exp:"Step 2 of the Dual Voucher process lets travel partners customize the client-facing voucher by hiding sensitive details like agency contact information, supplier prices, and strict cancellation terms to protect business margins." },
+  { id:14, cat:"Hotels", q:"According to the Dual Voucher Status feature, what is the advantage of generating a 'Confirmed' voucher while a booking is still on hold?", opts:["It guarantees the hotel price will not fluctuate during the hold period.","It bypasses the need for the review step in the booking journey.","It assists with the embassy requirements and visa applications.","It automatically deducts the funds from the travel partner's wallet."], ans:"It assists with the embassy requirements and visa applications.", exp:"A 'Confirmed' status voucher for an on-hold booking provides the client with a provisional confirmation document required by embassies for visa applications and travel documentation without requiring immediate payment." },
+  { id:15, cat:"Hotels", q:"Where should a travel partner navigate to first to retrieve an existing on-hold booking for the purpose of generating a Dual Voucher?", opts:["The pencil icon.","The Grid view.","The partner community page.","Manage Carts - Retrieve The Booking - Booking Summary"], ans:"Manage Carts - Retrieve The Booking - Booking Summary", exp:"To generate a Dual Voucher, the travel partner needs to retrieve the booking by going through Manage Carts, clicking on Retrieve The Booking, and accessing the Booking Summary page where the voucher tools are available." }
 ];
 
-// ═══════════════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════════════
-let user          = null;
-let qs            = [];       // 15 selected questions for this attempt
-let cur           = 0;        // current question index
-let spent         = 0;        // seconds elapsed
-let timerInterval = null;
-let isSubmitting  = false;
-let responses     = [];       // { id, result }
-const catScores   = { Flights: 0, Portal: 0, Hotels: 0 };
+const SECTION_META = {
+  Flights:{ icon:'✈️', desc:'Flights Module' },
+  Portal: { icon:'🖥️', desc:'Portal & GST'  },
+  Hotels: { icon:'🏨', desc:'Hotels Module'  }
+};
 
-// ═══════════════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════════════
+let user=null, qs=[], cur=0, spent=0;
+let timerInterval=null, isSubmitting=false, responses=[];
+const catScores = { Flights:0, Portal:0, Hotels:0 };
+
 window.addEventListener('DOMContentLoaded', () => {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-        const d = JSON.parse(stored);
-        const pct = Math.round(d.score / NUM_QS * 100);
-        const date = new Date(d.ts).toLocaleDateString('en-IN', { day:'numeric', month:'long', year:'numeric' });
-        document.getElementById('done-msg').textContent =
-            `You submitted on ${date} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
-        show('screen-done');
-        return;
-    }
-    loadTeam();
+  const stored = localStorage.getItem(STORAGE_KEY);
+  if (stored) {
+    const d   = JSON.parse(stored);
+    const pct = Math.round(d.score/NUM_QS*100);
+    const dt  = new Date(d.ts).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+    $id('done-msg').textContent = `You submitted on ${dt} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
+    show('screen-done'); return;
+  }
+  loadTeam();
 });
 
-// ═══════════════════════════════════════════════════════════════
-// LOAD TEAM
-// ═══════════════════════════════════════════════════════════════
 async function loadTeam() {
-    try {
-        const res  = await fetch(`${SCRIPT_URL}?action=getTeam`);
-        const team = await res.json();
-        if (!Array.isArray(team) || !team.length) throw new Error('empty');
-        team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
-        $('#userSelector').select2({ placeholder: 'Search your name…' });
-        document.getElementById('loader').classList.add('hidden');
-        document.getElementById('step-reg').classList.remove('hidden');
-    } catch {
-        document.getElementById('loader').classList.add('hidden');
-        document.getElementById('load-error').classList.remove('hidden');
-    }
+  try {
+    const res  = await fetch(`${SCRIPT_URL}?action=getTeam`);
+    const team = await res.json();
+    if (!Array.isArray(team)||!team.length) throw new Error('empty');
+    team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
+    $('#userSelector').select2({ placeholder:'Search your name\u2026' });
+    $id('loader').classList.add('hidden');
+    $id('step-reg').classList.remove('hidden');
+  } catch {
+    $id('loader').classList.add('hidden');
+    $id('load-error').classList.remove('hidden');
+  }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// OTP — SEND
-// ═══════════════════════════════════════════════════════════════
 async function sendOTP() {
-    const val = $('#userSelector').val();
-    if (!val) { regErr('Please select your name first.'); return; }
-
-    user = JSON.parse(val);
-    setBtn('btn-send-otp', 'Sending…', true);
-    hideErr();
-
-    try {
-        const dup  = await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${enc(user.empId)}`);
-        const dupD = await dup.json();
-        if (dupD.exists) { alert('You have already submitted for this month!'); location.reload(); return; }
-
-        await fetch(`${SCRIPT_URL}?action=sendOTP&email=${enc(user.email)}`);
-        document.getElementById('btn-send-otp').classList.add('hidden');
-        document.getElementById('otp-box').classList.remove('hidden');
-    } catch {
-        setBtn('btn-send-otp', 'Request Code', false);
-        regErr('Network error — please try again.');
-    }
+  const val = $('#userSelector').val();
+  if (!val) { regErr('Please select your name.'); return; }
+  user = JSON.parse(val);
+  setBtn('btn-otp','Sending\u2026',true); clearErr();
+  try {
+    const dup = await (await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${enc(user.empId)}`)).json();
+    if (dup.exists) { alert('You have already submitted for this month.'); location.reload(); return; }
+    await fetch(`${SCRIPT_URL}?action=sendOTP&email=${enc(user.email)}`);
+    $id('btn-otp').classList.add('hidden');
+    $id('otp-box').classList.remove('hidden');
+  } catch { setBtn('btn-otp','Request Verification Code',false); regErr('Network error \u2014 please try again.'); }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// OTP — VERIFY
-// ═══════════════════════════════════════════════════════════════
 async function verifyOTP() {
-    const otp = document.getElementById('otp-input').value.trim();
-    if (otp.length !== 4) { regErr('Please enter the full 4-digit code.'); return; }
-
-    setBtn('btn-verify', 'Verifying…', true);
-    hideErr();
-
-    try {
-        const res  = await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${enc(user.email)}&otp=${otp}`);
-        const data = await res.json();
-
-        if (!data.valid) {
-            regErr('Incorrect code — please try again.');
-            setBtn('btn-verify', 'Verify & Start', false);
-            return;
-        }
-
-        startQuiz();
-    } catch {
-        regErr('Network error — please try again.');
-        setBtn('btn-verify', 'Verify & Start', false);
-    }
+  const otp = $id('otp-input').value.trim();
+  if (otp.length!==4) { regErr('Please enter the full 4-digit code.'); return; }
+  setBtn('btn-verify','Verifying\u2026',true); clearErr();
+  try {
+    const data = await (await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${enc(user.email)}&otp=${otp}`)).json();
+    if (!data.valid) { regErr('Incorrect code \u2014 please try again.'); setBtn('btn-verify','Verify & Start',false); return; }
+    startQuiz();
+  } catch { regErr('Network error \u2014 please try again.'); setBtn('btn-verify','Verify & Start',false); }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// START QUIZ
-// ═══════════════════════════════════════════════════════════════
 function startQuiz() {
-    // Pick NUM_QS questions from bank, shuffle each question's options
-    qs = shuffle([...ALL_QUESTIONS]).slice(0, NUM_QS).map(q => ({
-        ...q, opts: shuffle([...q.opts])
-    }));
-
-    // Reset state
-    cur = 0; spent = 0; isSubmitting = false; responses = [];
-    Object.keys(catScores).forEach(k => catScores[k] = 0);
-
-    // Build dots
-    const dotRow = document.getElementById('dots');
-    dotRow.innerHTML = '';
-    qs.forEach((_, i) => {
-        const d = document.createElement('div');
-        d.className = 'dot' + (i === 0 ? ' active' : '');
-        d.id = 'dot-' + i;
-        dotRow.appendChild(d);
-    });
-
-    show('screen-quiz');
-    renderQ();
-    startTimer();
+  qs = shuffle([...ALL_QUESTIONS]).map(q=>({...q, opts:shuffle([...q.opts])}));
+  cur=0; spent=0; isSubmitting=false; responses=[];
+  Object.keys(catScores).forEach(k=>catScores[k]=0);
+  const dotRow=$id('dots'); dotRow.innerHTML='';
+  qs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.id='dot-'+i; dotRow.appendChild(d); });
+  show('screen-quiz'); renderQ(); startTimer();
 }
 
-// ═══════════════════════════════════════════════════════════════
-// TIMER
-// ═══════════════════════════════════════════════════════════════
 function startTimer() {
-    timerInterval = setInterval(() => {
-        spent++;
-        const rem = 360 - spent;
-        const el  = document.getElementById('timer');
-        el.textContent = `${pad(Math.floor(rem/60))}:${pad(rem%60)}`;
-        el.className = rem <= 60 ? 'danger' : rem <= 120 ? 'warning' : '';
-        if (rem <= 0) finish();
-    }, 1000);
+  timerInterval = setInterval(()=>{
+    spent++;
+    const rem=360-spent, el=$id('timer');
+    el.textContent=`${pad(Math.floor(rem/60))}:${pad(rem%60)}`;
+    el.className = rem<=60?'danger':rem<=120?'warning':'';
+    if(rem<=0) finish();
+  },1000);
 }
 
-// ═══════════════════════════════════════════════════════════════
-// RENDER QUESTION
-// ═══════════════════════════════════════════════════════════════
 function renderQ() {
-    const q = qs[cur];
-
-    // Update dots
-    if (cur > 0) {
-        const prev = responses[cur - 1];
-        setDot(cur - 1, prev.result === 'Correct' ? 'correct' : 'wrong');
-    }
-    setDot(cur, 'active');
-
-    document.getElementById('qCat').textContent  = q.cat.toUpperCase();
-    document.getElementById('qText').textContent = q.q;
-
-    const container = document.getElementById('opts');
-    container.innerHTML = '';
-    q.opts.forEach(o => {
-        const b = document.createElement('button');
-        b.className   = 'opt';
-        b.textContent = String(o);
-        b.dataset.val = String(o);
-        b.onclick = () => pick(b, q);
-        container.appendChild(b);
-    });
-
-    const expEl = document.getElementById('exp-box');
-    expEl.className = 'exp-box hidden';
-    expEl.textContent = '';
-    document.getElementById('btn-next').classList.add('hidden');
+  const q=qs[cur], meta=SECTION_META[q.cat]||{icon:'📋',desc:q.cat};
+  const pct=Math.round(cur/NUM_QS*100);
+  $id('progress-label').textContent=`Question ${cur+1} of ${NUM_QS}`;
+  $id('progress-pct').textContent=`${pct}%`;
+  $id('progress-fill').style.width=`${pct}%`;
+  $id('q-counter-top').textContent=`Q ${cur+1} / ${NUM_QS}`;
+  $id('q-score-top').textContent=`Score: ${Object.values(catScores).reduce((a,b)=>a+b,0)}`;
+  if(cur>0){ const prev=responses[cur-1]; setDot(cur-1,prev.result==='Correct'?'correct':'wrong'); }
+  setDot(cur,'active');
+  const banner=$id('section-banner');
+  banner.className=`section-banner ${q.cat}`;
+  $id('section-label').textContent=q.cat;
+  $id('section-desc').textContent=meta.desc;
+  banner.querySelector('.s-icon').textContent=meta.icon;
+  $id('q-counter').textContent=`Question ${cur+1}`;
+  $id('q-text').textContent=q.q;
+  const letters=['A','B','C','D'], container=$id('opts');
+  container.innerHTML='';
+  q.opts.forEach((o,i)=>{ const b=document.createElement('button'); b.className='opt'; b.dataset.val=String(o); b.innerHTML=`<span class="opt-letter">${letters[i]}</span><span>${o}</span>`; b.onclick=()=>pick(b,q); container.appendChild(b); });
+  $id('exp-box').className='exp-box hidden'; $id('exp-box').innerHTML='';
+  $id('btn-next').classList.add('hidden');
 }
 
-// ═══════════════════════════════════════════════════════════════
-// PICK ANSWER
-// ═══════════════════════════════════════════════════════════════
-function pick(btn, q) {
-    document.querySelectorAll('.opt').forEach(b => b.disabled = true);
-
-    const chosen  = btn.dataset.val;
-    const correct = String(q.ans);   // always String — no type mismatch
-    const isRight = chosen === correct;
-
-    btn.classList.add(isRight ? 'correct' : 'wrong');
-    if (!isRight) {
-        document.querySelectorAll('.opt').forEach(b => {
-            if (b.dataset.val === correct) b.classList.add('correct');
-        });
-    }
-
-    if (isRight) catScores[q.cat] = (catScores[q.cat] || 0) + 1;
-    responses.push({ id: q.id, result: isRight ? 'Correct' : 'Incorrect' });
-
-    const expEl = document.getElementById('exp-box');
-    expEl.className = `exp-box ${isRight ? 'correct-bg' : 'wrong-bg'}`;
-    expEl.innerHTML = `<strong>${isRight ? '✓ Correct!' : '✗ Incorrect'}</strong> — ${q.exp}`;
-
-    document.getElementById('btn-next').classList.remove('hidden');
+function pick(btn,q) {
+  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+  const chosen=btn.dataset.val, correct=String(q.ans), isRight=chosen===correct;
+  btn.classList.add(isRight?'correct':'wrong');
+  if(!isRight) document.querySelectorAll('.opt').forEach(b=>{ if(b.dataset.val===correct) b.classList.add('correct'); });
+  if(isRight) catScores[q.cat]++;
+  responses.push({id:q.id, result:isRight?'Correct':'Incorrect'});
+  const expEl=$id('exp-box');
+  expEl.className=`exp-box ${isRight?'correct-bg':'wrong-bg'}`;
+  expEl.innerHTML=`<strong>${isRight?'\u2713 Correct':'\u2717 Incorrect'}</strong> \u2014 ${q.exp}`;
+  $id('btn-next').classList.remove('hidden');
 }
 
-function nextQ() {
-    cur++;
-    if (cur < qs.length) renderQ();
-    else finish();
-}
+function nextQ() { cur++; if(cur<qs.length) renderQ(); else finish(); }
 
-// ═══════════════════════════════════════════════════════════════
-// FINISH
-// ═══════════════════════════════════════════════════════════════
 async function finish() {
-    if (isSubmitting) return;
-    isSubmitting = true;
-    clearInterval(timerInterval);
-
-    const timeSec       = spent;
-    const timeFormatted = `${pad(Math.floor(timeSec/60))}:${pad(timeSec%60)}`;
-    const totalScore    = Object.values(catScores).reduce((a, b) => a + b, 0);
-
-    // Lock re-entry immediately
-    localStorage.setItem(STORAGE_KEY, JSON.stringify({
-        score: totalScore, timeSec, ts: Date.now()
-    }));
-
-    // Result screen
-    show('screen-result');
-    document.getElementById('res-score').textContent = `${totalScore}/${qs.length}`;
-    document.getElementById('res-time').textContent  = `⏱ Time taken: ${timeFormatted}`;
-
-    const catGrid = document.getElementById('res-cats');
-    catGrid.innerHTML = '';
-    Object.entries(catScores).forEach(([cat, score]) => {
-        catGrid.innerHTML +=
-            `<div class="cat-box"><div class="lbl">${cat.toUpperCase()}</div><div class="val">${score}</div></div>`;
-    });
-
-    // Submit to sheet
-    const payload = {
-        name:          user.name,
-        empId:         user.empId,
-        email:         user.email,
-        totalScore,
-        flightsScore:  catScores['Flights'] || 0,
-        portalScore:   catScores['Portal']  || 0,
-        hotelScore:    catScores['Hotels']  || 0,
-        timeFormatted,
-        timeSec,
-        edition:       EDITION,
-        responses
-    };
-
-    try {
-        // No mode:'no-cors' — follows redirect so body reaches doPost
-        // No Content-Type header — sends as text/plain, no CORS preflight
-        const res  = await fetch(SCRIPT_URL, { method:'POST', body: JSON.stringify(payload) });
-        const text = await res.text();
-        document.getElementById('submit-status').textContent =
-            (text === 'SUCCESS' || text === 'DUPLICATE') ? '✅ Result saved!' : '⚠️ Save failed — contact admin.';
-    } catch {
-        document.getElementById('submit-status').textContent = '⚠️ Save failed — contact admin.';
-    }
+  if(isSubmitting) return; isSubmitting=true; clearInterval(timerInterval);
+  const timeSec=spent, timeFmt=`${pad(Math.floor(timeSec/60))}:${pad(timeSec%60)}`;
+  const totalScore=Object.values(catScores).reduce((a,b)=>a+b,0);
+  const pct=Math.round(totalScore/NUM_QS*100);
+  localStorage.setItem(STORAGE_KEY,JSON.stringify({score:totalScore,timeSec,ts:Date.now()}));
+  show('screen-result');
+  $id('res-score').innerHTML=`${totalScore}<span>/${NUM_QS}</span>`;
+  $id('res-pct').textContent=`${pct}% \u2014 ${pct>=90?'Excellence Club \uD83C\uDFC6':pct>=70?'Pass \u2713':'Below Threshold'}`;
+  $id('res-time').textContent=`\u23F1 Time taken: ${timeFmt}`;
+  $id('cc-flights').textContent=catScores['Flights'];
+  $id('cc-portal').textContent=catScores['Portal'];
+  $id('cc-hotels').textContent=catScores['Hotels'];
+  const payload={name:user.name,empId:user.empId,email:user.email,totalScore,flightsScore:catScores['Flights'],portalScore:catScores['Portal'],hotelScore:catScores['Hotels'],timeFormatted:timeFmt,timeSec,edition:EDITION,responses};
+  try {
+    const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
+    const text=await res.text();
+    $id('submit-status').textContent=(text==='SUCCESS'||text==='DUPLICATE')?'\u2705 Result saved successfully.':'\u26A0 Could not save \u2014 contact admin.';
+  } catch { $id('submit-status').textContent='\u26A0 Could not save \u2014 contact admin.'; }
 }
 
-// ═══════════════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════════════
-function show(id) {
-    ['screen-reg','screen-quiz','screen-result','screen-done']
-        .forEach(s => document.getElementById(s).classList.add('hidden'));
-    document.getElementById(id).classList.remove('hidden');
-}
-
-function shuffle(arr) {
-    const a = [...arr];
-    for (let i = a.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [a[i], a[j]] = [a[j], a[i]];
-    }
-    return a;
-}
-
-function pad(n) { return String(n).padStart(2, '0'); }
-function enc(s) { return encodeURIComponent(s); }
-
-function setBtn(id, text, disabled) {
-    const b = document.getElementById(id);
-    b.textContent = text;
-    b.disabled    = disabled;
-}
-
-function setDot(idx, state) {
-    const d = document.getElementById('dot-' + idx);
-    if (d) d.className = 'dot ' + state;
-}
-
-function regErr(msg) {
-    const el = document.getElementById('reg-error');
-    el.textContent = msg;
-    el.classList.remove('hidden');
-}
-
-function hideErr() {
-    document.getElementById('reg-error').classList.add('hidden');
-}
+function show(id) { ['screen-reg','screen-quiz','screen-result','screen-done'].forEach(s=>$id(s).classList.add('hidden')); $id(id).classList.remove('hidden'); }
+function $id(id) { return document.getElementById(id); }
+function pad(n)  { return String(n).padStart(2,'0'); }
+function enc(s)  { return encodeURIComponent(s); }
+function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
+function setDot(i,cls) { const d=$id('dot-'+i); if(d) d.className='dot '+cls; }
+function setBtn(id,txt,dis) { const b=$id(id); b.textContent=txt; b.disabled=dis; }
+function regErr(msg) { const el=$id('reg-error'); el.textContent=msg; el.classList.remove('hidden'); }
+function clearErr() { $id('reg-error').classList.add('hidden'); }
 </script>
 </body>
 </html>
