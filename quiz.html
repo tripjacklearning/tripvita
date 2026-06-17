@@ -342,6 +342,18 @@ let timerInterval=null, isSubmitting=false, responses=[];
 const catScores = { Flights:0, Portal:0, Hotels:0 };
 
 window.addEventListener('DOMContentLoaded', () => {
+
+  // ── EDITION CLOSED — set to false to re-open ────────────
+  const EDITION_CLOSED = true;
+
+  if (EDITION_CLOSED) {
+    $id('screen-done').querySelector('.d-icon').textContent = '🔒';
+    $id('screen-done').querySelector('h2').textContent = 'May 2026 Edition Closed';
+    $id('done-msg').textContent = 'The May 2026 edition has now closed. Thank you to everyone who participated. Stay tuned for the June edition — coming soon!';
+    show('screen-done'); return;
+  }
+  // ────────────────────────────────────────────────────────
+
   const stored = localStorage.getItem(STORAGE_KEY);
   if (stored) {
     const d   = JSON.parse(stored);
