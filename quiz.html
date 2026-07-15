@@ -3,191 +3,113 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita — May 2026</title>
+    <title>TripVita — June 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         :root {
-            --blue:#1B3F7A; --orange:#EF7F1A;
+            --blue:#1B3F7A; --orange:#EF7F1A; --orange-lt:#FEF3E8;
             --green:#0e7c5a; --green-lt:#E6F5EF;
             --red:#c0392b; --red-lt:#FDF0EF;
             --bg:#F2F4F8; --white:#FFFFFF; --border:#DDE1EA;
             --text:#1A202C; --text-2:#4A5568; --text-3:#718096;
-            --flights-bg:#EBF2FF; --flights-fg:#1B3F7A; --flights-bdr:#BDD0F5;
-            --portal-bg:#FEF3E8;  --portal-fg:#C05F00;  --portal-bdr:#F9C98A;
-            --hotels-bg:#E6F5EF;  --hotels-fg:#0a6347;  --hotels-bdr:#8ECFB8;
+            --mt-bg:#EBF2FF; --mt-fg:#1B3F7A; --mt-bdr:#BDD0F5;
+            --ic-bg:#F5F3FF; --ic-fg:#6D28D9; --ic-bdr:#DDD6FE;
         }
-        body {
-            font-family:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
-            background:var(--bg); color:var(--text);
-            min-height:100vh; display:flex; flex-direction:column;
-            align-items:center; padding:24px 16px 48px;
-        }
-        .topbar {
-            width:100%; max-width:560px;
-            display:flex; align-items:center; justify-content:space-between;
-            margin-bottom:20px;
-        }
+        body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px 48px; }
+        .topbar { width:100%; max-width:560px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
         .logo { display:flex; align-items:center; gap:8px; }
-        .logo-mark {
-            width:30px; height:30px; background:var(--blue); border-radius:7px;
-            display:flex; align-items:center; justify-content:center;
-        }
-        .logo-mark span { color:var(--orange); font-weight:800; font-size:16px; line-height:1; }
-        .logo-name { font-size:15px; font-weight:700; color:var(--blue); letter-spacing:-0.3px; }
+        .logo-mark { width:30px; height:30px; background:var(--blue); border-radius:7px; display:flex; align-items:center; justify-content:center; }
+        .logo-mark span { color:var(--orange); font-weight:800; font-size:15px; }
+        .logo-name { font-size:15px; font-weight:700; color:var(--blue); }
         .logo-name em { font-style:normal; color:var(--orange); }
-        .edition-pill {
-            font-size:11px; font-weight:600; color:var(--text-3);
-            background:var(--white); border:1px solid var(--border);
-            padding:4px 10px; border-radius:20px;
-        }
-        .card {
-            width:100%; max-width:560px; background:var(--white);
-            border-radius:16px; border:1px solid var(--border);
-            box-shadow:0 2px 12px rgba(0,0,0,0.06); overflow:hidden;
-        }
+        .edition-pill { font-size:11px; font-weight:600; color:var(--text-3); background:var(--white); border:1px solid var(--border); padding:4px 10px; border-radius:20px; }
+        .card { width:100%; max-width:560px; background:var(--white); border-radius:16px; border:1px solid var(--border); box-shadow:0 2px 12px rgba(0,0,0,0.06); overflow:hidden; }
         .card-body { padding:28px 28px 24px; }
         .brand-header { text-align:center; padding:28px 28px 0; margin-bottom:4px; }
         .brand-title { font-size:26px; font-weight:800; color:var(--blue); letter-spacing:-0.5px; }
         .brand-title span { color:var(--orange); }
         .brand-sub { font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
         .divider { height:1px; background:var(--border); margin:20px 0; }
-        .form-label { display:block; font-size:12px; font-weight:600; color:var(--text-2); margin-bottom:6px; }
-        .form-group { margin-bottom:14px; }
-        .btn {
-            display:block; width:100%; padding:13px 20px;
-            font-family:'Inter',sans-serif; font-size:14px; font-weight:600;
-            border:none; border-radius:10px; cursor:pointer;
-            transition:opacity 0.15s,background 0.15s; letter-spacing:0.1px;
-        }
+        .btn { display:block; width:100%; padding:13px 20px; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; border:none; border-radius:10px; cursor:pointer; transition:opacity 0.15s,background 0.15s; }
         .btn:disabled { opacity:0.45; cursor:not-allowed; }
         .btn-primary { background:var(--blue); color:#fff; margin-top:4px; }
         .btn-primary:hover:not(:disabled) { background:#153368; }
         .btn-success { background:#1a7a4a; color:#fff; margin-top:10px; }
-        .btn-success:hover:not(:disabled) { background:#155e38; }
-        .otp-input {
-            width:100%; padding:14px; text-align:center;
-            font-family:'Inter',monospace; font-size:28px; font-weight:700;
-            letter-spacing:12px; color:var(--blue);
-            border:2px solid var(--border); border-radius:10px;
-            outline:none; margin-top:12px; transition:border-color 0.15s;
-        }
+        .otp-input { width:100%; padding:14px; text-align:center; font-family:'Inter',monospace; font-size:28px; font-weight:700; letter-spacing:12px; color:var(--blue); border:2px solid var(--border); border-radius:10px; outline:none; margin-top:12px; }
         .otp-input:focus { border-color:var(--blue); }
         .error-text { font-size:12px; font-weight:500; color:var(--red); margin-top:10px; text-align:center; }
         #loader { text-align:center; color:var(--text-3); padding:20px 0; font-size:14px; }
-
         /* Timer */
-        .timer-bar {
-            background:var(--blue); padding:14px 24px;
-            display:flex; align-items:center; justify-content:space-between;
-        }
+        .timer-bar { background:var(--blue); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
         .timer-label-sm { font-size:10px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1.5px; }
-        #timer {
-            font-size:42px; font-weight:800; color:#fff;
-            letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums;
-            transition:color 0.3s;
-        }
+        #timer { font-size:42px; font-weight:800; color:#fff; letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums; }
         #timer.warning { color:#FFD580; }
-        #timer.danger  { color:#FF8080; animation:blink 0.6s infinite alternate; }
+        #timer.danger { color:#FF8080; animation:blink 0.6s infinite alternate; }
         @keyframes blink { to { opacity:0.5; } }
-
         /* Progress */
         .progress-wrap { padding:12px 24px 0; }
         .progress-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
         .progress-text { font-size:12px; font-weight:500; color:var(--text-3); }
         .progress-track { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
         .progress-fill { height:100%; background:var(--orange); border-radius:2px; transition:width 0.3s ease; }
-
         /* Dots */
         .dots-wrap { padding:10px 24px 0; display:flex; gap:5px; flex-wrap:wrap; }
         .dot { width:9px; height:9px; border-radius:50%; background:var(--border); transition:background 0.2s; flex-shrink:0; }
-        .dot.active  { background:var(--orange); }
+        .dot.active { background:var(--orange); }
         .dot.correct { background:#1a7a4a; }
-        .dot.wrong   { background:var(--red); }
-
+        .dot.wrong { background:var(--red); }
         /* Section banner */
-        .section-banner {
-            margin:14px 24px 0; padding:10px 14px;
-            border-radius:8px; display:flex; align-items:center; gap:10px;
-            border:1px solid;
-        }
-        .section-banner .s-icon { font-size:16px; line-height:1; flex-shrink:0; }
+        .section-banner { margin:14px 24px 0; padding:10px 14px; border-radius:8px; display:flex; align-items:center; gap:10px; border:1px solid; }
+        .section-banner .s-icon { font-size:16px; flex-shrink:0; }
         .section-banner .s-right { display:flex; flex-direction:column; gap:1px; }
         .section-banner .s-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; }
-        .section-banner .s-desc  { font-size:11px; font-weight:400; opacity:0.7; }
-        .section-banner.Flights { background:var(--flights-bg); border-color:var(--flights-bdr); color:var(--flights-fg); }
-        .section-banner.Portal  { background:var(--portal-bg);  border-color:var(--portal-bdr);  color:var(--portal-fg); }
-        .section-banner.Hotels  { background:var(--hotels-bg);  border-color:var(--hotels-bdr);  color:var(--hotels-fg); }
-
+        .section-banner .s-desc { font-size:11px; opacity:0.7; }
+        .section-banner.mt { background:var(--mt-bg); border-color:var(--mt-bdr); color:var(--mt-fg); }
+        .section-banner.ic { background:var(--ic-bg); border-color:var(--ic-bdr); color:var(--ic-fg); }
         /* Question */
         .question-wrap { padding:14px 24px 4px; }
         .q-counter { font-size:11px; font-weight:600; color:var(--text-3); margin-bottom:8px; }
         .q-text { font-size:16px; font-weight:600; color:var(--text); line-height:1.5; }
-
         /* Options */
         .options-wrap { padding:14px 24px; display:flex; flex-direction:column; gap:8px; }
-        .opt {
-            width:100%; padding:12px 15px;
-            background:var(--bg); border:1.5px solid var(--border);
-            border-radius:10px; cursor:pointer;
-            font-family:'Inter',sans-serif; font-size:14px; font-weight:500; color:var(--text-2);
-            text-align:left; line-height:1.45; transition:border-color 0.12s,background 0.12s,color 0.12s;
-            display:flex; align-items:flex-start; gap:10px;
-        }
-        .opt-letter {
-            width:20px; height:20px; border-radius:50%;
-            background:var(--border); color:var(--text-3);
-            font-size:10px; font-weight:700; display:flex;
-            align-items:center; justify-content:center;
-            flex-shrink:0; margin-top:1px; transition:background 0.12s,color 0.12s;
-        }
-        .opt:hover:not(:disabled) { border-color:var(--blue); background:var(--flights-bg); color:var(--blue); }
+        .opt { width:100%; padding:12px 15px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; cursor:pointer; font-family:'Inter',sans-serif; font-size:14px; font-weight:500; color:var(--text-2); text-align:left; line-height:1.45; display:flex; align-items:flex-start; gap:10px; transition:border-color 0.12s,background 0.12s; }
+        .opt-letter { width:20px; height:20px; border-radius:50%; background:var(--border); color:var(--text-3); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
+        .opt:hover:not(:disabled) { border-color:var(--blue); background:var(--mt-bg); color:var(--blue); }
         .opt:hover:not(:disabled) .opt-letter { background:var(--blue); color:#fff; }
         .opt.correct { background:var(--green-lt); border-color:var(--green); color:var(--green); font-weight:600; }
         .opt.correct .opt-letter { background:var(--green); color:#fff; }
-        .opt.wrong   { background:var(--red-lt);   border-color:var(--red);   color:var(--red);   font-weight:600; }
-        .opt.wrong   .opt-letter { background:var(--red); color:#fff; }
-
+        .opt.wrong { background:var(--red-lt); border-color:var(--red); color:var(--red); font-weight:600; }
+        .opt.wrong .opt-letter { background:var(--red); color:#fff; }
         /* Explanation */
         .exp-wrap { padding:0 24px 4px; }
-        .exp-box {
-            padding:12px 15px; border-radius:10px;
-            font-size:13px; font-weight:400; line-height:1.6; border-left:4px solid;
-        }
+        .exp-box { padding:12px 15px; border-radius:10px; font-size:13px; line-height:1.6; border-left:4px solid; }
         .exp-box.correct-bg { background:var(--green-lt); border-color:var(--green); color:#0a5038; }
-        .exp-box.wrong-bg   { background:var(--red-lt);   border-color:var(--red);   color:#8b2018; }
-        .exp-box strong { font-weight:700; }
+        .exp-box.wrong-bg { background:var(--red-lt); border-color:var(--red); color:#8b2018; }
         .next-wrap { padding:12px 24px 24px; }
-
         /* Result */
         .result-score-block { text-align:center; padding:28px 28px 16px; }
         .score-big { font-size:64px; font-weight:800; color:var(--blue); letter-spacing:-2px; line-height:1; }
         .score-big span { color:var(--text-3); font-size:36px; font-weight:500; }
         .score-pct { font-size:16px; font-weight:600; color:var(--text-2); margin-top:6px; }
-        .time-display { font-size:13px; color:var(--text-3); margin-top:4px; font-weight:500; }
-        .cat-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+        .time-display { font-size:13px; color:var(--text-3); margin-top:4px; }
+        .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .cat-cell { border-radius:10px; padding:14px 10px; text-align:center; border:1px solid; }
-        .cat-cell.Flights { background:var(--flights-bg); border-color:var(--flights-bdr); }
-        .cat-cell.Portal  { background:var(--portal-bg);  border-color:var(--portal-bdr); }
-        .cat-cell.Hotels  { background:var(--hotels-bg);  border-color:var(--hotels-bdr); }
+        .cat-cell.mt { background:var(--mt-bg); border-color:var(--mt-bdr); }
+        .cat-cell.ic { background:var(--ic-bg); border-color:var(--ic-bdr); }
         .cc-icon { font-size:18px; margin-bottom:4px; }
-        .cc-val  { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
-        .cc-lbl  { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
-        .submit-status { text-align:center; font-size:13px; color:var(--text-3); padding:0 28px 8px; font-weight:500; }
+        .cc-val { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
+        .cc-lbl { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
+        .submit-status { text-align:center; font-size:13px; color:var(--text-3); padding:0 28px 8px; }
         .result-actions { padding:4px 28px 28px; }
-
-        /* Already done */
+        /* Done */
         .done-block { text-align:center; padding:36px 28px; }
         .done-block .d-icon { font-size:48px; margin-bottom:16px; }
-        .done-block h2 { font-size:20px; font-weight:700; color:var(--text); margin-bottom:8px; }
+        .done-block h2 { font-size:20px; font-weight:700; margin-bottom:8px; }
         .done-block p { font-size:14px; color:var(--text-2); line-height:1.6; margin-bottom:20px; }
-
         /* Select2 */
-        .select2-container--default .select2-selection--single {
-            height:42px; border:1.5px solid var(--border); border-radius:8px;
-            display:flex; align-items:center;
-        }
+        .select2-container--default .select2-selection--single { height:42px; border:1.5px solid var(--border); border-radius:8px; display:flex; align-items:center; }
         .select2-container--default .select2-selection--single .select2-selection__rendered { line-height:42px; font-size:14px; color:var(--text); }
         .select2-container--default .select2-selection--single .select2-selection__arrow { height:42px; }
         .hidden { display:none !important; }
@@ -196,18 +118,15 @@
 <body>
 
 <div class="topbar">
-    <div class="logo">
-        <div class="logo-mark"><span>T</span></div>
-        <div class="logo-name">Trip<em>Jack</em> &nbsp;·&nbsp; TripVita</div>
-    </div>
-    <div class="edition-pill">May 2026</div>
+    <div class="logo"><div class="logo-mark"><span>T</span></div><div class="logo-name">Trip<em>Jack</em> &nbsp;·&nbsp; TripVita</div></div>
+    <div class="edition-pill">June 2026</div>
 </div>
 
 <!-- REGISTRATION -->
 <div class="card" id="screen-reg">
     <div class="brand-header">
         <div class="brand-title">Trip<span>Vita</span></div>
-        <div class="brand-sub">May 2026 · Monthly Assessment</div>
+        <div class="brand-sub">June 2026 · Monthly Assessment</div>
     </div>
     <div class="card-body">
         <div id="loader">Loading team list…</div>
@@ -215,19 +134,19 @@
         <div id="step-reg" class="hidden">
             <div class="divider" style="margin-top:8px;"></div>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;">
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>📋</span> 15 Questions</div>
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>⏱</span> 6-Minute Timer</div>
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🔒</span> One Attempt Only</div>
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🏆</span> Live Leaderboard</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>📋</span>15 Questions</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>⏱</span>6-Minute Timer</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🔒</span>One Attempt Only</div>
+                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🏆</span>Live Leaderboard</div>
             </div>
-            <div class="form-group">
-                <label class="form-label">Select Your Name</label>
+            <div style="margin-bottom:14px;">
+                <label style="display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;">Select Your Name</label>
                 <select id="userSelector" style="width:100%;"></select>
             </div>
             <button class="btn btn-primary" id="btn-otp" onclick="sendOTP()">Request Verification Code</button>
             <div id="otp-box" class="hidden">
                 <div class="divider"></div>
-                <label class="form-label" style="text-align:center;display:block;">Enter the 4-digit code sent to your email</label>
+                <label style="font-size:12px;font-weight:600;color:var(--text-2);text-align:center;display:block;">Enter the 4-digit code sent to your email</label>
                 <input type="text" id="otp-input" class="otp-input" maxlength="4" placeholder="——" autocomplete="off">
                 <button class="btn btn-success" id="btn-verify" onclick="verifyOTP()">Verify &amp; Start</button>
             </div>
@@ -239,34 +158,19 @@
 <!-- QUIZ -->
 <div class="card hidden" id="screen-quiz">
     <div class="timer-bar">
-        <div>
-            <div class="timer-label-sm">Time Remaining</div>
-            <div id="timer">06:00</div>
-        </div>
-        <div style="text-align:right;">
-            <div class="timer-label-sm" id="q-counter-top">Q 1 / 15</div>
-            <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-top:4px;" id="q-score-top">Score: 0</div>
-        </div>
+        <div><div class="timer-label-sm">Time Remaining</div><div id="timer">06:00</div></div>
+        <div style="text-align:right;"><div class="timer-label-sm" id="q-counter-top">Q 1 / 15</div><div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-top:4px;" id="q-score-top">Score: 0</div></div>
     </div>
     <div class="progress-wrap">
-        <div class="progress-row">
-            <span class="progress-text" id="progress-label">Question 1 of 15</span>
-            <span class="progress-text" id="progress-pct">0%</span>
-        </div>
+        <div class="progress-row"><span class="progress-text" id="progress-label">Question 1 of 15</span><span class="progress-text" id="progress-pct">0%</span></div>
         <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     </div>
     <div class="dots-wrap" id="dots"></div>
-    <div class="section-banner Flights" id="section-banner">
-        <span class="s-icon">✈️</span>
-        <div class="s-right">
-            <span class="s-label" id="section-label">Flights</span>
-            <span class="s-desc"  id="section-desc">Flights Module</span>
-        </div>
+    <div class="section-banner mt" id="section-banner">
+        <span class="s-icon">🧳</span>
+        <div class="s-right"><span class="s-label" id="section-label">Manage Travellers</span><span class="s-desc" id="section-desc">Traveller Management</span></div>
     </div>
-    <div class="question-wrap">
-        <div class="q-counter" id="q-counter">Question 1</div>
-        <p class="q-text" id="q-text"></p>
-    </div>
+    <div class="question-wrap"><div class="q-counter" id="q-counter">Question 1</div><p class="q-text" id="q-text"></p></div>
     <div class="options-wrap" id="opts"></div>
     <div class="exp-wrap"><div class="exp-box hidden" id="exp-box"></div></div>
     <div class="next-wrap"><button class="btn btn-primary hidden" id="btn-next" onclick="nextQ()">Continue →</button></div>
@@ -276,23 +180,20 @@
 <div class="card hidden" id="screen-result">
     <div class="result-score-block">
         <div class="score-big" id="res-score">0<span>/15</span></div>
-        <div class="score-pct"     id="res-pct"></div>
-        <div class="time-display"  id="res-time"></div>
+        <div class="score-pct" id="res-pct"></div>
+        <div class="time-display" id="res-time"></div>
     </div>
     <div class="divider" style="margin:0 28px;"></div>
     <div style="padding:16px 28px 12px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin-bottom:12px;">Score by Section</div>
         <div class="cat-grid">
-            <div class="cat-cell Flights"><div class="cc-icon">✈️</div><div class="cc-val" id="cc-flights">0</div><div class="cc-lbl">Flights</div></div>
-            <div class="cat-cell Portal"> <div class="cc-icon">🖥️</div><div class="cc-val" id="cc-portal">0</div> <div class="cc-lbl">Portal</div></div>
-            <div class="cat-cell Hotels"> <div class="cc-icon">🏨</div><div class="cc-val" id="cc-hotels">0</div> <div class="cc-lbl">Hotels</div></div>
+            <div class="cat-cell mt"><div class="cc-icon">🧳</div><div class="cc-val" id="cc-mt">0</div><div class="cc-lbl">Manage Travellers</div></div>
+            <div class="cat-cell ic"><div class="cc-icon">⚡</div><div class="cc-val" id="cc-ic">0</div><div class="cc-lbl">InstaCredit</div></div>
         </div>
     </div>
     <div class="divider" style="margin:12px 28px;"></div>
     <div class="submit-status" id="submit-status">Saving result…</div>
-    <div class="result-actions">
-        <button class="btn btn-primary" onclick="location.href='leaderboard.html'">View Live Leaderboard →</button>
-    </div>
+    <div class="result-actions"><button class="btn btn-primary" onclick="location.href='leaderboard.html'">View Live Leaderboard →</button></div>
 </div>
 
 <!-- ALREADY DONE -->
@@ -308,191 +209,316 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbyIRloBsoHfWrZl3XMh_qA8Hr8WbI_VQfll584P9m5Tsn-vqhcUXyDFZzNAn72hrPUH/exec';
-const EDITION     = 'May 2026';
-const STORAGE_KEY = 'tripvita_may_2026';
-const NUM_QS      = 15;
+// ═══════════════════════════════════════════════════════
+// CONFIG — paste your deployed Apps Script URL here
+// ═══════════════════════════════════════════════════════
+const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbzu-o-kyd-NAsRQjlOhoDgVSmnAfonvXizB5-aPFM5g9un_DN9kXJBCtBNqj16-3J_SAQ/exec';
+const EDITION     = 'June 2026';
+const STORAGE_KEY = 'tripvita_june_2026';
+const NUM_QS      = 15;  // served from 18
 
+// ═══════════════════════════════════════════════════════
+// JUNE 2026 QUESTION BANK — 18 questions, 15 served
+// True/False options normalised to strings
+// Typos fixed: "An partner" → "A partner", "settlled" → "settled", "with 48" → "within 48"
+// ═══════════════════════════════════════════════════════
 const ALL_QUESTIONS = [
-  { id:1, cat:"Flights", q:"Under the 'Save for Later' feature, if a payment fails, within how many minutes can you retry the payment without starting over?", opts:["20 minutes","30 minutes","15 minutes","10 minutes"], ans:"30 minutes", exp:"If a payment fails during the transaction process, the portal allows a buffer period of 30 minutes to retry the payment without losing the itinerary or having to restart the booking from scratch." },
-  { id:2, cat:"Flights", q:"Under the 'Save for Later' feature, how many itineraries can be saved at one time?", opts:["20","10","15","30"], ans:"20", exp:"The 'Save for Later' feature allows travel partners to hold or save up to 20 different flight itineraries simultaneously to manage multiple client options before final purchase." },
-  { id:3, cat:"Flights", q:"If a client is worried about having to cancel their trip, which section of the \"Flight Details\" panel must you explain?", opts:["Terminal Info","Fare Rules","Flight Number","Layover Duration"], ans:"Fare Rules", exp:"The 'Fare Rules' section contains all specific terms and conditions regarding cancellation penalties, date change fees, and refundability, which must be explained to clients who are worried about canceling." },
-  { id:4, cat:"Flights", q:"You have already applied filters for \"IndiGo\" and \"Morning Departure.\" The client now wants to see \"Air India\" instead. What is the fastest way?", opts:["Refresh the whole browser","Use Modify Search","Uncheck IndiGo and check Air India in the Airline Filter panel","Close the tab and start over"], ans:"Uncheck IndiGo and check Air India in the Airline Filter panel", exp:"Since IndiGo is already selected under the popular filters, the quickest way to view Air India flights is to uncheck IndiGo and select Air India in the filter panel." },
-  { id:5, cat:"Portal", q:"Which view allows you to see the actual commission or earnings you make on a specific flight?", opts:["Net View","Incentive View","Gross View","Discount View"], ans:"Incentive View", exp:"The 'Incentive View' toggles the display to show the exact commission, incentives, and net earnings a travel partner makes on a specific flight option." },
-  { id:6, cat:"Portal", q:"What is the earliest date a user can upload a GST invoice for commission earned during the current month?", opts:["Immediate after the first transaction","The 11th of the following month","The 16th of the current month","The 1st of the following month"], ans:"The 1st of the following month", exp:"GST invoices for commission earned during a specific calendar month can only be compiled and verified after the month concludes. Hence, the earliest date to upload them is the 1st of the following month." },
-  { id:7, cat:"Portal", q:"Which of the following components are summed to determine the 'Taxable Value' on the Tripjack dashboard?", opts:["Commission + Deposit Incentive","Wallet Balance + GST Amount","Net Profit - Operating Costs","Total Bookings + Refund Credits"], ans:"Commission + Deposit Incentive", exp:"The 'Taxable Value' for GST calculation on the dashboard is determined by adding the travel partner's Commission and any Deposit Incentives earned." },
-  { id:8, cat:"Portal", q:"If a travel partner requires a manual review for a 'Mismatch' status, which email address should they contact?", opts:["info@tripjack.com","taxation@tripjack.com","finance@tripjack.com","support@tripjack.com"], ans:"taxation@tripjack.com", exp:"For any manual reconciliation or correction of a 'Mismatch' status related to TDS or GST, the dedicated support email is taxation@tripjack.com." },
-  { id:9, cat:"Portal", q:"What is InstaCredit?", opts:["A manual credit limit increase approved by the ASM","An auto-approved instant credit on top of the travel partner's permanent base limit","A one-time emergency credit for locked accounts","A government-backed travel finance scheme"], ans:"An auto-approved instant credit on top of the travel partner's permanent base limit", exp:"InstaCredit is an automated feature that provides travel partners with an instantaneous, auto-approved credit extension on top of their permanent base limit to prevent booking disruptions." },
-  { id:10, cat:"Portal", q:"A travel partner does one large booking every 2 months but nothing in between. How does this affect their InstaCredit?", opts:["It has no effect \u2014 only total volume matters","It helps because a large booking boosts TTWS","It hurts because Sales Consistency requires regular, not random, booking patterns","It increases their Payment Float score"], ans:"It hurts because Sales Consistency requires regular, not random, booking patterns", exp:"InstaCredit score algorithms heavily prioritize 'Sales Consistency'. Random, sporadic booking patterns, even if large, reduce the consistency score compared to regular, predictable daily or weekly bookings." },
-  { id:11, cat:"Portal", q:"What is \"Payment Float\" in the context of InstaCredit?", opts:["The buffer amount between base limit and InstaCredit","The total outstanding amount on a travel partner's account","Payment ageing \u2014 how promptly the travel partner clears their dues","A fee charged for extending the due date"], ans:"Payment ageing \u2014 how promptly the travel partner clears their dues", exp:"In credit scoring, 'Payment Float' represents payment ageing, which tracks how promptly and reliably a travel partner clears their outstanding balances and settles dues within the credit cycle." },
-  { id:12, cat:"Hotels", q:"What is the primary benefit of the 'Advanced Room Mapping' feature for travel partners?", opts:["It filters hotels based on GST claim-eligibility.","It defines the absolute lowest price for a specific category across different suppliers.","It automatically applies the travel partner's margin to the room rate.","It provides HD images."], ans:"It defines the absolute lowest price for a specific category across different suppliers.", exp:"Advanced Room Mapping automatically aggregates and deduplicates identical room categories across multiple hotel suppliers, allowing travel partners to instantly see the absolute lowest available price for that specific room type." },
-  { id:13, cat:"Hotels", q:"When customizing a voucher in Step 2 of the Dual Voucher process, which of the following can be hidden to match current business needs?", opts:["Check-in and Check-out times.","Agency info, prices, and cancellation terms.","Hotel address and location.","Number of guests."], ans:"Agency info, prices, and cancellation terms.", exp:"Step 2 of the Dual Voucher process lets travel partners customize the client-facing voucher by hiding sensitive details like agency contact information, supplier prices, and strict cancellation terms to protect business margins." },
-  { id:14, cat:"Hotels", q:"According to the Dual Voucher Status feature, what is the advantage of generating a 'Confirmed' voucher while a booking is still on hold?", opts:["It guarantees the hotel price will not fluctuate during the hold period.","It bypasses the need for the review step in the booking journey.","It assists with the embassy requirements and visa applications.","It automatically deducts the funds from the travel partner's wallet."], ans:"It assists with the embassy requirements and visa applications.", exp:"A 'Confirmed' status voucher for an on-hold booking provides the client with a provisional confirmation document required by embassies for visa applications and travel documentation without requiring immediate payment." },
-  { id:15, cat:"Hotels", q:"Where should a travel partner navigate to first to retrieve an existing on-hold booking for the purpose of generating a Dual Voucher?", opts:["The pencil icon.","The Grid view.","The partner community page.","Manage Carts - Retrieve The Booking - Booking Summary"], ans:"Manage Carts - Retrieve The Booking - Booking Summary", exp:"To generate a Dual Voucher, the travel partner needs to retrieve the booking by going through Manage Carts, clicking on Retrieve The Booking, and accessing the Booking Summary page where the voucher tools are available." }
+  { id:1, cat:"Manage Travellers",
+    q:"Where can partners access the Manage Travellers feature?",
+    opts:["My Bookings","Dashboard → Manage Travellers","Payment Passbook","Booking Calendar"],
+    ans:"Dashboard → Manage Travellers",
+    exp:"When a user is looking to access Manage Travellers, they have to visit Dashboard and look for \"Manage Travellers\" section on the left pane." },
+
+  { id:2, cat:"Manage Travellers",
+    q:"What is the primary purpose of the Manage Travellers feature?",
+    opts:["Save payment details","Save traveller details for future bookings","Store invoices","Track commissions"],
+    ans:"Save traveller details for future bookings",
+    exp:"\"Manage Travellers\" is designed to help travel partners store all information regarding their customers, so while booking tickets, all required information can be directly imported from the saved directory." },
+
+  { id:3, cat:"Manage Travellers",
+    q:"Which of the following is NOT a benefit of the 'Manage Travellers' feature?",
+    opts:["Faster bookings","Reduced manual errors","Automatic ticket cancellation","Reuse traveller information"],
+    ans:"Automatic ticket cancellation",
+    exp:"While Manage Travellers enables partners to book faster, reduce manual typing errors and reuse traveller information, it is not designed for ticket cancellation or reissuance." },
+
+  { id:4, cat:"Manage Travellers",
+    q:"Which type of travellers can be saved?",
+    opts:["International only","Domestic only","Both Domestic and International","Corporate only"],
+    ans:"Both Domestic and International",
+    exp:"Manage Travellers enables users to save all customers regardless of travel sector. For international clients, users can input details including passport information." },
+
+  { id:5, cat:"Manage Travellers",
+    q:"What does the Profile Completion Score indicate?",
+    opts:["Number of bookings made","How complete the traveller profile is","Credit balance","Ticket confirmation status"],
+    ans:"How complete the traveller profile is",
+    exp:"Profile Completion Score indicates how much information about a given traveller is available for fetching while creating a booking — essentially displaying how complete a traveller profile is." },
+
+  { id:6, cat:"Manage Travellers",
+    q:"Traveller profiles can be edited after they are created.",
+    opts:["True","False"],
+    ans:"True",
+    exp:"Traveller profiles can be edited from time to time — updating names, prefixes, meal preferences, GST details etc. as required." },
+
+  { id:7, cat:"Manage Travellers",
+    q:"Partners must create a new traveller profile for every booking.",
+    opts:["True","False"],
+    ans:"False",
+    exp:"Manage Travellers is designed so partners do not have to enter traveller details for each booking — they can auto-fetch available information, saving time and reducing errors." },
+
+  { id:8, cat:"Manage Travellers",
+    q:"Bulk Add Traveller Details is useful for corporate agencies.",
+    opts:["True","False"],
+    ans:"True",
+    exp:"Corporate companies frequently need to book tickets for large groups. In such cases, the Bulk Add Traveller Details feature is particularly beneficial." },
+
+  { id:9, cat:"Manage Travellers",
+    q:"Higher Profile Completion helps reduce missing information during bookings.",
+    opts:["True","False"],
+    ans:"True",
+    exp:"A complete profile score means no required information is missing, leading to a more efficient booking journey for partners." },
+
+  { id:10, cat:"Manage Travellers",
+    q:"Traveller profiles cannot be deleted once created.",
+    opts:["True","False"],
+    ans:"False",
+    exp:"Traveller profile is an agile feature — partners can create and delete profiles as their requirements and client base changes." },
+
+  { id:11, cat:"InstaCredit",
+    q:"What is InstaCredit?",
+    opts:["A manual credit limit increase approved by the ASM","An auto-approved instant credit on top of the partner's permanent base limit","A one-time emergency credit for locked accounts","A government-backed travel finance scheme"],
+    ans:"An auto-approved instant credit on top of the partner's permanent base limit",
+    exp:"InstaCredit is an instant top-up on the existing credit line which does not require a manual approval cycle, enabling partners to quickly fulfill their booking requirements." },
+
+  { id:12, cat:"InstaCredit",
+    q:"What does TTWS stand for?",
+    opts:["Total Travel Weekly Sales","Trailing Twelve Week Sales","Transaction Time Weighted Score","Target-to-Win Sales"],
+    ans:"Trailing Twelve Week Sales",
+    exp:"TTWS stands for Trailing Twelve Week Sales — indicating total sales for the last 12 weeks, used to calculate credit payment eligibility." },
+
+  { id:13, cat:"InstaCredit",
+    q:"A partner does one large booking every 2 months but nothing in between. How does this affect their InstaCredit?",
+    opts:["It has no effect — only total volume matters","It helps because a large booking boosts TTWS","It hurts because Sales Consistency requires regular, not random, booking patterns","It increases their Payment Float score"],
+    ans:"It hurts because Sales Consistency requires regular, not random, booking patterns",
+    exp:"Credit is determined by multiple parameters including sales figures, frequency of bookings, and booking patterns — not just total volume." },
+
+  { id:14, cat:"InstaCredit",
+    q:"What is \"Payment Float\" in the context of InstaCredit?",
+    opts:["The buffer amount between base limit and InstaCredit","The total outstanding amount on a partner's account","Payment ageing — how promptly the partner clears their dues","A fee charged for extending the due date"],
+    ans:"Payment ageing — how promptly the partner clears their dues",
+    exp:"Payment Float indicates the time duration between using credit for a booking and clearing the outstanding due — essentially tracking payment promptness." },
+
+  { id:15, cat:"InstaCredit",
+    q:"When a partner requests a due date extension and it gets accepted, what actually changes in the system?",
+    opts:["The billing cycle resets to the next month","The lock date gets pushed forward","The bill gets settled.","The base credit limit is temporarily reduced"],
+    ans:"The lock date gets pushed forward",
+    exp:"When a partner requests a due date extension, the system determines a future date as a new deadline for fulfilling dues, pushing the lock date forward." },
+
+  { id:16, cat:"InstaCredit",
+    q:"A partner's account is locked. They make the full payment within 48 hours. What happens next?",
+    opts:["They must call the ASM to manually raise an unlock request","The account unlocks automatically within 24 hours","An unlock request is automatically raised by the system","They must submit a written request to the State Head"],
+    ans:"The account unlocks automatically within 24 hours",
+    exp:"Once full payment is completed, a locked account automatically unlocks within the next 24 hours, enabling partners to stay functional." },
+
+  { id:17, cat:"InstaCredit",
+    q:"The auto-raised unlock request is routed to which authority in case of moderate concern?",
+    opts:["Always to the ASM, regardless of the situation","Always to the National Head","To State Head","Directly to the Finance team"],
+    ans:"To State Head",
+    exp:"Depending on the partner's credit history and booking patterns, the system routes unlock requests to ASM / State Head / Regional Head / National Head for different concern levels." },
+
+  { id:18, cat:"InstaCredit",
+    q:"Which partner profile would score HIGHEST for InstaCredit?",
+    opts:["On TJ for 2 months, uses credit, books regularly","On TJ for 5 months, uses credit, books ₹10K every week, always pays on time","On TJ for 6 months, does not use the credit feature","On TJ for 4 months, uses credit, had one large booking 3 months ago, often delays payment"],
+    ans:"On TJ for 5 months, uses credit, books ₹10K every week, always pays on time",
+    exp:"InstaCredit considers multiple parameters: booking volume, booking values, consistency, patterns, and repayment history. Regular high-value bookings with on-time payment scores highest." }
 ];
 
+// ═══════════════════════════════════════════════════════
+// SECTION META
+// ═══════════════════════════════════════════════════════
 const SECTION_META = {
-  Flights:{ icon:'✈️', desc:'Flights Module' },
-  Portal: { icon:'🖥️', desc:'Portal & GST'  },
-  Hotels: { icon:'🏨', desc:'Hotels Module'  }
+  'Manage Travellers': { cls:'mt', icon:'🧳', desc:'Traveller Management' },
+  'InstaCredit':       { cls:'ic', icon:'⚡', desc:'Credit & Payments'   }
 };
 
+// ═══════════════════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════════════════
 let user=null, qs=[], cur=0, spent=0;
 let timerInterval=null, isSubmitting=false, responses=[];
-const catScores = { Flights:0, Portal:0, Hotels:0 };
+const catScores = { 'Manage Travellers':0, 'InstaCredit':0 };
 
+// ═══════════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
-
-  // ── EDITION CLOSED — set to false to re-open ────────────
-  const EDITION_CLOSED = true;
-
-  if (EDITION_CLOSED) {
-    $id('screen-done').querySelector('.d-icon').textContent = '🔒';
-    $id('screen-done').querySelector('h2').textContent = 'May 2026 Edition Closed';
-    $id('done-msg').textContent = 'The May 2026 edition has now closed. Thank you to everyone who participated. Stay tuned for the June edition — coming soon!';
-    show('screen-done'); return;
-  }
-  // ────────────────────────────────────────────────────────
-
-  const stored = localStorage.getItem(STORAGE_KEY);
-  if (stored) {
-    const d   = JSON.parse(stored);
-    const pct = Math.round(d.score/NUM_QS*100);
-    const dt  = new Date(d.ts).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-    $id('done-msg').textContent = `You submitted on ${dt} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
-    show('screen-done'); return;
-  }
-  loadTeam();
+    const EDITION_CLOSED = false; // set true to close June
+    if (EDITION_CLOSED) {
+        $id('screen-done').querySelector('.d-icon').textContent = '🔒';
+        $id('screen-done').querySelector('h2').textContent = 'June 2026 Edition Closed';
+        $id('done-msg').textContent = 'The June 2026 edition has closed. Thank you for participating. Watch out for the July edition!';
+        show('screen-done'); return;
+    }
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+        const d   = JSON.parse(stored);
+        const pct = Math.round(d.score/NUM_QS*100);
+        const dt  = new Date(d.ts).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+        $id('done-msg').textContent = `You submitted on ${dt} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
+        show('screen-done'); return;
+    }
+    loadTeam();
 });
 
+// ═══════════════════════════════════════════════════════
+// LOAD TEAM
+// ═══════════════════════════════════════════════════════
 async function loadTeam() {
-  try {
-    const res  = await fetch(`${SCRIPT_URL}?action=getTeam`);
-    const team = await res.json();
-    if (!Array.isArray(team)||!team.length) throw new Error('empty');
-    team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
-    $('#userSelector').select2({ placeholder:'Search your name\u2026' });
-    $id('loader').classList.add('hidden');
-    $id('step-reg').classList.remove('hidden');
-  } catch {
-    $id('loader').classList.add('hidden');
-    $id('load-error').classList.remove('hidden');
-  }
+    try {
+        const res  = await fetch(`${SCRIPT_URL}?action=getTeam`);
+        const team = await res.json();
+        if (!Array.isArray(team)||!team.length) throw new Error('empty');
+        team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
+        $('#userSelector').select2({ placeholder:'Search your name…' });
+        $id('loader').classList.add('hidden');
+        $id('step-reg').classList.remove('hidden');
+    } catch {
+        $id('loader').classList.add('hidden');
+        $id('load-error').classList.remove('hidden');
+    }
 }
 
+// ═══════════════════════════════════════════════════════
+// OTP
+// ═══════════════════════════════════════════════════════
 async function sendOTP() {
-  const val = $('#userSelector').val();
-  if (!val) { regErr('Please select your name.'); return; }
-  user = JSON.parse(val);
-  setBtn('btn-otp','Sending\u2026',true); clearErr();
-  try {
-    const dup = await (await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${enc(user.empId)}`)).json();
-    if (dup.exists) { alert('You have already submitted for this month.'); location.reload(); return; }
-    await fetch(`${SCRIPT_URL}?action=sendOTP&email=${enc(user.email)}`);
-    $id('btn-otp').classList.add('hidden');
-    $id('otp-box').classList.remove('hidden');
-  } catch { setBtn('btn-otp','Request Verification Code',false); regErr('Network error \u2014 please try again.'); }
+    const val = $('#userSelector').val();
+    if (!val) { regErr('Please select your name.'); return; }
+    user = JSON.parse(val);
+    setBtn('btn-otp','Sending…',true); clearErr();
+    try {
+        const dup = await (await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${enc(user.empId)}`)).json();
+        if (dup.exists) { alert('You have already submitted for this month.'); location.reload(); return; }
+        await fetch(`${SCRIPT_URL}?action=sendOTP&email=${enc(user.email)}`);
+        $id('btn-otp').classList.add('hidden');
+        $id('otp-box').classList.remove('hidden');
+    } catch { setBtn('btn-otp','Request Verification Code',false); regErr('Network error — please try again.'); }
 }
 
 async function verifyOTP() {
-  const otp = $id('otp-input').value.trim();
-  if (otp.length!==4) { regErr('Please enter the full 4-digit code.'); return; }
-  setBtn('btn-verify','Verifying\u2026',true); clearErr();
-  try {
-    const data = await (await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${enc(user.email)}&otp=${otp}`)).json();
-    if (!data.valid) { regErr('Incorrect code \u2014 please try again.'); setBtn('btn-verify','Verify & Start',false); return; }
-    startQuiz();
-  } catch { regErr('Network error \u2014 please try again.'); setBtn('btn-verify','Verify & Start',false); }
+    const otp = $id('otp-input').value.trim();
+    if (otp.length!==4) { regErr('Please enter the full 4-digit code.'); return; }
+    setBtn('btn-verify','Verifying…',true); clearErr();
+    try {
+        const data = await (await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${enc(user.email)}&otp=${otp}`)).json();
+        if (!data.valid) { regErr('Incorrect code — please try again.'); setBtn('btn-verify','Verify & Start',false); return; }
+        startQuiz();
+    } catch { regErr('Network error — please try again.'); setBtn('btn-verify','Verify & Start',false); }
 }
 
+// ═══════════════════════════════════════════════════════
+// QUIZ
+// ═══════════════════════════════════════════════════════
 function startQuiz() {
-  qs = shuffle([...ALL_QUESTIONS]).map(q=>({...q, opts:shuffle([...q.opts])}));
-  cur=0; spent=0; isSubmitting=false; responses=[];
-  Object.keys(catScores).forEach(k=>catScores[k]=0);
-  const dotRow=$id('dots'); dotRow.innerHTML='';
-  qs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.id='dot-'+i; dotRow.appendChild(d); });
-  show('screen-quiz'); renderQ(); startTimer();
+    qs = shuffle([...ALL_QUESTIONS]).slice(0,NUM_QS).map(q=>({...q,opts:shuffle([...q.opts])}));
+    cur=0; spent=0; isSubmitting=false; responses=[];
+    Object.keys(catScores).forEach(k=>catScores[k]=0);
+    const dotRow=$id('dots'); dotRow.innerHTML='';
+    qs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.id='dot-'+i; dotRow.appendChild(d); });
+    show('screen-quiz'); renderQ(); startTimer();
 }
 
 function startTimer() {
-  timerInterval = setInterval(()=>{
-    spent++;
-    const rem=360-spent, el=$id('timer');
-    el.textContent=`${pad(Math.floor(rem/60))}:${pad(rem%60)}`;
-    el.className = rem<=60?'danger':rem<=120?'warning':'';
-    if(rem<=0) finish();
-  },1000);
+    timerInterval=setInterval(()=>{
+        spent++;
+        const rem=360-spent, el=$id('timer');
+        el.textContent=`${pad(Math.floor(rem/60))}:${pad(rem%60)}`;
+        el.className=rem<=60?'danger':rem<=120?'warning':'';
+        if(rem<=0) finish();
+    },1000);
 }
 
 function renderQ() {
-  const q=qs[cur], meta=SECTION_META[q.cat]||{icon:'📋',desc:q.cat};
-  const pct=Math.round(cur/NUM_QS*100);
-  $id('progress-label').textContent=`Question ${cur+1} of ${NUM_QS}`;
-  $id('progress-pct').textContent=`${pct}%`;
-  $id('progress-fill').style.width=`${pct}%`;
-  $id('q-counter-top').textContent=`Q ${cur+1} / ${NUM_QS}`;
-  $id('q-score-top').textContent=`Score: ${Object.values(catScores).reduce((a,b)=>a+b,0)}`;
-  if(cur>0){ const prev=responses[cur-1]; setDot(cur-1,prev.result==='Correct'?'correct':'wrong'); }
-  setDot(cur,'active');
-  const banner=$id('section-banner');
-  banner.className=`section-banner ${q.cat}`;
-  $id('section-label').textContent=q.cat;
-  $id('section-desc').textContent=meta.desc;
-  banner.querySelector('.s-icon').textContent=meta.icon;
-  $id('q-counter').textContent=`Question ${cur+1}`;
-  $id('q-text').textContent=q.q;
-  const letters=['A','B','C','D'], container=$id('opts');
-  container.innerHTML='';
-  q.opts.forEach((o,i)=>{ const b=document.createElement('button'); b.className='opt'; b.dataset.val=String(o); b.innerHTML=`<span class="opt-letter">${letters[i]}</span><span>${o}</span>`; b.onclick=()=>pick(b,q); container.appendChild(b); });
-  $id('exp-box').className='exp-box hidden'; $id('exp-box').innerHTML='';
-  $id('btn-next').classList.add('hidden');
+    const q=qs[cur], meta=SECTION_META[q.cat]||{cls:'mt',icon:'📋',desc:q.cat};
+    const pct=Math.round(cur/NUM_QS*100);
+    $id('progress-label').textContent=`Question ${cur+1} of ${NUM_QS}`;
+    $id('progress-pct').textContent=`${pct}%`;
+    $id('progress-fill').style.width=`${pct}%`;
+    $id('q-counter-top').textContent=`Q ${cur+1} / ${NUM_QS}`;
+    $id('q-score-top').textContent=`Score: ${Object.values(catScores).reduce((a,b)=>a+b,0)}`;
+    if(cur>0){const prev=responses[cur-1]; setDot(cur-1,prev.result==='Correct'?'correct':'wrong');}
+    setDot(cur,'active');
+    const banner=$id('section-banner');
+    banner.className=`section-banner ${meta.cls}`;
+    $id('section-label').textContent=q.cat;
+    $id('section-desc').textContent=meta.desc;
+    banner.querySelector('.s-icon').textContent=meta.icon;
+    $id('q-counter').textContent=`Question ${cur+1}`;
+    $id('q-text').textContent=q.q;
+    const letters=['A','B','C','D'], container=$id('opts');
+    container.innerHTML='';
+    q.opts.forEach((o,i)=>{
+        const b=document.createElement('button');
+        b.className='opt'; b.dataset.val=String(o);
+        b.innerHTML=`<span class="opt-letter">${letters[i]}</span><span>${o}</span>`;
+        b.onclick=()=>pick(b,q); container.appendChild(b);
+    });
+    $id('exp-box').className='exp-box hidden'; $id('exp-box').innerHTML='';
+    $id('btn-next').classList.add('hidden');
 }
 
 function pick(btn,q) {
-  document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-  const chosen=btn.dataset.val, correct=String(q.ans), isRight=chosen===correct;
-  btn.classList.add(isRight?'correct':'wrong');
-  if(!isRight) document.querySelectorAll('.opt').forEach(b=>{ if(b.dataset.val===correct) b.classList.add('correct'); });
-  if(isRight) catScores[q.cat]++;
-  responses.push({id:q.id, result:isRight?'Correct':'Incorrect'});
-  const expEl=$id('exp-box');
-  expEl.className=`exp-box ${isRight?'correct-bg':'wrong-bg'}`;
-  expEl.innerHTML=`<strong>${isRight?'\u2713 Correct':'\u2717 Incorrect'}</strong> \u2014 ${q.exp}`;
-  $id('btn-next').classList.remove('hidden');
+    document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
+    const chosen=btn.dataset.val, correct=String(q.ans), isRight=chosen===correct;
+    btn.classList.add(isRight?'correct':'wrong');
+    if(!isRight) document.querySelectorAll('.opt').forEach(b=>{if(b.dataset.val===correct)b.classList.add('correct');});
+    if(isRight) catScores[q.cat]=(catScores[q.cat]||0)+1;
+    responses.push({id:q.id,result:isRight?'Correct':'Incorrect'});
+    const expEl=$id('exp-box');
+    expEl.className=`exp-box ${isRight?'correct-bg':'wrong-bg'}`;
+    expEl.innerHTML=`<strong>${isRight?'✓ Correct':'✗ Incorrect'}</strong> — ${q.exp}`;
+    $id('btn-next').classList.remove('hidden');
 }
 
-function nextQ() { cur++; if(cur<qs.length) renderQ(); else finish(); }
+function nextQ(){cur++; if(cur<qs.length)renderQ(); else finish();}
 
+// ═══════════════════════════════════════════════════════
+// FINISH
+// ═══════════════════════════════════════════════════════
 async function finish() {
-  if(isSubmitting) return; isSubmitting=true; clearInterval(timerInterval);
-  const timeSec=spent, timeFmt=`${pad(Math.floor(timeSec/60))}:${pad(timeSec%60)}`;
-  const totalScore=Object.values(catScores).reduce((a,b)=>a+b,0);
-  const pct=Math.round(totalScore/NUM_QS*100);
-  localStorage.setItem(STORAGE_KEY,JSON.stringify({score:totalScore,timeSec,ts:Date.now()}));
-  show('screen-result');
-  $id('res-score').innerHTML=`${totalScore}<span>/${NUM_QS}</span>`;
-  $id('res-pct').textContent=`${pct}% \u2014 ${pct>=90?'Excellence Club \uD83C\uDFC6':pct>=70?'Pass \u2713':'Below Threshold'}`;
-  $id('res-time').textContent=`\u23F1 Time taken: ${timeFmt}`;
-  $id('cc-flights').textContent=catScores['Flights'];
-  $id('cc-portal').textContent=catScores['Portal'];
-  $id('cc-hotels').textContent=catScores['Hotels'];
-  const payload={name:user.name,empId:user.empId,email:user.email,totalScore,flightsScore:catScores['Flights'],portalScore:catScores['Portal'],hotelScore:catScores['Hotels'],timeFormatted:timeFmt,timeSec,edition:EDITION,responses};
-  try {
-    const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
-    const text=await res.text();
-    $id('submit-status').textContent=(text==='SUCCESS'||text==='DUPLICATE')?'\u2705 Result saved successfully.':'\u26A0 Could not save \u2014 contact admin.';
-  } catch { $id('submit-status').textContent='\u26A0 Could not save \u2014 contact admin.'; }
+    if(isSubmitting)return; isSubmitting=true; clearInterval(timerInterval);
+    const timeSec=spent, timeFmt=`${pad(Math.floor(timeSec/60))}:${pad(timeSec%60)}`;
+    const totalScore=Object.values(catScores).reduce((a,b)=>a+b,0);
+    const pct=Math.round(totalScore/NUM_QS*100);
+    localStorage.setItem(STORAGE_KEY,JSON.stringify({score:totalScore,timeSec,ts:Date.now()}));
+    show('screen-result');
+    $id('res-score').innerHTML=`${totalScore}<span>/${NUM_QS}</span>`;
+    $id('res-pct').textContent=`${pct}% — ${pct>=90?'Excellence Club 🏆':pct>=70?'Pass ✓':'Below Threshold'}`;
+    $id('res-time').textContent=`⏱ Time taken: ${timeFmt}`;
+    $id('cc-mt').textContent=catScores['Manage Travellers']||0;
+    $id('cc-ic').textContent=catScores['InstaCredit']||0;
+    const payload={name:user.name,empId:user.empId,email:user.email,totalScore,
+        manageTravellersScore:catScores['Manage Travellers']||0,
+        instaCreditScore:catScores['InstaCredit']||0,
+        timeFormatted:timeFmt,timeSec,edition:EDITION,responses};
+    try {
+        const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
+        const text=await res.text();
+        $id('submit-status').textContent=(text==='SUCCESS'||text==='DUPLICATE')?'✅ Result saved successfully.':'⚠ Could not save — contact admin.';
+    } catch { $id('submit-status').textContent='⚠ Could not save — contact admin.'; }
 }
 
-function show(id) { ['screen-reg','screen-quiz','screen-result','screen-done'].forEach(s=>$id(s).classList.add('hidden')); $id(id).classList.remove('hidden'); }
-function $id(id) { return document.getElementById(id); }
-function pad(n)  { return String(n).padStart(2,'0'); }
-function enc(s)  { return encodeURIComponent(s); }
-function shuffle(arr) { const a=[...arr]; for(let i=a.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [a[i],a[j]]=[a[j],a[i]]; } return a; }
-function setDot(i,cls) { const d=$id('dot-'+i); if(d) d.className='dot '+cls; }
-function setBtn(id,txt,dis) { const b=$id(id); b.textContent=txt; b.disabled=dis; }
-function regErr(msg) { const el=$id('reg-error'); el.textContent=msg; el.classList.remove('hidden'); }
-function clearErr() { $id('reg-error').classList.add('hidden'); }
+// ═══════════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════════
+function show(id){['screen-reg','screen-quiz','screen-result','screen-done'].forEach(s=>$id(s).classList.add('hidden'));$id(id).classList.remove('hidden');}
+function $id(id){return document.getElementById(id);}
+function pad(n){return String(n).padStart(2,'0');}
+function enc(s){return encodeURIComponent(s);}
+function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
+function setDot(i,cls){const d=$id('dot-'+i);if(d)d.className='dot '+cls;}
+function setBtn(id,txt,dis){const b=$id(id);b.textContent=txt;b.disabled=dis;}
+function regErr(msg){const el=$id('reg-error');el.textContent=msg;el.classList.remove('hidden');}
+function clearErr(){$id('reg-error').classList.add('hidden');}
 </script>
 </body>
 </html>
