@@ -212,7 +212,7 @@
 // ═══════════════════════════════════════════════════════
 // CONFIG — paste your deployed Apps Script URL here
 // ═══════════════════════════════════════════════════════
-const SCRIPT_URL  = 'https://script.google.com/macros/s/AKfycbzu-o-kyd-NAsRQjlOhoDgVSmnAfonvXizB5-aPFM5g9un_DN9kXJBCtBNqj16-3J_SAQ/exec';
+const SCRIPT_URL  = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
 const EDITION     = 'June 2026';
 const STORAGE_KEY = 'tripvita_june_2026';
 const NUM_QS      = 15;  // served from 18
@@ -351,11 +351,11 @@ const catScores = { 'Manage Travellers':0, 'InstaCredit':0 };
 // INIT
 // ═══════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
-    const EDITION_CLOSED = false; // set true to close June
+    const EDITION_CLOSED = true; // June closed — set false to reopen
     if (EDITION_CLOSED) {
         $id('screen-done').querySelector('.d-icon').textContent = '🔒';
         $id('screen-done').querySelector('h2').textContent = 'June 2026 Edition Closed';
-        $id('done-msg').textContent = 'The June 2026 edition has closed. Thank you for participating. Watch out for the July edition!';
+        $id('done-msg').textContent = 'The June 2026 edition has now closed. Thank you to everyone who participated! The July edition is on its way — stick around, it drops soon.';
         show('screen-done'); return;
     }
     const stored = localStorage.getItem(STORAGE_KEY);
