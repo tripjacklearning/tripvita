@@ -1,534 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita — July 2026</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
-    <style>
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-        :root {
-            --blue:#1B3F7A; --orange:#EF7F1A; --orange-lt:#FEF3E8;
-            --green:#0e7c5a; --green-lt:#E6F5EF;
-            --red:#c0392b; --red-lt:#FDF0EF;
-            --bg:#F2F4F8; --white:#FFFFFF; --border:#DDE1EA;
-            --text:#1A202C; --text-2:#4A5568; --text-3:#718096;
-            --bus-bg:#FEF3E8; --bus-fg:#C05F00; --bus-bdr:#F9C98A;
-            --ts-bg:#EBF2FF;  --ts-fg:#1B3F7A;  --ts-bdr:#BDD0F5;
-        }
-        body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px 48px; }
-        .topbar { width:100%; max-width:560px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
-        .logo { display:flex; align-items:center; gap:8px; }
-        .logo-mark { width:30px; height:30px; background:var(--blue); border-radius:7px; display:flex; align-items:center; justify-content:center; }
-        .logo-mark span { color:var(--orange); font-weight:800; font-size:15px; }
-        .logo-name { font-size:15px; font-weight:700; color:var(--blue); }
-        .logo-name em { font-style:normal; color:var(--orange); }
-        .edition-pill { font-size:11px; font-weight:600; color:var(--text-3); background:var(--white); border:1px solid var(--border); padding:4px 10px; border-radius:20px; }
-        .card { width:100%; max-width:560px; background:var(--white); border-radius:16px; border:1px solid var(--border); box-shadow:0 2px 12px rgba(0,0,0,0.06); overflow:hidden; }
-        .card-body { padding:28px 28px 24px; }
-        .brand-header { text-align:center; padding:28px 28px 0; margin-bottom:4px; }
-        .brand-title { font-size:26px; font-weight:800; color:var(--blue); letter-spacing:-0.5px; }
-        .brand-title span { color:var(--orange); }
-        .brand-sub { font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:2px; margin-top:4px; }
-        .divider { height:1px; background:var(--border); margin:20px 0; }
-        .btn { display:block; width:100%; padding:13px 20px; font-family:'Inter',sans-serif; font-size:14px; font-weight:600; border:none; border-radius:10px; cursor:pointer; transition:opacity 0.15s,background 0.15s; }
-        .btn:disabled { opacity:0.45; cursor:not-allowed; }
-        .btn-primary { background:var(--blue); color:#fff; margin-top:4px; }
-        .btn-primary:hover:not(:disabled) { background:#153368; }
-        .btn-success { background:#1a7a4a; color:#fff; margin-top:10px; }
-        .otp-input { width:100%; padding:14px; text-align:center; font-family:'Inter',monospace; font-size:28px; font-weight:700; letter-spacing:12px; color:var(--blue); border:2px solid var(--border); border-radius:10px; outline:none; margin-top:12px; }
-        .otp-input:focus { border-color:var(--blue); }
-        .error-text { font-size:12px; font-weight:500; color:var(--red); margin-top:10px; text-align:center; }
-        #loader { text-align:center; color:var(--text-3); padding:20px 0; font-size:14px; }
-        .timer-bar { background:var(--blue); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
-        .timer-label-sm { font-size:10px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1.5px; }
-        #timer { font-size:42px; font-weight:800; color:#fff; letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums; }
-        #timer.warning { color:#FFD580; }
-        #timer.danger { color:#FF8080; animation:blink 0.6s infinite alternate; }
-        @keyframes blink { to { opacity:0.5; } }
-        .progress-wrap { padding:12px 24px 0; }
-        .progress-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
-        .progress-text { font-size:12px; font-weight:500; color:var(--text-3); }
-        .progress-track { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
-        .progress-fill { height:100%; background:var(--orange); border-radius:2px; transition:width 0.3s ease; }
-        .dots-wrap { padding:10px 24px 0; display:flex; gap:5px; flex-wrap:wrap; }
-        .dot { width:9px; height:9px; border-radius:50%; background:var(--border); transition:background 0.2s; flex-shrink:0; }
-        .dot.active { background:var(--orange); }
-        .dot.correct { background:#1a7a4a; }
-        .dot.wrong { background:var(--red); }
-        .section-banner { margin:14px 24px 0; padding:10px 14px; border-radius:8px; display:flex; align-items:center; gap:10px; border:1px solid; }
-        .section-banner .s-icon { font-size:16px; flex-shrink:0; }
-        .section-banner .s-right { display:flex; flex-direction:column; gap:1px; }
-        .section-banner .s-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; }
-        .section-banner .s-desc { font-size:11px; opacity:0.7; }
-        .section-banner.bus { background:var(--bus-bg); border-color:var(--bus-bdr); color:var(--bus-fg); }
-        .section-banner.ts  { background:var(--ts-bg);  border-color:var(--ts-bdr);  color:var(--ts-fg); }
-        .question-wrap { padding:14px 24px 4px; }
-        .q-counter { font-size:11px; font-weight:600; color:var(--text-3); margin-bottom:8px; }
-        .q-text { font-size:16px; font-weight:600; color:var(--text); line-height:1.5; }
-        .options-wrap { padding:14px 24px; display:flex; flex-direction:column; gap:8px; }
-        .opt { width:100%; padding:12px 15px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; cursor:pointer; font-family:'Inter',sans-serif; font-size:14px; font-weight:500; color:var(--text-2); text-align:left; line-height:1.45; display:flex; align-items:flex-start; gap:10px; transition:border-color 0.12s,background 0.12s; }
-        .opt-letter { width:20px; height:20px; border-radius:50%; background:var(--border); color:var(--text-3); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
-        .opt:hover:not(:disabled) { border-color:var(--blue); background:var(--ts-bg); color:var(--blue); }
-        .opt:hover:not(:disabled) .opt-letter { background:var(--blue); color:#fff; }
-        .opt.correct { background:var(--green-lt); border-color:var(--green); color:var(--green); font-weight:600; }
-        .opt.correct .opt-letter { background:var(--green); color:#fff; }
-        .opt.wrong { background:var(--red-lt); border-color:var(--red); color:var(--red); font-weight:600; }
-        .opt.wrong .opt-letter { background:var(--red); color:#fff; }
-        .exp-wrap { padding:0 24px 4px; }
-        .exp-box { padding:12px 15px; border-radius:10px; font-size:13px; line-height:1.6; border-left:4px solid; }
-        .exp-box.correct-bg { background:var(--green-lt); border-color:var(--green); color:#0a5038; }
-        .exp-box.wrong-bg { background:var(--red-lt); border-color:var(--red); color:#8b2018; }
-        .next-wrap { padding:12px 24px 24px; }
-        .result-score-block { text-align:center; padding:28px 28px 16px; }
-        .score-big { font-size:64px; font-weight:800; color:var(--blue); letter-spacing:-2px; line-height:1; }
-        .score-big span { color:var(--text-3); font-size:36px; font-weight:500; }
-        .score-pct { font-size:16px; font-weight:600; color:var(--text-2); margin-top:6px; }
-        .time-display { font-size:13px; color:var(--text-3); margin-top:4px; }
-        .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
-        .cat-cell { border-radius:10px; padding:14px 10px; text-align:center; border:1px solid; }
-        .cat-cell.bus { background:var(--bus-bg); border-color:var(--bus-bdr); }
-        .cat-cell.ts  { background:var(--ts-bg);  border-color:var(--ts-bdr); }
-        .cc-icon { font-size:18px; margin-bottom:4px; }
-        .cc-val { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
-        .cc-lbl { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
-        .submit-status { text-align:center; font-size:13px; color:var(--text-3); padding:0 28px 8px; }
-        .result-actions { padding:4px 28px 28px; }
-        .done-block { text-align:center; padding:36px 28px; }
-        .done-block .d-icon { font-size:48px; margin-bottom:16px; }
-        .done-block h2 { font-size:20px; font-weight:700; margin-bottom:8px; }
-        .done-block p { font-size:14px; color:var(--text-2); line-height:1.6; margin-bottom:20px; }
-        .select2-container--default .select2-selection--single { height:42px; border:1.5px solid var(--border); border-radius:8px; display:flex; align-items:center; }
-        .select2-container--default .select2-selection--single .select2-selection__rendered { line-height:42px; font-size:14px; color:var(--text); }
-        .select2-container--default .select2-selection--single .select2-selection__arrow { height:42px; }
-        .hidden { display:none !important; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TripVita — July 2026</title>
+
+<!-- Fallback redirect if JS is disabled -->
+<meta http-equiv="refresh" content="0; url=https://script.google.com/a/macros/tripjack.com/s/AKfycbx5SaYUtrQZQYpKemYSWHj11hM5nBnbyq_ZvgOjeT9FShYCrscMbxN-6h7dUbJrQC_q/exec">
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Inter',-apple-system,sans-serif;background:#F2F4F8;color:#1A202C;
+       min-height:100vh;display:flex;align-items:center;justify-content:center;padding:24px;}
+  .card{background:#fff;border:1px solid #DDE1EA;border-radius:16px;
+        box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:40px 36px;text-align:center;max-width:420px;width:100%;}
+  .logo{display:flex;align-items:center;justify-content:center;gap:8px;margin-bottom:24px;}
+  .logo-mark{width:30px;height:30px;background:#1B3F7A;border-radius:7px;
+             display:flex;align-items:center;justify-content:center;}
+  .logo-mark span{color:#EF7F1A;font-weight:800;font-size:15px;}
+  .logo-name{font-size:15px;font-weight:700;color:#1B3F7A;}
+  .logo-name em{font-style:normal;color:#EF7F1A;}
+  .title{font-size:24px;font-weight:800;color:#1B3F7A;letter-spacing:-0.5px;}
+  .title span{color:#EF7F1A;}
+  .sub{font-size:11px;font-weight:600;color:#718096;text-transform:uppercase;
+       letter-spacing:2px;margin-top:4px;margin-bottom:26px;}
+  .spinner{width:34px;height:34px;border:3px solid #DDE1EA;border-top-color:#EF7F1A;
+           border-radius:50%;margin:0 auto 18px;animation:spin .8s linear infinite;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+  .msg{font-size:14px;color:#4A5568;line-height:1.7;}
+  .manual{margin-top:22px;padding-top:20px;border-top:1px solid #EEF2FA;font-size:13px;color:#718096;line-height:1.6;}
+  .btn{display:inline-block;margin-top:12px;background:#EF7F1A;color:#fff;text-decoration:none;
+       font-size:14px;font-weight:700;padding:12px 26px;border-radius:10px;}
+  .btn:hover{background:#d97116;}
+  .note{margin-top:18px;font-size:12px;color:#A0AEC0;line-height:1.6;}
+</style>
 </head>
 <body>
+  <div class="card">
+    <div class="logo">
+      <div class="logo-mark"><span>T</span></div>
+      <div class="logo-name">Trip<em>Jack</em> &nbsp;·&nbsp; TripVita</div>
+    </div>
 
-<div class="topbar">
-    <div class="logo"><div class="logo-mark"><span>T</span></div><div class="logo-name">Trip<em>Jack</em> &nbsp;·&nbsp; TripVita</div></div>
-    <div class="edition-pill">July 2026</div>
-</div>
+    <div class="title">Trip<span>Vita</span></div>
+    <div class="sub">July 2026 · Monthly Assessment</div>
 
-<!-- REGISTRATION -->
-<div class="card" id="screen-reg">
-    <div class="brand-header">
-        <div class="brand-title">Trip<span>Vita</span></div>
-        <div class="brand-sub">July 2026 · Monthly Assessment</div>
-    </div>
-    <div class="card-body">
-        <div id="loader">Loading team list…</div>
-        <div id="load-error" class="error-text hidden">⚠ Could not load team list. Please refresh.</div>
-        <div id="step-reg" class="hidden">
-            <div class="divider" style="margin-top:8px;"></div>
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:20px;">
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>📋</span>15 Questions</div>
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>⏱</span>6-Minute Timer</div>
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🔒</span>One Attempt Only</div>
-                <div style="background:var(--bg);border-radius:8px;padding:10px 12px;font-size:12px;font-weight:500;color:var(--text-2);display:flex;align-items:center;gap:8px;"><span>🏆</span>Live Leaderboard</div>
-            </div>
-            <div style="margin-bottom:14px;">
-                <label style="display:block;font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:6px;">Select Your Name</label>
-                <select id="userSelector" style="width:100%;"></select>
-            </div>
-            <button class="btn btn-primary" id="btn-otp" onclick="sendOTP()">Request Verification Code</button>
-            <div id="otp-box" class="hidden">
-                <div class="divider"></div>
-                <label style="font-size:12px;font-weight:600;color:var(--text-2);text-align:center;display:block;">Enter the 4-digit code sent to your email</label>
-                <input type="text" id="otp-input" class="otp-input" maxlength="4" placeholder="——" autocomplete="off">
-                <button class="btn btn-success" id="btn-verify" onclick="verifyOTP()">Verify &amp; Start</button>
-            </div>
-            <div id="reg-error" class="error-text hidden"></div>
-        </div>
-    </div>
-</div>
+    <div class="spinner"></div>
+    <p class="msg">Taking you to the quiz…</p>
 
-<!-- QUIZ -->
-<div class="card hidden" id="screen-quiz">
-    <div class="timer-bar">
-        <div><div class="timer-label-sm">Time Remaining</div><div id="timer">06:00</div></div>
-        <div style="text-align:right;"><div class="timer-label-sm" id="q-counter-top">Q 1 / 15</div><div style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.7);margin-top:4px;" id="q-score-top">Score: 0</div></div>
+    <div class="manual">
+      Not redirected automatically?
+      <br>
+      <a class="btn" id="go" href="https://script.google.com/a/macros/tripjack.com/s/AKfycbx5SaYUtrQZQYpKemYSWHj11hM5nBnbyq_ZvgOjeT9FShYCrscMbxN-6h7dUbJrQC_q/exec">Open the Quiz →</a>
     </div>
-    <div class="progress-wrap">
-        <div class="progress-row"><span class="progress-text" id="progress-label">Question 1 of 15</span><span class="progress-text" id="progress-pct">0%</span></div>
-        <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
-    </div>
-    <div class="dots-wrap" id="dots"></div>
-    <div class="section-banner bus" id="section-banner">
-        <span class="s-icon">🚌</span>
-        <div class="s-right"><span class="s-label" id="section-label">Bus</span><span class="s-desc" id="section-desc">Commission, Policy & Bookings</span></div>
-    </div>
-    <div class="question-wrap"><div class="q-counter" id="q-counter">Question 1</div><p class="q-text" id="q-text"></p></div>
-    <div class="options-wrap" id="opts"></div>
-    <div class="exp-wrap"><div class="exp-box hidden" id="exp-box"></div></div>
-    <div class="next-wrap"><button class="btn btn-primary hidden" id="btn-next" onclick="nextQ()">Continue →</button></div>
-</div>
 
-<!-- RESULT -->
-<div class="card hidden" id="screen-result">
-    <div class="result-score-block">
-        <div class="score-big" id="res-score">0<span>/15</span></div>
-        <div class="score-pct" id="res-pct"></div>
-        <div class="time-display" id="res-time"></div>
-    </div>
-    <div class="divider" style="margin:0 28px;"></div>
-    <div style="padding:16px 28px 12px;">
-        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin-bottom:12px;">Score by Section</div>
-        <div class="cat-grid">
-            <div class="cat-cell bus"><div class="cc-icon">🚌</div><div class="cc-val" id="cc-bus">0</div><div class="cc-lbl">Bus</div></div>
-            <div class="cat-cell ts"><div class="cc-icon">🛡️</div><div class="cc-val" id="cc-ts">0</div><div class="cc-lbl">TripSafe</div></div>
-        </div>
-    </div>
-    <div class="divider" style="margin:12px 28px;"></div>
-    <div class="submit-status" id="submit-status">Saving result…</div>
-    <div class="result-actions"><button class="btn btn-primary" onclick="location.href='leaderboard.html'">View Live Leaderboard →</button></div>
-</div>
+    <p class="note">
+      Sign in with your <strong>@tripjack.com</strong> account when prompted.
+    </p>
+  </div>
 
-<!-- ALREADY DONE -->
-<div class="card hidden" id="screen-done">
-    <div class="done-block">
-        <div class="d-icon">✅</div>
-        <h2>Already Submitted</h2>
-        <p id="done-msg">You have already completed this month's assessment.</p>
-        <button class="btn btn-primary" onclick="location.href='leaderboard.html'">View Leaderboard →</button>
-    </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
-// ═══════════════════════════════════════════════════════
-// CONFIG
-// ═══════════════════════════════════════════════════════
-const SCRIPT_URL  = 'https://script.google.com/a/macros/tripjack.com/s/AKfycbx5SaYUtrQZQYpKemYSWHj11hM5nBnbyq_ZvgOjeT9FShYCrscMbxN-6h7dUbJrQC_q/exec';
-const EDITION     = 'July 2026';
-const STORAGE_KEY = 'tripvita_july_2026';
-const NUM_QS      = 15;  // served from 21
-
-// ═══════════════════════════════════════════════════════
-// JULY 2026 QUESTION BANK — 21 questions, 15 served
-// Fixes applied: Q7 "journe"→"journey", Q17 duplicate option replaced
-// Category typo fixed: "Trapsafe" → "TripSafe"
-// ═══════════════════════════════════════════════════════
-const ALL_QUESTIONS = [
-  { id:1, cat:"Bus",
-    q:"What is the agent-facing commission line, and how much does an agent pay on a ₹100 base fare?",
-    opts:["Variable 10% commission; Agent pays ₹90","Flat 5% commission on base fare; Agent pays ₹95","Flat 5% commission on total fare; Agent pays ₹90","Flat 2% commission on base fare; Agent pays ₹98"],
-    ans:"Flat 5% commission on base fare; Agent pays ₹95",
-    exp:"The agent commission on Bus is a flat 5% on the base fare, not variable and not on the total fare. On a ₹100 base fare, the agent's net payout is ₹95 after commission is deducted." },
-
-  { id:2, cat:"Bus",
-    q:"How should \"TJ Choice\" be explained to agents?",
-    opts:["As a third-party recommended operator network","As Tripjack's own curated selection and a key differentiator worth highlighting directly","As a premium loyalty tier for high-volume agents","As a discounted fare category sponsored by bus operators"],
-    ans:"As Tripjack's own curated selection and a key differentiator worth highlighting directly",
-    exp:"TJ Choice is Tripjack's own curated selection of preferred operators — not a third-party network or loyalty tier. Reps should position it directly to agents as a differentiator." },
-
-  { id:3, cat:"Bus",
-    q:"Is there a system-enforced cap on how much markup an agent can add to a fare, and should this be stated to an agent?",
-    opts:["Yes, there is a cap, and reps should clearly state this cap to agents.","No, there is no cap, and reps should proactively share this freedom with agents.","False (no system cap), but reps should NEVER state this to an agent to avoid unwanted markup negotiations.","True (there is a 15% cap), but reps should keep it confidential."],
-    ans:"False (no system cap), but reps should NEVER state this to an agent to avoid unwanted markup negotiations.",
-    exp:"There's no system-enforced markup cap, but reps should avoid stating this to agents — surfacing it invites markup negotiation pressure that isn't in Tripjack's interest to manage." },
-
-  { id:4, cat:"Bus",
-    q:"An agent books 3 seats and sets themselves as the primary passenger. What happens if they try to cancel only their own seat?",
-    opts:["Only the primary passenger's seat gets cancelled; the other 2 remain valid.","The system automatically assigns the second passenger as primary without cancelling.","The entire booking (all 3 seats) gets cancelled.","The cancellation fails and throws a platform error."],
-    ans:"The entire booking (all 3 seats) gets cancelled.",
-    exp:"Since the primary passenger's seat is tied to the whole booking record, cancelling it cancels all seats on that booking — partial cancellation isn't supported when it's the primary passenger being removed." },
-
-  { id:5, cat:"Bus",
-    q:"What does a greyed-out \"Quick Pay\" button mean on the checkout screen?",
-    opts:["The Quick Pay feature is currently down for platform maintenance.","The agent is not authorized to use prepaid wallet options.","Insufficient funds in the prepaid balance (Wallet/Credit Line/Deposit) relative to net payable amount.","Quick Pay is only available for flight bookings, not bus bookings."],
-    ans:"Insufficient funds in the prepaid balance (Wallet/Credit Line/Deposit) relative to net payable amount.",
-    exp:"Quick Pay greys out specifically when the prepaid balance (Wallet/Credit Line/Deposit combined) is insufficient to cover the net payable amount — it's a funds check, not a system or category restriction." },
-
-  { id:6, cat:"Bus",
-    q:"Which of the following is Tripjack explicitly RESPONSIBLE for as a ticketing platform?",
-    opts:["Bus seat quality and onboard AC functioning","Issuing a valid ticket, processing standard cancellation refunds, and platform support","Providing compensation for bus operator delays","Handling passenger baggage loss during the trip"],
-    ans:"Issuing a valid ticket, processing standard cancellation refunds, and platform support",
-    exp:"Tripjack's platform responsibility is limited to issuing valid tickets, processing standard cancellation refunds, and providing platform support — not the physical travel experience (seat quality, AC, baggage), which sits with the operator." },
-
-  { id:7, cat:"Bus",
-    q:"What is Tripjack's maximum liability exposure on any booking, and what is the allowable grievance window?",
-    opts:["Capped at ₹5,000; Grievance window is 30 days post-journey","Capped at the ticket fare; Grievance window is 10 days post-journey","Capped at 50% of ticket fare; Grievance window is 7 days post-journey","Unlimited liability; Grievance window is 24 hours post-journey"],
-    ans:"Capped at the ticket fare; Grievance window is 10 days post-journey",
-    exp:"Tripjack's maximum liability on any booking is capped at the ticket fare itself, and the grievance window for raising an issue is 10 days post-journey." },
-
-  { id:8, cat:"Bus",
-    q:"What is the primary difference between an Agent Invoice and a Customer Invoice?",
-    opts:["Agent Invoice shows net paid, commission earned, and TDS deducted. Customer Invoice shows gross price paid by the end traveler","Agent Invoice includes GST; Customer Invoice is non-taxable.","Agent Invoice is issued by the bus operator; Customer Invoice is issued by Tripjack.","There is no difference; both display the exact same amounts."],
-    ans:"Agent Invoice shows net paid, commission earned, and TDS deducted. Customer Invoice shows gross price paid by the end traveler",
-    exp:"The Agent Invoice shows the agent's net paid amount, commission earned, and TDS deducted — it's an internal settlement document. The Customer Invoice shows the gross price the end traveller paid, since that's the only figure relevant to them." },
-
-  { id:9, cat:"Bus",
-    q:"What checkout contact details are captured, and what are they used for?",
-    opts:["Agent's registered email/phone — used to send bus and driver details ~24 hours before the trip.","End-customer's personal phone number — used for direct Tripjack marketing.","Primary passenger's address — used for billing compliance.","Operator contact details — used for payment settlements."],
-    ans:"Agent's registered email/phone — used to send bus and driver details ~24 hours before the trip.",
-    exp:"The agent's own registered email/phone is captured at checkout, and it's used to send bus and driver details roughly 24 hours before travel — not the passenger's or the operator's contact details." },
-
-  { id:10, cat:"Bus",
-    q:"An agent asks to change the travel date on a confirmed booking. What is the correct procedure?",
-    opts:["Submit an L2 escalation ticket for manual date modification.","Cancel the existing booking and rebook (tickets are non-transferable/non-modifiable once issued).","Charge a ₹100 date-change fee and process on the portal header.","Direct the agent to call the bus driver to modify the date."],
-    ans:"Cancel the existing booking and rebook (tickets are non-transferable/non-modifiable once issued).",
-    exp:"Bus tickets are non-transferable and non-modifiable once issued, so a date change means cancelling the existing booking and creating a fresh one — there's no manual date-modification workflow." },
-
-  { id:11, cat:"Bus",
-    q:"A customer's bus is delayed by 3 hours, and the agent demands compensation. What is Tripjack's liability position?",
-    opts:["Tripjack will issue a full ticket refund automatically.","Tripjack provides a flat ₹500 wallet credit for delay compensation.","No compensation obligation for delays (operator responsibility); any exposure remains strictly capped at ticket fare.","Tripjack will charge the bus operator a penalty fee and pass it to the agent."],
-    ans:"No compensation obligation for delays (operator responsibility); any exposure remains strictly capped at ticket fare.",
-    exp:"Delays are the operator's responsibility, not Tripjack's — there's no compensation obligation, and any exposure Tripjack does carry stays capped at the ticket fare regardless of the delay." },
-
-  { id:12, cat:"TripSafe",
-    q:"What are the Sum Insured options available in TripSafe Student?",
-    opts:["$50,000 USD & $100,000 USD","$250,000 USD","$500,000 USD","All the above"],
-    ans:"All the above",
-    exp:"TripSafe Student offers four Sum Insured tiers — $50,000, $100,000, $250,000, and $500,000 USD — giving students a range of coverage levels to choose from." },
-
-  { id:13, cat:"TripSafe",
-    q:"Who is eligible to purchase TripSafe Student?",
-    opts:["Any foreign citizen","Indian citizen or OCI cardholder","Only Indian citizens below 18 years","Only OCI cardholders"],
-    ans:"Indian citizen or OCI cardholder",
-    exp:"Eligibility is restricted to Indian citizens or OCI cardholders — foreign nationals without OCI status aren't covered under this specific product." },
-
-  { id:14, cat:"TripSafe",
-    q:"What is the eligible age range for a TripSafe Student policy?",
-    opts:["16–35 years","18–45 years","21–50 years","18–60 years"],
-    ans:"18–45 years",
-    exp:"The eligible age band is 18–45 years." },
-
-  { id:15, cat:"TripSafe",
-    q:"What should be the primary purpose of travel for TripSafe Student?",
-    opts:["Tourism and holidays","Business meetings","Education or studies abroad","Visiting family and friends"],
-    ans:"Education or studies abroad",
-    exp:"The policy is designed specifically for students travelling abroad for education — not tourism, business, or family visits." },
-
-  { id:16, cat:"TripSafe",
-    q:"What is the minimum course duration required for TripSafe Student?",
-    opts:["7 days","15 days","1 month","3 months"],
-    ans:"1 month",
-    exp:"The course being pursued abroad must run for a minimum of 1 month for the policy to apply." },
-
-  { id:17, cat:"TripSafe",
-    q:"Where must the student be located when purchasing the TripSafe Student policy?",
-    opts:["Anywhere, as long as travel begins within India","Anywhere outside India","In India","At the university campus"],
-    ans:"In India",
-    exp:"The student must be physically located in India at the time of purchasing the policy — it can't be bought after departure." },
-
-  { id:18, cat:"TripSafe",
-    q:"Which partner handles Baggage Tracking and Protection?",
-    opts:["Blue Ribbon Bags","Aditya Birla Capital Health Insurance","None of these","Across Assist"],
-    ans:"Blue Ribbon Bags",
-    exp:"Blue Ribbon Bags is the named partner handling Baggage Tracking and Protection under this policy." },
-
-  { id:19, cat:"TripSafe",
-    q:"Which company provides the 12 Assistance Services shown on the slide?",
-    opts:["TripSafe Global","Aditya Birla Capital","Across Assist","Blue Ribbon Bags"],
-    ans:"Across Assist",
-    exp:"Across Assist is the provider behind the 12 Assistance Services included in TripSafe Student." },
-
-  { id:20, cat:"TripSafe",
-    q:"Which of the following is a key feature of TripSafe Student?",
-    opts:["Baggage Tracking & Protection","Assistance Services","Travel Insurance Coverage","All of the above"],
-    ans:"All of the above",
-    exp:"TripSafe Student combines all three — Baggage Tracking & Protection, Assistance Services, and Travel Insurance Coverage — as its core feature set." },
-
-  { id:21, cat:"TripSafe",
-    q:"What does \"university insolvency\" mean?",
-    opts:["University Insolvency reimburses any travel or hotel costs to return to India if the university closes or loses recognition.","When a university increases its tuition fees","When a university temporarily stops accepting new students","When a student decides to change their university"],
-    ans:"University Insolvency reimburses any travel or hotel costs to return to India if the university closes or loses recognition.",
-    exp:"University Insolvency cover reimburses the student's travel or hotel costs to return to India if their university shuts down or loses its recognition mid-course." }
-];
-
-// ═══════════════════════════════════════════════════════
-// SECTION META
-// ═══════════════════════════════════════════════════════
-const SECTION_META = {
-  'Bus':      { cls:'bus', icon:'🚌', desc:'Commission, Policy & Bookings' },
-  'TripSafe': { cls:'ts',  icon:'🛡️', desc:'Student Insurance & Coverage' }
-};
-
-// ═══════════════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════════════
-let user=null, qs=[], cur=0, spent=0;
-let timerInterval=null, isSubmitting=false, responses=[];
-const catScores = { 'Bus':0, 'TripSafe':0 };
-
-// ═══════════════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════════════
-window.addEventListener('DOMContentLoaded', () => {
-    const EDITION_CLOSED = false; // set true to close July
-    if (EDITION_CLOSED) {
-        $id('screen-done').querySelector('.d-icon').textContent = '🔒';
-        $id('screen-done').querySelector('h2').textContent = 'July 2026 Edition Closed';
-        $id('done-msg').textContent = 'The July 2026 edition has closed. Thank you for participating. Watch out for the August edition!';
-        show('screen-done'); return;
-    }
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored) {
-        const d   = JSON.parse(stored);
-        const pct = Math.round(d.score / NUM_QS * 100);
-        const dt  = new Date(d.ts).toLocaleDateString('en-IN',
-            { day:'numeric', month:'long', year:'numeric' });
-        $id('done-msg').textContent =
-            `You submitted on ${dt} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
-        show('screen-done'); return;
-    }
-    loadTeam();
-});
-
-// ═══════════════════════════════════════════════════════
-// LOAD TEAM
-// ═══════════════════════════════════════════════════════
-async function loadTeam() {
-    try {
-        const res  = await fetch(`${SCRIPT_URL}?action=getTeam`);
-        const team = await res.json();
-        if (!Array.isArray(team)||!team.length) throw new Error('empty');
-        team.forEach(p => $('#userSelector').append(new Option(p.name, JSON.stringify(p))));
-        $('#userSelector').select2({ placeholder:'Search your name…' });
-        $id('loader').classList.add('hidden');
-        $id('step-reg').classList.remove('hidden');
-    } catch {
-        $id('loader').classList.add('hidden');
-        $id('load-error').classList.remove('hidden');
-    }
-}
-
-// ═══════════════════════════════════════════════════════
-// OTP
-// ═══════════════════════════════════════════════════════
-async function sendOTP() {
-    const val = $('#userSelector').val();
-    if (!val) { regErr('Please select your name.'); return; }
-    user = JSON.parse(val);
-    setBtn('btn-otp','Sending…',true); clearErr();
-    try {
-        const dup = await (await fetch(`${SCRIPT_URL}?action=checkDuplicate&empId=${enc(user.empId)}`)).json();
-        if (dup.exists) { alert('You have already submitted for this month.'); location.reload(); return; }
-        await fetch(`${SCRIPT_URL}?action=sendOTP&email=${enc(user.email)}`);
-        $id('btn-otp').classList.add('hidden');
-        $id('otp-box').classList.remove('hidden');
-    } catch { setBtn('btn-otp','Request Verification Code',false); regErr('Network error — please try again.'); }
-}
-
-async function verifyOTP() {
-    const otp = $id('otp-input').value.trim();
-    if (otp.length!==4) { regErr('Please enter the full 4-digit code.'); return; }
-    setBtn('btn-verify','Verifying…',true); clearErr();
-    try {
-        const data = await (await fetch(`${SCRIPT_URL}?action=verifyOTP&email=${enc(user.email)}&otp=${otp}`)).json();
-        if (!data.valid) { regErr('Incorrect code — please try again.'); setBtn('btn-verify','Verify & Start',false); return; }
-        startQuiz();
-    } catch { regErr('Network error — please try again.'); setBtn('btn-verify','Verify & Start',false); }
-}
-
-// ═══════════════════════════════════════════════════════
-// QUIZ
-// ═══════════════════════════════════════════════════════
-function startQuiz() {
-    qs = shuffle([...ALL_QUESTIONS]).slice(0,NUM_QS).map(q=>({...q,opts:shuffle([...q.opts])}));
-    cur=0; spent=0; isSubmitting=false; responses=[];
-    Object.keys(catScores).forEach(k=>catScores[k]=0);
-    const dotRow=$id('dots'); dotRow.innerHTML='';
-    qs.forEach((_,i)=>{ const d=document.createElement('div'); d.className='dot'+(i===0?' active':''); d.id='dot-'+i; dotRow.appendChild(d); });
-    show('screen-quiz'); renderQ(); startTimer();
-}
-
-function startTimer() {
-    timerInterval=setInterval(()=>{
-        spent++;
-        const rem=360-spent, el=$id('timer');
-        el.textContent=`${pad(Math.floor(rem/60))}:${pad(rem%60)}`;
-        el.className=rem<=60?'danger':rem<=120?'warning':'';
-        if(rem<=0) finish();
-    },1000);
-}
-
-function renderQ() {
-    const q=qs[cur], meta=SECTION_META[q.cat]||{cls:'bus',icon:'📋',desc:q.cat};
-    const pct=Math.round(cur/NUM_QS*100);
-    $id('progress-label').textContent=`Question ${cur+1} of ${NUM_QS}`;
-    $id('progress-pct').textContent=`${pct}%`;
-    $id('progress-fill').style.width=`${pct}%`;
-    $id('q-counter-top').textContent=`Q ${cur+1} / ${NUM_QS}`;
-    $id('q-score-top').textContent=`Score: ${Object.values(catScores).reduce((a,b)=>a+b,0)}`;
-    if(cur>0){const prev=responses[cur-1]; setDot(cur-1,prev.result==='Correct'?'correct':'wrong');}
-    setDot(cur,'active');
-    const banner=$id('section-banner');
-    banner.className=`section-banner ${meta.cls}`;
-    $id('section-label').textContent=q.cat;
-    $id('section-desc').textContent=meta.desc;
-    banner.querySelector('.s-icon').textContent=meta.icon;
-    $id('q-counter').textContent=`Question ${cur+1}`;
-    $id('q-text').textContent=q.q;
-    const letters=['A','B','C','D'], container=$id('opts');
-    container.innerHTML='';
-    q.opts.forEach((o,i)=>{
-        const b=document.createElement('button');
-        b.className='opt'; b.dataset.val=String(o);
-        b.innerHTML=`<span class="opt-letter">${letters[i]}</span><span>${o}</span>`;
-        b.onclick=()=>pick(b,q); container.appendChild(b);
-    });
-    $id('exp-box').className='exp-box hidden'; $id('exp-box').innerHTML='';
-    $id('btn-next').classList.add('hidden');
-}
-
-function pick(btn,q) {
-    document.querySelectorAll('.opt').forEach(b=>b.disabled=true);
-    const chosen=btn.dataset.val, correct=String(q.ans), isRight=chosen===correct;
-    btn.classList.add(isRight?'correct':'wrong');
-    if(!isRight) document.querySelectorAll('.opt').forEach(b=>{if(b.dataset.val===correct)b.classList.add('correct');});
-    if(isRight) catScores[q.cat]=(catScores[q.cat]||0)+1;
-    responses.push({id:q.id,result:isRight?'Correct':'Incorrect'});
-    const expEl=$id('exp-box');
-    expEl.className=`exp-box ${isRight?'correct-bg':'wrong-bg'}`;
-    expEl.innerHTML=`<strong>${isRight?'✓ Correct':'✗ Incorrect'}</strong> — ${q.exp}`;
-    $id('btn-next').classList.remove('hidden');
-}
-
-function nextQ(){cur++; if(cur<qs.length)renderQ(); else finish();}
-
-// ═══════════════════════════════════════════════════════
-// FINISH
-// ═══════════════════════════════════════════════════════
-async function finish() {
-    if(isSubmitting)return; isSubmitting=true; clearInterval(timerInterval);
-    const timeSec=spent, timeFmt=`${pad(Math.floor(timeSec/60))}:${pad(timeSec%60)}`;
-    const totalScore=Object.values(catScores).reduce((a,b)=>a+b,0);
-    const pct=Math.round(totalScore/NUM_QS*100);
-    localStorage.setItem(STORAGE_KEY,JSON.stringify({score:totalScore,timeSec,ts:Date.now()}));
-    show('screen-result');
-    $id('res-score').innerHTML=`${totalScore}<span>/${NUM_QS}</span>`;
-    $id('res-pct').textContent=`${pct}% — ${pct>=90?'Excellence Club 🏆':pct>=70?'Pass ✓':'Below Threshold'}`;
-    $id('res-time').textContent=`⏱ Time taken: ${timeFmt}`;
-    $id('cc-bus').textContent=catScores['Bus']||0;
-    $id('cc-ts').textContent=catScores['TripSafe']||0;
-    const payload={name:user.name,empId:user.empId,email:user.email,totalScore,
-        busScore:catScores['Bus']||0,
-        tripSafeScore:catScores['TripSafe']||0,
-        timeFormatted:timeFmt,timeSec,edition:EDITION,responses};
-    try {
-        const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
-        const text=await res.text();
-        $id('submit-status').textContent=(text==='SUCCESS'||text==='DUPLICATE')?'✅ Result saved successfully.':'⚠ Could not save — contact admin.';
-    } catch { $id('submit-status').textContent='⚠ Could not save — contact admin.'; }
-}
-
-// ═══════════════════════════════════════════════════════
-// HELPERS
-// ═══════════════════════════════════════════════════════
-function show(id){['screen-reg','screen-quiz','screen-result','screen-done'].forEach(s=>$id(s).classList.add('hidden'));$id(id).classList.remove('hidden');}
-function $id(id){return document.getElementById(id);}
-function pad(n){return String(n).padStart(2,'0');}
-function enc(s){return encodeURIComponent(s);}
-function shuffle(arr){const a=[...arr];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;}
-function setDot(i,cls){const d=$id('dot-'+i);if(d)d.className='dot '+cls;}
-function setBtn(id,txt,dis){const b=$id(id);b.textContent=txt;b.disabled=dis;}
-function regErr(msg){const el=$id('reg-error');el.textContent=msg;el.classList.remove('hidden');}
-function clearErr(){$id('reg-error').classList.add('hidden');}
+  // Immediate redirect. replace() keeps this shim out of back-button history,
+  // so "Back" from the quiz doesn't bounce the user straight back here again.
+  window.location.replace(document.getElementById('go').href);
 </script>
 </body>
 </html>
