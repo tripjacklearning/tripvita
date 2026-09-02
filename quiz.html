@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TripVita — June 2026</title>
+    <title>TripVita — July 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet"/>
     <style>
@@ -14,8 +14,8 @@
             --red:#c0392b; --red-lt:#FDF0EF;
             --bg:#F2F4F8; --white:#FFFFFF; --border:#DDE1EA;
             --text:#1A202C; --text-2:#4A5568; --text-3:#718096;
-            --mt-bg:#EBF2FF; --mt-fg:#1B3F7A; --mt-bdr:#BDD0F5;
-            --ic-bg:#F5F3FF; --ic-fg:#6D28D9; --ic-bdr:#DDD6FE;
+            --bus-bg:#FEF3E8; --bus-fg:#C05F00; --bus-bdr:#F9C98A;
+            --ts-bg:#EBF2FF;  --ts-fg:#1B3F7A;  --ts-bdr:#BDD0F5;
         }
         body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; display:flex; flex-direction:column; align-items:center; padding:24px 16px 48px; }
         .topbar { width:100%; max-width:560px; display:flex; align-items:center; justify-content:space-between; margin-bottom:20px; }
@@ -41,54 +41,46 @@
         .otp-input:focus { border-color:var(--blue); }
         .error-text { font-size:12px; font-weight:500; color:var(--red); margin-top:10px; text-align:center; }
         #loader { text-align:center; color:var(--text-3); padding:20px 0; font-size:14px; }
-        /* Timer */
         .timer-bar { background:var(--blue); padding:14px 24px; display:flex; align-items:center; justify-content:space-between; }
         .timer-label-sm { font-size:10px; font-weight:600; color:rgba(255,255,255,0.5); text-transform:uppercase; letter-spacing:1.5px; }
         #timer { font-size:42px; font-weight:800; color:#fff; letter-spacing:-1px; line-height:1; font-variant-numeric:tabular-nums; }
         #timer.warning { color:#FFD580; }
         #timer.danger { color:#FF8080; animation:blink 0.6s infinite alternate; }
         @keyframes blink { to { opacity:0.5; } }
-        /* Progress */
         .progress-wrap { padding:12px 24px 0; }
         .progress-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
         .progress-text { font-size:12px; font-weight:500; color:var(--text-3); }
         .progress-track { height:4px; background:var(--bg); border-radius:2px; overflow:hidden; }
         .progress-fill { height:100%; background:var(--orange); border-radius:2px; transition:width 0.3s ease; }
-        /* Dots */
         .dots-wrap { padding:10px 24px 0; display:flex; gap:5px; flex-wrap:wrap; }
         .dot { width:9px; height:9px; border-radius:50%; background:var(--border); transition:background 0.2s; flex-shrink:0; }
         .dot.active { background:var(--orange); }
         .dot.correct { background:#1a7a4a; }
         .dot.wrong { background:var(--red); }
-        /* Section banner */
         .section-banner { margin:14px 24px 0; padding:10px 14px; border-radius:8px; display:flex; align-items:center; gap:10px; border:1px solid; }
         .section-banner .s-icon { font-size:16px; flex-shrink:0; }
         .section-banner .s-right { display:flex; flex-direction:column; gap:1px; }
         .section-banner .s-label { font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:1.5px; }
         .section-banner .s-desc { font-size:11px; opacity:0.7; }
-        .section-banner.mt { background:var(--mt-bg); border-color:var(--mt-bdr); color:var(--mt-fg); }
-        .section-banner.ic { background:var(--ic-bg); border-color:var(--ic-bdr); color:var(--ic-fg); }
-        /* Question */
+        .section-banner.bus { background:var(--bus-bg); border-color:var(--bus-bdr); color:var(--bus-fg); }
+        .section-banner.ts  { background:var(--ts-bg);  border-color:var(--ts-bdr);  color:var(--ts-fg); }
         .question-wrap { padding:14px 24px 4px; }
         .q-counter { font-size:11px; font-weight:600; color:var(--text-3); margin-bottom:8px; }
         .q-text { font-size:16px; font-weight:600; color:var(--text); line-height:1.5; }
-        /* Options */
         .options-wrap { padding:14px 24px; display:flex; flex-direction:column; gap:8px; }
         .opt { width:100%; padding:12px 15px; background:var(--bg); border:1.5px solid var(--border); border-radius:10px; cursor:pointer; font-family:'Inter',sans-serif; font-size:14px; font-weight:500; color:var(--text-2); text-align:left; line-height:1.45; display:flex; align-items:flex-start; gap:10px; transition:border-color 0.12s,background 0.12s; }
         .opt-letter { width:20px; height:20px; border-radius:50%; background:var(--border); color:var(--text-3); font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; margin-top:1px; }
-        .opt:hover:not(:disabled) { border-color:var(--blue); background:var(--mt-bg); color:var(--blue); }
+        .opt:hover:not(:disabled) { border-color:var(--blue); background:var(--ts-bg); color:var(--blue); }
         .opt:hover:not(:disabled) .opt-letter { background:var(--blue); color:#fff; }
         .opt.correct { background:var(--green-lt); border-color:var(--green); color:var(--green); font-weight:600; }
         .opt.correct .opt-letter { background:var(--green); color:#fff; }
         .opt.wrong { background:var(--red-lt); border-color:var(--red); color:var(--red); font-weight:600; }
         .opt.wrong .opt-letter { background:var(--red); color:#fff; }
-        /* Explanation */
         .exp-wrap { padding:0 24px 4px; }
         .exp-box { padding:12px 15px; border-radius:10px; font-size:13px; line-height:1.6; border-left:4px solid; }
         .exp-box.correct-bg { background:var(--green-lt); border-color:var(--green); color:#0a5038; }
         .exp-box.wrong-bg { background:var(--red-lt); border-color:var(--red); color:#8b2018; }
         .next-wrap { padding:12px 24px 24px; }
-        /* Result */
         .result-score-block { text-align:center; padding:28px 28px 16px; }
         .score-big { font-size:64px; font-weight:800; color:var(--blue); letter-spacing:-2px; line-height:1; }
         .score-big span { color:var(--text-3); font-size:36px; font-weight:500; }
@@ -96,19 +88,17 @@
         .time-display { font-size:13px; color:var(--text-3); margin-top:4px; }
         .cat-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
         .cat-cell { border-radius:10px; padding:14px 10px; text-align:center; border:1px solid; }
-        .cat-cell.mt { background:var(--mt-bg); border-color:var(--mt-bdr); }
-        .cat-cell.ic { background:var(--ic-bg); border-color:var(--ic-bdr); }
+        .cat-cell.bus { background:var(--bus-bg); border-color:var(--bus-bdr); }
+        .cat-cell.ts  { background:var(--ts-bg);  border-color:var(--ts-bdr); }
         .cc-icon { font-size:18px; margin-bottom:4px; }
         .cc-val { font-size:22px; font-weight:800; color:var(--text); line-height:1; }
         .cc-lbl { font-size:10px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:1px; margin-top:3px; }
         .submit-status { text-align:center; font-size:13px; color:var(--text-3); padding:0 28px 8px; }
         .result-actions { padding:4px 28px 28px; }
-        /* Done */
         .done-block { text-align:center; padding:36px 28px; }
         .done-block .d-icon { font-size:48px; margin-bottom:16px; }
         .done-block h2 { font-size:20px; font-weight:700; margin-bottom:8px; }
         .done-block p { font-size:14px; color:var(--text-2); line-height:1.6; margin-bottom:20px; }
-        /* Select2 */
         .select2-container--default .select2-selection--single { height:42px; border:1.5px solid var(--border); border-radius:8px; display:flex; align-items:center; }
         .select2-container--default .select2-selection--single .select2-selection__rendered { line-height:42px; font-size:14px; color:var(--text); }
         .select2-container--default .select2-selection--single .select2-selection__arrow { height:42px; }
@@ -119,14 +109,14 @@
 
 <div class="topbar">
     <div class="logo"><div class="logo-mark"><span>T</span></div><div class="logo-name">Trip<em>Jack</em> &nbsp;·&nbsp; TripVita</div></div>
-    <div class="edition-pill">June 2026</div>
+    <div class="edition-pill">July 2026</div>
 </div>
 
 <!-- REGISTRATION -->
 <div class="card" id="screen-reg">
     <div class="brand-header">
         <div class="brand-title">Trip<span>Vita</span></div>
-        <div class="brand-sub">June 2026 · Monthly Assessment</div>
+        <div class="brand-sub">July 2026 · Monthly Assessment</div>
     </div>
     <div class="card-body">
         <div id="loader">Loading team list…</div>
@@ -166,9 +156,9 @@
         <div class="progress-track"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
     </div>
     <div class="dots-wrap" id="dots"></div>
-    <div class="section-banner mt" id="section-banner">
-        <span class="s-icon">🧳</span>
-        <div class="s-right"><span class="s-label" id="section-label">Manage Travellers</span><span class="s-desc" id="section-desc">Traveller Management</span></div>
+    <div class="section-banner bus" id="section-banner">
+        <span class="s-icon">🚌</span>
+        <div class="s-right"><span class="s-label" id="section-label">Bus</span><span class="s-desc" id="section-desc">Commission, Policy & Bookings</span></div>
     </div>
     <div class="question-wrap"><div class="q-counter" id="q-counter">Question 1</div><p class="q-text" id="q-text"></p></div>
     <div class="options-wrap" id="opts"></div>
@@ -187,8 +177,8 @@
     <div style="padding:16px 28px 12px;">
         <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-3);margin-bottom:12px;">Score by Section</div>
         <div class="cat-grid">
-            <div class="cat-cell mt"><div class="cc-icon">🧳</div><div class="cc-val" id="cc-mt">0</div><div class="cc-lbl">Manage Travellers</div></div>
-            <div class="cat-cell ic"><div class="cc-icon">⚡</div><div class="cc-val" id="cc-ic">0</div><div class="cc-lbl">InstaCredit</div></div>
+            <div class="cat-cell bus"><div class="cc-icon">🚌</div><div class="cc-val" id="cc-bus">0</div><div class="cc-lbl">Bus</div></div>
+            <div class="cat-cell ts"><div class="cc-icon">🛡️</div><div class="cc-val" id="cc-ts">0</div><div class="cc-lbl">TripSafe</div></div>
         </div>
     </div>
     <div class="divider" style="margin:12px 28px;"></div>
@@ -210,134 +200,152 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <script>
 // ═══════════════════════════════════════════════════════
-// CONFIG — paste your deployed Apps Script URL here
+// CONFIG
 // ═══════════════════════════════════════════════════════
 const SCRIPT_URL  = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
-const EDITION     = 'June 2026';
-const STORAGE_KEY = 'tripvita_june_2026';
-const NUM_QS      = 15;  // served from 18
+const EDITION     = 'July 2026';
+const STORAGE_KEY = 'tripvita_july_2026';
+const NUM_QS      = 15;  // served from 21
 
 // ═══════════════════════════════════════════════════════
-// JUNE 2026 QUESTION BANK — 18 questions, 15 served
-// True/False options normalised to strings
-// Typos fixed: "An partner" → "A partner", "settlled" → "settled", "with 48" → "within 48"
+// JULY 2026 QUESTION BANK — 21 questions, 15 served
+// Fixes applied: Q7 "journe"→"journey", Q17 duplicate option replaced
+// Category typo fixed: "Trapsafe" → "TripSafe"
 // ═══════════════════════════════════════════════════════
 const ALL_QUESTIONS = [
-  { id:1, cat:"Manage Travellers",
-    q:"Where can partners access the Manage Travellers feature?",
-    opts:["My Bookings","Dashboard → Manage Travellers","Payment Passbook","Booking Calendar"],
-    ans:"Dashboard → Manage Travellers",
-    exp:"When a user is looking to access Manage Travellers, they have to visit Dashboard and look for \"Manage Travellers\" section on the left pane." },
+  { id:1, cat:"Bus",
+    q:"What is the agent-facing commission line, and how much does an agent pay on a ₹100 base fare?",
+    opts:["Variable 10% commission; Agent pays ₹90","Flat 5% commission on base fare; Agent pays ₹95","Flat 5% commission on total fare; Agent pays ₹90","Flat 2% commission on base fare; Agent pays ₹98"],
+    ans:"Flat 5% commission on base fare; Agent pays ₹95",
+    exp:"The agent commission on Bus is a flat 5% on the base fare, not variable and not on the total fare. On a ₹100 base fare, the agent's net payout is ₹95 after commission is deducted." },
 
-  { id:2, cat:"Manage Travellers",
-    q:"What is the primary purpose of the Manage Travellers feature?",
-    opts:["Save payment details","Save traveller details for future bookings","Store invoices","Track commissions"],
-    ans:"Save traveller details for future bookings",
-    exp:"\"Manage Travellers\" is designed to help travel partners store all information regarding their customers, so while booking tickets, all required information can be directly imported from the saved directory." },
+  { id:2, cat:"Bus",
+    q:"How should \"TJ Choice\" be explained to agents?",
+    opts:["As a third-party recommended operator network","As Tripjack's own curated selection and a key differentiator worth highlighting directly","As a premium loyalty tier for high-volume agents","As a discounted fare category sponsored by bus operators"],
+    ans:"As Tripjack's own curated selection and a key differentiator worth highlighting directly",
+    exp:"TJ Choice is Tripjack's own curated selection of preferred operators — not a third-party network or loyalty tier. Reps should position it directly to agents as a differentiator." },
 
-  { id:3, cat:"Manage Travellers",
-    q:"Which of the following is NOT a benefit of the 'Manage Travellers' feature?",
-    opts:["Faster bookings","Reduced manual errors","Automatic ticket cancellation","Reuse traveller information"],
-    ans:"Automatic ticket cancellation",
-    exp:"While Manage Travellers enables partners to book faster, reduce manual typing errors and reuse traveller information, it is not designed for ticket cancellation or reissuance." },
+  { id:3, cat:"Bus",
+    q:"Is there a system-enforced cap on how much markup an agent can add to a fare, and should this be stated to an agent?",
+    opts:["Yes, there is a cap, and reps should clearly state this cap to agents.","No, there is no cap, and reps should proactively share this freedom with agents.","False (no system cap), but reps should NEVER state this to an agent to avoid unwanted markup negotiations.","True (there is a 15% cap), but reps should keep it confidential."],
+    ans:"False (no system cap), but reps should NEVER state this to an agent to avoid unwanted markup negotiations.",
+    exp:"There's no system-enforced markup cap, but reps should avoid stating this to agents — surfacing it invites markup negotiation pressure that isn't in Tripjack's interest to manage." },
 
-  { id:4, cat:"Manage Travellers",
-    q:"Which type of travellers can be saved?",
-    opts:["International only","Domestic only","Both Domestic and International","Corporate only"],
-    ans:"Both Domestic and International",
-    exp:"Manage Travellers enables users to save all customers regardless of travel sector. For international clients, users can input details including passport information." },
+  { id:4, cat:"Bus",
+    q:"An agent books 3 seats and sets themselves as the primary passenger. What happens if they try to cancel only their own seat?",
+    opts:["Only the primary passenger's seat gets cancelled; the other 2 remain valid.","The system automatically assigns the second passenger as primary without cancelling.","The entire booking (all 3 seats) gets cancelled.","The cancellation fails and throws a platform error."],
+    ans:"The entire booking (all 3 seats) gets cancelled.",
+    exp:"Since the primary passenger's seat is tied to the whole booking record, cancelling it cancels all seats on that booking — partial cancellation isn't supported when it's the primary passenger being removed." },
 
-  { id:5, cat:"Manage Travellers",
-    q:"What does the Profile Completion Score indicate?",
-    opts:["Number of bookings made","How complete the traveller profile is","Credit balance","Ticket confirmation status"],
-    ans:"How complete the traveller profile is",
-    exp:"Profile Completion Score indicates how much information about a given traveller is available for fetching while creating a booking — essentially displaying how complete a traveller profile is." },
+  { id:5, cat:"Bus",
+    q:"What does a greyed-out \"Quick Pay\" button mean on the checkout screen?",
+    opts:["The Quick Pay feature is currently down for platform maintenance.","The agent is not authorized to use prepaid wallet options.","Insufficient funds in the prepaid balance (Wallet/Credit Line/Deposit) relative to net payable amount.","Quick Pay is only available for flight bookings, not bus bookings."],
+    ans:"Insufficient funds in the prepaid balance (Wallet/Credit Line/Deposit) relative to net payable amount.",
+    exp:"Quick Pay greys out specifically when the prepaid balance (Wallet/Credit Line/Deposit combined) is insufficient to cover the net payable amount — it's a funds check, not a system or category restriction." },
 
-  { id:6, cat:"Manage Travellers",
-    q:"Traveller profiles can be edited after they are created.",
-    opts:["True","False"],
-    ans:"True",
-    exp:"Traveller profiles can be edited from time to time — updating names, prefixes, meal preferences, GST details etc. as required." },
+  { id:6, cat:"Bus",
+    q:"Which of the following is Tripjack explicitly RESPONSIBLE for as a ticketing platform?",
+    opts:["Bus seat quality and onboard AC functioning","Issuing a valid ticket, processing standard cancellation refunds, and platform support","Providing compensation for bus operator delays","Handling passenger baggage loss during the trip"],
+    ans:"Issuing a valid ticket, processing standard cancellation refunds, and platform support",
+    exp:"Tripjack's platform responsibility is limited to issuing valid tickets, processing standard cancellation refunds, and providing platform support — not the physical travel experience (seat quality, AC, baggage), which sits with the operator." },
 
-  { id:7, cat:"Manage Travellers",
-    q:"Partners must create a new traveller profile for every booking.",
-    opts:["True","False"],
-    ans:"False",
-    exp:"Manage Travellers is designed so partners do not have to enter traveller details for each booking — they can auto-fetch available information, saving time and reducing errors." },
+  { id:7, cat:"Bus",
+    q:"What is Tripjack's maximum liability exposure on any booking, and what is the allowable grievance window?",
+    opts:["Capped at ₹5,000; Grievance window is 30 days post-journey","Capped at the ticket fare; Grievance window is 10 days post-journey","Capped at 50% of ticket fare; Grievance window is 7 days post-journey","Unlimited liability; Grievance window is 24 hours post-journey"],
+    ans:"Capped at the ticket fare; Grievance window is 10 days post-journey",
+    exp:"Tripjack's maximum liability on any booking is capped at the ticket fare itself, and the grievance window for raising an issue is 10 days post-journey." },
 
-  { id:8, cat:"Manage Travellers",
-    q:"Bulk Add Traveller Details is useful for corporate agencies.",
-    opts:["True","False"],
-    ans:"True",
-    exp:"Corporate companies frequently need to book tickets for large groups. In such cases, the Bulk Add Traveller Details feature is particularly beneficial." },
+  { id:8, cat:"Bus",
+    q:"What is the primary difference between an Agent Invoice and a Customer Invoice?",
+    opts:["Agent Invoice shows net paid, commission earned, and TDS deducted. Customer Invoice shows gross price paid by the end traveler","Agent Invoice includes GST; Customer Invoice is non-taxable.","Agent Invoice is issued by the bus operator; Customer Invoice is issued by Tripjack.","There is no difference; both display the exact same amounts."],
+    ans:"Agent Invoice shows net paid, commission earned, and TDS deducted. Customer Invoice shows gross price paid by the end traveler",
+    exp:"The Agent Invoice shows the agent's net paid amount, commission earned, and TDS deducted — it's an internal settlement document. The Customer Invoice shows the gross price the end traveller paid, since that's the only figure relevant to them." },
 
-  { id:9, cat:"Manage Travellers",
-    q:"Higher Profile Completion helps reduce missing information during bookings.",
-    opts:["True","False"],
-    ans:"True",
-    exp:"A complete profile score means no required information is missing, leading to a more efficient booking journey for partners." },
+  { id:9, cat:"Bus",
+    q:"What checkout contact details are captured, and what are they used for?",
+    opts:["Agent's registered email/phone — used to send bus and driver details ~24 hours before the trip.","End-customer's personal phone number — used for direct Tripjack marketing.","Primary passenger's address — used for billing compliance.","Operator contact details — used for payment settlements."],
+    ans:"Agent's registered email/phone — used to send bus and driver details ~24 hours before the trip.",
+    exp:"The agent's own registered email/phone is captured at checkout, and it's used to send bus and driver details roughly 24 hours before travel — not the passenger's or the operator's contact details." },
 
-  { id:10, cat:"Manage Travellers",
-    q:"Traveller profiles cannot be deleted once created.",
-    opts:["True","False"],
-    ans:"False",
-    exp:"Traveller profile is an agile feature — partners can create and delete profiles as their requirements and client base changes." },
+  { id:10, cat:"Bus",
+    q:"An agent asks to change the travel date on a confirmed booking. What is the correct procedure?",
+    opts:["Submit an L2 escalation ticket for manual date modification.","Cancel the existing booking and rebook (tickets are non-transferable/non-modifiable once issued).","Charge a ₹100 date-change fee and process on the portal header.","Direct the agent to call the bus driver to modify the date."],
+    ans:"Cancel the existing booking and rebook (tickets are non-transferable/non-modifiable once issued).",
+    exp:"Bus tickets are non-transferable and non-modifiable once issued, so a date change means cancelling the existing booking and creating a fresh one — there's no manual date-modification workflow." },
 
-  { id:11, cat:"InstaCredit",
-    q:"What is InstaCredit?",
-    opts:["A manual credit limit increase approved by the ASM","An auto-approved instant credit on top of the partner's permanent base limit","A one-time emergency credit for locked accounts","A government-backed travel finance scheme"],
-    ans:"An auto-approved instant credit on top of the partner's permanent base limit",
-    exp:"InstaCredit is an instant top-up on the existing credit line which does not require a manual approval cycle, enabling partners to quickly fulfill their booking requirements." },
+  { id:11, cat:"Bus",
+    q:"A customer's bus is delayed by 3 hours, and the agent demands compensation. What is Tripjack's liability position?",
+    opts:["Tripjack will issue a full ticket refund automatically.","Tripjack provides a flat ₹500 wallet credit for delay compensation.","No compensation obligation for delays (operator responsibility); any exposure remains strictly capped at ticket fare.","Tripjack will charge the bus operator a penalty fee and pass it to the agent."],
+    ans:"No compensation obligation for delays (operator responsibility); any exposure remains strictly capped at ticket fare.",
+    exp:"Delays are the operator's responsibility, not Tripjack's — there's no compensation obligation, and any exposure Tripjack does carry stays capped at the ticket fare regardless of the delay." },
 
-  { id:12, cat:"InstaCredit",
-    q:"What does TTWS stand for?",
-    opts:["Total Travel Weekly Sales","Trailing Twelve Week Sales","Transaction Time Weighted Score","Target-to-Win Sales"],
-    ans:"Trailing Twelve Week Sales",
-    exp:"TTWS stands for Trailing Twelve Week Sales — indicating total sales for the last 12 weeks, used to calculate credit payment eligibility." },
+  { id:12, cat:"TripSafe",
+    q:"What are the Sum Insured options available in TripSafe Student?",
+    opts:["$50,000 USD & $100,000 USD","$250,000 USD","$500,000 USD","All the above"],
+    ans:"All the above",
+    exp:"TripSafe Student offers four Sum Insured tiers — $50,000, $100,000, $250,000, and $500,000 USD — giving students a range of coverage levels to choose from." },
 
-  { id:13, cat:"InstaCredit",
-    q:"A partner does one large booking every 2 months but nothing in between. How does this affect their InstaCredit?",
-    opts:["It has no effect — only total volume matters","It helps because a large booking boosts TTWS","It hurts because Sales Consistency requires regular, not random, booking patterns","It increases their Payment Float score"],
-    ans:"It hurts because Sales Consistency requires regular, not random, booking patterns",
-    exp:"Credit is determined by multiple parameters including sales figures, frequency of bookings, and booking patterns — not just total volume." },
+  { id:13, cat:"TripSafe",
+    q:"Who is eligible to purchase TripSafe Student?",
+    opts:["Any foreign citizen","Indian citizen or OCI cardholder","Only Indian citizens below 18 years","Only OCI cardholders"],
+    ans:"Indian citizen or OCI cardholder",
+    exp:"Eligibility is restricted to Indian citizens or OCI cardholders — foreign nationals without OCI status aren't covered under this specific product." },
 
-  { id:14, cat:"InstaCredit",
-    q:"What is \"Payment Float\" in the context of InstaCredit?",
-    opts:["The buffer amount between base limit and InstaCredit","The total outstanding amount on a partner's account","Payment ageing — how promptly the partner clears their dues","A fee charged for extending the due date"],
-    ans:"Payment ageing — how promptly the partner clears their dues",
-    exp:"Payment Float indicates the time duration between using credit for a booking and clearing the outstanding due — essentially tracking payment promptness." },
+  { id:14, cat:"TripSafe",
+    q:"What is the eligible age range for a TripSafe Student policy?",
+    opts:["16–35 years","18–45 years","21–50 years","18–60 years"],
+    ans:"18–45 years",
+    exp:"The eligible age band is 18–45 years." },
 
-  { id:15, cat:"InstaCredit",
-    q:"When a partner requests a due date extension and it gets accepted, what actually changes in the system?",
-    opts:["The billing cycle resets to the next month","The lock date gets pushed forward","The bill gets settled.","The base credit limit is temporarily reduced"],
-    ans:"The lock date gets pushed forward",
-    exp:"When a partner requests a due date extension, the system determines a future date as a new deadline for fulfilling dues, pushing the lock date forward." },
+  { id:15, cat:"TripSafe",
+    q:"What should be the primary purpose of travel for TripSafe Student?",
+    opts:["Tourism and holidays","Business meetings","Education or studies abroad","Visiting family and friends"],
+    ans:"Education or studies abroad",
+    exp:"The policy is designed specifically for students travelling abroad for education — not tourism, business, or family visits." },
 
-  { id:16, cat:"InstaCredit",
-    q:"A partner's account is locked. They make the full payment within 48 hours. What happens next?",
-    opts:["They must call the ASM to manually raise an unlock request","The account unlocks automatically within 24 hours","An unlock request is automatically raised by the system","They must submit a written request to the State Head"],
-    ans:"The account unlocks automatically within 24 hours",
-    exp:"Once full payment is completed, a locked account automatically unlocks within the next 24 hours, enabling partners to stay functional." },
+  { id:16, cat:"TripSafe",
+    q:"What is the minimum course duration required for TripSafe Student?",
+    opts:["7 days","15 days","1 month","3 months"],
+    ans:"1 month",
+    exp:"The course being pursued abroad must run for a minimum of 1 month for the policy to apply." },
 
-  { id:17, cat:"InstaCredit",
-    q:"The auto-raised unlock request is routed to which authority in case of moderate concern?",
-    opts:["Always to the ASM, regardless of the situation","Always to the National Head","To State Head","Directly to the Finance team"],
-    ans:"To State Head",
-    exp:"Depending on the partner's credit history and booking patterns, the system routes unlock requests to ASM / State Head / Regional Head / National Head for different concern levels." },
+  { id:17, cat:"TripSafe",
+    q:"Where must the student be located when purchasing the TripSafe Student policy?",
+    opts:["Anywhere, as long as travel begins within India","Anywhere outside India","In India","At the university campus"],
+    ans:"In India",
+    exp:"The student must be physically located in India at the time of purchasing the policy — it can't be bought after departure." },
 
-  { id:18, cat:"InstaCredit",
-    q:"Which partner profile would score HIGHEST for InstaCredit?",
-    opts:["On TJ for 2 months, uses credit, books regularly","On TJ for 5 months, uses credit, books ₹10K every week, always pays on time","On TJ for 6 months, does not use the credit feature","On TJ for 4 months, uses credit, had one large booking 3 months ago, often delays payment"],
-    ans:"On TJ for 5 months, uses credit, books ₹10K every week, always pays on time",
-    exp:"InstaCredit considers multiple parameters: booking volume, booking values, consistency, patterns, and repayment history. Regular high-value bookings with on-time payment scores highest." }
+  { id:18, cat:"TripSafe",
+    q:"Which partner handles Baggage Tracking and Protection?",
+    opts:["Blue Ribbon Bags","Aditya Birla Capital Health Insurance","None of these","Across Assist"],
+    ans:"Blue Ribbon Bags",
+    exp:"Blue Ribbon Bags is the named partner handling Baggage Tracking and Protection under this policy." },
+
+  { id:19, cat:"TripSafe",
+    q:"Which company provides the 12 Assistance Services shown on the slide?",
+    opts:["TripSafe Global","Aditya Birla Capital","Across Assist","Blue Ribbon Bags"],
+    ans:"Across Assist",
+    exp:"Across Assist is the provider behind the 12 Assistance Services included in TripSafe Student." },
+
+  { id:20, cat:"TripSafe",
+    q:"Which of the following is a key feature of TripSafe Student?",
+    opts:["Baggage Tracking & Protection","Assistance Services","Travel Insurance Coverage","All of the above"],
+    ans:"All of the above",
+    exp:"TripSafe Student combines all three — Baggage Tracking & Protection, Assistance Services, and Travel Insurance Coverage — as its core feature set." },
+
+  { id:21, cat:"TripSafe",
+    q:"What does \"university insolvency\" mean?",
+    opts:["University Insolvency reimburses any travel or hotel costs to return to India if the university closes or loses recognition.","When a university increases its tuition fees","When a university temporarily stops accepting new students","When a student decides to change their university"],
+    ans:"University Insolvency reimburses any travel or hotel costs to return to India if the university closes or loses recognition.",
+    exp:"University Insolvency cover reimburses the student's travel or hotel costs to return to India if their university shuts down or loses its recognition mid-course." }
 ];
 
 // ═══════════════════════════════════════════════════════
 // SECTION META
 // ═══════════════════════════════════════════════════════
 const SECTION_META = {
-  'Manage Travellers': { cls:'mt', icon:'🧳', desc:'Traveller Management' },
-  'InstaCredit':       { cls:'ic', icon:'⚡', desc:'Credit & Payments'   }
+  'Bus':      { cls:'bus', icon:'🚌', desc:'Commission, Policy & Bookings' },
+  'TripSafe': { cls:'ts',  icon:'🛡️', desc:'Student Insurance & Coverage' }
 };
 
 // ═══════════════════════════════════════════════════════
@@ -345,25 +353,27 @@ const SECTION_META = {
 // ═══════════════════════════════════════════════════════
 let user=null, qs=[], cur=0, spent=0;
 let timerInterval=null, isSubmitting=false, responses=[];
-const catScores = { 'Manage Travellers':0, 'InstaCredit':0 };
+const catScores = { 'Bus':0, 'TripSafe':0 };
 
 // ═══════════════════════════════════════════════════════
 // INIT
 // ═══════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', () => {
-    const EDITION_CLOSED = true; // June closed — set false to reopen
+    const EDITION_CLOSED = false; // set true to close July
     if (EDITION_CLOSED) {
         $id('screen-done').querySelector('.d-icon').textContent = '🔒';
-        $id('screen-done').querySelector('h2').textContent = 'June 2026 Edition Closed';
-        $id('done-msg').textContent = 'The June 2026 edition has now closed. Thank you to everyone who participated! The July edition is on its way — stick around, it drops soon.';
+        $id('screen-done').querySelector('h2').textContent = 'July 2026 Edition Closed';
+        $id('done-msg').textContent = 'The July 2026 edition has closed. Thank you for participating. Watch out for the August edition!';
         show('screen-done'); return;
     }
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
         const d   = JSON.parse(stored);
-        const pct = Math.round(d.score/NUM_QS*100);
-        const dt  = new Date(d.ts).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
-        $id('done-msg').textContent = `You submitted on ${dt} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
+        const pct = Math.round(d.score / NUM_QS * 100);
+        const dt  = new Date(d.ts).toLocaleDateString('en-IN',
+            { day:'numeric', month:'long', year:'numeric' });
+        $id('done-msg').textContent =
+            `You submitted on ${dt} with a score of ${d.score}/${NUM_QS} (${pct}%). Each edition allows one attempt only.`;
         show('screen-done'); return;
     }
     loadTeam();
@@ -438,7 +448,7 @@ function startTimer() {
 }
 
 function renderQ() {
-    const q=qs[cur], meta=SECTION_META[q.cat]||{cls:'mt',icon:'📋',desc:q.cat};
+    const q=qs[cur], meta=SECTION_META[q.cat]||{cls:'bus',icon:'📋',desc:q.cat};
     const pct=Math.round(cur/NUM_QS*100);
     $id('progress-label').textContent=`Question ${cur+1} of ${NUM_QS}`;
     $id('progress-pct').textContent=`${pct}%`;
@@ -494,11 +504,11 @@ async function finish() {
     $id('res-score').innerHTML=`${totalScore}<span>/${NUM_QS}</span>`;
     $id('res-pct').textContent=`${pct}% — ${pct>=90?'Excellence Club 🏆':pct>=70?'Pass ✓':'Below Threshold'}`;
     $id('res-time').textContent=`⏱ Time taken: ${timeFmt}`;
-    $id('cc-mt').textContent=catScores['Manage Travellers']||0;
-    $id('cc-ic').textContent=catScores['InstaCredit']||0;
+    $id('cc-bus').textContent=catScores['Bus']||0;
+    $id('cc-ts').textContent=catScores['TripSafe']||0;
     const payload={name:user.name,empId:user.empId,email:user.email,totalScore,
-        manageTravellersScore:catScores['Manage Travellers']||0,
-        instaCreditScore:catScores['InstaCredit']||0,
+        busScore:catScores['Bus']||0,
+        tripSafeScore:catScores['TripSafe']||0,
         timeFormatted:timeFmt,timeSec,edition:EDITION,responses};
     try {
         const res=await fetch(SCRIPT_URL,{method:'POST',body:JSON.stringify(payload)});
