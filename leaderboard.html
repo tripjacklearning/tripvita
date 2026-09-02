@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>TripVita Leaderboard — June 2026</title>
+<title>TripVita Leaderboard — July 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,16 +12,13 @@
   --orange:#EF7F1A; --orange-lt:#FEF3E8;
   --green:#0e7c5a; --green-lt:#E6F5EF;
   --red:#c0392b; --red-lt:#FDF0EF;
-  --purple:#6D28D9; --purple-lt:#F5F3FF; --purple-bdr:#DDD6FE;
   --gold-bg:#FFFBEF; --gold-bdr:#F5C842;
   --bg:#F2F4F8; --card:#fff; --border:#DDE1EA;
   --text:#1A202C; --text-2:#4A5568; --text-3:#718096;
-  --mt-bg:#EBF2FF; --mt-fg:#1B3F7A; --mt-bdr:#BDD0F5;
-  --ic-bg:#F5F3FF; --ic-fg:#6D28D9; --ic-bdr:#DDD6FE;
+  --bus-bg:#FEF3E8; --bus-fg:#C05F00; --bus-bdr:#F9C98A;
+  --ts-bg:#EBF2FF;  --ts-fg:#1B3F7A;  --ts-bdr:#BDD0F5;
 }
 body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; }
-
-/* Topbar */
 .topbar { background:var(--blue); padding:0 32px; height:52px; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; z-index:100; box-shadow:0 2px 8px rgba(0,0,0,0.15); }
 .logo { display:flex; align-items:center; gap:8px; }
 .logo-mark { width:26px; height:26px; background:var(--orange); border-radius:6px; display:flex; align-items:center; justify-content:center; }
@@ -35,11 +32,7 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .refresh-btn:hover { background:rgba(255,255,255,0.22); }
 .refresh-btn:disabled { opacity:0.5; cursor:not-allowed; }
 .last-updated { font-size:11px; color:rgba(255,255,255,0.4); }
-
-/* Layout */
 .content { max-width:900px; margin:0 auto; padding:24px 16px 48px; }
-
-/* Hero */
 .hero { background:var(--blue); border-radius:14px; padding:24px 28px; margin-bottom:16px; display:flex; align-items:center; justify-content:space-between; gap:16px; box-shadow:0 4px 20px rgba(27,63,122,0.18); }
 .hero-label { font-size:10px; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--orange); margin-bottom:4px; }
 .hero-title { font-size:24px; font-weight:800; color:#fff; letter-spacing:-0.5px; }
@@ -47,8 +40,6 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .hero-badge { background:var(--orange); border-radius:10px; padding:10px 18px; text-align:center; flex-shrink:0; }
 .hero-badge-num { font-size:28px; font-weight:800; color:#fff; line-height:1; }
 .hero-badge-lbl { font-size:10px; font-weight:700; color:rgba(255,255,255,0.8); text-transform:uppercase; letter-spacing:1px; margin-top:2px; }
-
-/* Stats */
 .stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; margin-bottom:16px; }
 .stat-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; border-top:3px solid var(--orange); }
 .stat-card.blue { border-top-color:var(--blue); }
@@ -56,18 +47,14 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .stat-card.red { border-top-color:var(--red); }
 .stat-val { font-size:22px; font-weight:800; color:var(--blue); line-height:1; margin-bottom:4px; }
 .stat-lbl { font-size:11px; font-weight:600; color:var(--text-3); text-transform:uppercase; letter-spacing:0.8px; }
-
-/* Section summary */
 .section-summary { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
 .section-card { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px 16px; display:flex; align-items:center; gap:12px; }
-.section-card.mt { border-top:3px solid var(--mt-fg); }
-.section-card.ic { border-top:3px solid var(--ic-fg); }
+.section-card.bus { border-top:3px solid var(--bus-fg); }
+.section-card.ts  { border-top:3px solid var(--ts-fg); }
 .sc-icon { font-size:20px; flex-shrink:0; }
 .sc-lbl { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:1px; color:var(--text-3); }
 .sc-val { font-size:18px; font-weight:800; color:var(--text); line-height:1.2; }
 .sc-sub { font-size:11px; color:var(--text-3); margin-top:1px; }
-
-/* Podium */
 .podium { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-bottom:16px; }
 .podium-card { background:var(--card); border:1px solid var(--border); border-radius:12px; padding:18px 14px; text-align:center; position:relative; overflow:hidden; }
 .podium-card.rank-1 { border-color:var(--gold-bdr); background:var(--gold-bg); box-shadow:0 3px 16px rgba(245,200,66,0.2); }
@@ -81,8 +68,6 @@ body { font-family:'Inter',-apple-system,sans-serif; background:var(--bg); color
 .podium-time { font-size:12px; color:var(--text-3); margin-top:3px; font-variant-numeric:tabular-nums; }
 .perfect-tag { position:absolute; top:8px; right:8px; background:var(--green-lt); color:var(--green); font-size:9px; font-weight:700; padding:2px 6px; border-radius:10px; text-transform:uppercase; }
 .empty-podium { color:var(--text-3); font-size:13px; padding:24px 0; }
-
-/* Table */
 .table-wrap { background:var(--card); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
 .table-header { padding:12px 20px; background:var(--bg); border-bottom:1px solid var(--border); display:flex; justify-content:space-between; align-items:center; }
 .table-title { font-size:13px; font-weight:700; color:var(--blue); }
@@ -101,13 +86,11 @@ tbody td { padding:10px 16px; font-size:13px; color:var(--text-2); }
 .score-cell { font-size:14px; font-weight:700; color:var(--blue); font-variant-numeric:tabular-nums; }
 .time-cell { font-size:12px; color:var(--text-3); font-variant-numeric:tabular-nums; font-family:'DM Mono',monospace; }
 .pct-cell { font-size:12px; font-weight:600; font-variant-numeric:tabular-nums; }
-.mt-score { font-size:13px; color:var(--mt-fg); font-weight:600; }
-.ic-score { font-size:13px; color:var(--ic-fg); font-weight:600; }
+.bus-score { font-size:13px; color:var(--bus-fg); font-weight:600; }
+.ts-score  { font-size:13px; color:var(--ts-fg);  font-weight:600; }
 .tag { display:inline-block; font-size:9px; font-weight:700; padding:2px 6px; border-radius:8px; text-transform:uppercase; letter-spacing:0.5px; margin-left:5px; vertical-align:middle; }
 .tag-perfect { background:var(--green-lt); color:var(--green); }
 .tag-top { background:var(--blue-lt); color:var(--blue-acc); }
-
-/* State */
 .state-box { text-align:center; padding:40px 20px; }
 .state-box .st-icon { font-size:36px; margin-bottom:12px; }
 .state-box p { font-size:14px; color:var(--text-3); line-height:1.6; }
@@ -115,7 +98,6 @@ tbody td { padding:10px 16px; font-size:13px; color:var(--text-2); }
 </head>
 <body>
 
-<!-- Topbar -->
 <div class="topbar">
   <div class="logo">
     <div class="logo-mark"><span>T</span></div>
@@ -130,10 +112,9 @@ tbody td { padding:10px 16px; font-size:13px; color:var(--text-2); }
 
 <div class="content">
 
-  <!-- Hero -->
   <div class="hero">
     <div>
-      <div class="hero-label">TripVita · June 2026</div>
+      <div class="hero-label">TripVita · July 2026</div>
       <div class="hero-title">Live Leaderboard</div>
       <div class="hero-sub">Ranked by score · fastest time breaks ties · auto-refreshes every 60s</div>
     </div>
@@ -143,7 +124,6 @@ tbody td { padding:10px 16px; font-size:13px; color:var(--text-2); }
     </div>
   </div>
 
-  <!-- Stats -->
   <div class="stats-row">
     <div class="stat-card blue"><div class="stat-val" id="stat-avg">—</div><div class="stat-lbl">Avg Score</div></div>
     <div class="stat-card green"><div class="stat-val" id="stat-perfect">—</div><div class="stat-lbl">Perfect 15/15</div></div>
@@ -151,34 +131,31 @@ tbody td { padding:10px 16px; font-size:13px; color:var(--text-2); }
     <div class="stat-card red"><div class="stat-val" id="stat-below">—</div><div class="stat-lbl">Below Threshold</div></div>
   </div>
 
-  <!-- Section averages -->
   <div class="section-summary">
-    <div class="section-card mt">
-      <div class="sc-icon">🧳</div>
+    <div class="section-card bus">
+      <div class="sc-icon">🚌</div>
       <div>
-        <div class="sc-lbl">Manage Travellers</div>
-        <div class="sc-val" id="sec-mt">—</div>
-        <div class="sc-sub">avg out of 10</div>
+        <div class="sc-lbl">Bus</div>
+        <div class="sc-val" id="sec-bus">—</div>
+        <div class="sc-sub">avg out of 11</div>
       </div>
     </div>
-    <div class="section-card ic">
-      <div class="sc-icon">⚡</div>
+    <div class="section-card ts">
+      <div class="sc-icon">🛡️</div>
       <div>
-        <div class="sc-lbl">InstaCredit</div>
-        <div class="sc-val" id="sec-ic">—</div>
-        <div class="sc-sub">avg out of 8</div>
+        <div class="sc-lbl">TripSafe</div>
+        <div class="sc-val" id="sec-ts">—</div>
+        <div class="sc-sub">avg out of 10</div>
       </div>
     </div>
   </div>
 
-  <!-- Podium -->
   <div class="podium" id="podium">
     <div class="podium-card"><div class="empty-podium">Loading…</div></div>
     <div class="podium-card"><div class="empty-podium"></div></div>
     <div class="podium-card"><div class="empty-podium"></div></div>
   </div>
 
-  <!-- Table -->
   <div class="table-wrap">
     <div class="table-header">
       <div class="table-title">Full Rankings</div>
@@ -192,7 +169,7 @@ tbody td { padding:10px 16px; font-size:13px; color:var(--text-2); }
 </div>
 
 <script>
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzu-o-kyd-NAsRQjlOhoDgVSmnAfonvXizB5-aPFM5g9un_DN9kXJBCtBNqj16-3J_SAQ/exec';
+const SCRIPT_URL = 'PASTE_YOUR_APPS_SCRIPT_URL_HERE';
 const NUM_QS     = 15;
 let allData      = [];
 
@@ -229,14 +206,13 @@ function renderAll() {
   document.getElementById('stat-top').textContent     = allData.filter(r => r.pct >= 90).length;
   document.getElementById('stat-below').textContent   = allData.filter(r => r.pct < 70).length;
 
-  // Section averages
   const secAvg = (key, max) => {
     if (!allData.length) return '—';
     const a = allData.reduce((s, r) => s + (Number(r[key]) || 0), 0) / allData.length;
     return `${a.toFixed(1)} / ${max}`;
   };
-  document.getElementById('sec-mt').textContent = secAvg('mt', 10);
-  document.getElementById('sec-ic').textContent = secAvg('ic', 8);
+  document.getElementById('sec-bus').textContent = secAvg('bus', 11);
+  document.getElementById('sec-ts').textContent  = secAvg('ts', 10);
 
   renderPodium(sorted);
   renderTable(sorted);
@@ -281,8 +257,8 @@ function renderTable(sorted) {
     <th>#</th>
     <th>Name</th>
     <th>Score</th>
-    <th>🧳 Manage Travellers</th>
-    <th>⚡ InstaCredit</th>
+    <th>🚌 Bus</th>
+    <th>🛡️ TripSafe</th>
     <th>%</th>
     <th>Time</th>
   </tr></thead><tbody>`;
@@ -300,8 +276,8 @@ function renderTable(sorted) {
       <td class="rank-cell">${rank}</td>
       <td class="name-cell">${r.name}${tag}</td>
       <td class="score-cell">${r.score}/15</td>
-      <td class="mt-score">${r.mt ?? '—'}</td>
-      <td class="ic-score">${r.ic ?? '—'}</td>
+      <td class="bus-score">${r.bus ?? '—'}</td>
+      <td class="ts-score">${r.ts ?? '—'}</td>
       <td class="pct-cell" style="color:${pctColor};">${r.pct}%</td>
       <td class="time-cell">${r.time || fmt(r.timeSec)}</td>
     </tr>`;
